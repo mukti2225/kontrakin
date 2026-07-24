@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 
 export const Cta = () => {
   return (
-    <section id="coba" className="bg-[#12141B] py-20">
+    <section id="cta" className="bg-[#12141B] py-20">
       <div className="mx-auto max-w-3xl px-6 text-center">
         <h2 className="text-[28px] font-semibold tracking-tight text-white md:text-[34px]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           Mulai kelola kontrakanmu hari ini juga.

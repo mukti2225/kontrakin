@@ -37,7 +37,7 @@ export const DashboardPreview = () => {
   ];
 
   return (
-    <section className="bg-[#FAFAF8] py-24">
+    <section id="preview" className="bg-[#FAFAF8] py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
           <div>

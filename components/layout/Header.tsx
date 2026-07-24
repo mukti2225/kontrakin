@@ -12,9 +12,9 @@ import { useSession } from "@/lib/auth/client";
 
 const NAV_ITEMS = [
   { href: "/", label: "Beranda" },
-  { href: "/features", label: "Fitur" },
-  { href: "/pricing", label: "Langganan" },
-  { href: "/contact", label: "Kontak" },
+  { href: "#fitur", label: "Fitur" },
+  { href: "#harga", label: "Langganan" },
+  { href: "#cta", label: "Kontak" },
 ] as const;
 
 export default function Header() {

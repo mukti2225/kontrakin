@@ -18,7 +18,7 @@ export const HowItWorks = () => {
   ];
 
   return (
-    <section id="cara-kerja" className="border-y border-[#E5E5E0] bg-white py-24">
+    <section id="cara" className="border-y border-[#E5E5E0] bg-white py-24">
       <div className="mx-auto max-w-6xl px-6">
         <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[#0FA37F]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
           Cara kerja

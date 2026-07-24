@@ -31,7 +31,7 @@ export const Hero = () => {
   };
 
   return (
-    <section className="border-b border-[#E5E5E0] bg-[#FAFAF8]">
+    <section id="beranda" className="border-b border-[#E5E5E0] bg-[#FAFAF8]">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-28">
         <div>
           <span className="inline-block text-[12px] font-medium uppercase tracking-[0.08em] text-[#0FA37F]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
