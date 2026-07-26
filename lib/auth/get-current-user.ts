@@ -18,3 +18,24 @@ export async function requireUser() {
   }
   return user;
 }
+
+export async function requireOwner() {
+  const user = await requireUser();
+  if (user.role !== "owner") {
+    throw new Error("FORBIDDEN: hanya untuk owner");
+  }
+  return user;
+}
+
+export async function requireOwnerId() {
+  const user = await requireOwner();
+  return user.id;
+}
+
+export async function requireTenant() {
+  const user = await requireUser();
+  // tenant tidak wajib dicek role ketat kalau kamu izinkan owner juga bisa jadi tenant di properti lain,
+  // tapi kalau mau ketat aktifkan baris berikut:
+  if (user.role !== "tenant") throw new Error("FORBIDDEN: hanya untuk tenant");
+  return user;
+}

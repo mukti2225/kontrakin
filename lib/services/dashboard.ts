@@ -20,22 +20,22 @@ const okupansiBulanan: TitikData[] = [
 ];
 
 const kamar: Kamar[] = [
-  { id: "k1", nomor: "A-01", lantai: 1, tipe: "Standar", hargaBulanan: 950_000, status: "Terisi", penyewaId: "p1" },
-  { id: "k2", nomor: "A-02", lantai: 1, tipe: "Standar", hargaBulanan: 950_000, status: "Terisi", penyewaId: "p2" },
+  { id: "k1", nomor: "A-01", lantai: 1, tipe: "Standar", hargaBulanan: 950_000, status: "Terisi", penghuniId: "p1" },
+  { id: "k2", nomor: "A-02", lantai: 1, tipe: "Standar", hargaBulanan: 950_000, status: "Terisi", penghuniId: "p2" },
   { id: "k3", nomor: "A-03", lantai: 1, tipe: "Standar", hargaBulanan: 950_000, status: "Kosong" },
-  { id: "k4", nomor: "B-01", lantai: 2, tipe: "Deluxe", hargaBulanan: 1_350_000, status: "Terisi", penyewaId: "p3" },
+  { id: "k4", nomor: "B-01", lantai: 2, tipe: "Deluxe", hargaBulanan: 1_350_000, status: "Terisi", penghuniId: "p3" },
   { id: "k5", nomor: "B-02", lantai: 2, tipe: "Deluxe", hargaBulanan: 1_350_000, status: "Perbaikan" },
-  { id: "k6", nomor: "B-03", lantai: 2, tipe: "Deluxe", hargaBulanan: 1_350_000, status: "Terisi", penyewaId: "p4" },
-  { id: "k7", nomor: "C-01", lantai: 3, tipe: "VIP", hargaBulanan: 1_800_000, status: "Terisi", penyewaId: "p5" },
+  { id: "k6", nomor: "B-03", lantai: 2, tipe: "Deluxe", hargaBulanan: 1_350_000, status: "Terisi", penghuniId: "p4" },
+  { id: "k7", nomor: "C-01", lantai: 3, tipe: "VIP", hargaBulanan: 1_800_000, status: "Terisi", penghuniId: "p5" },
   { id: "k8", nomor: "C-02", lantai: 3, tipe: "VIP", hargaBulanan: 1_800_000, status: "Kosong" },
 ];
 
 const pembayaranTerbaru: Pembayaran[] = [
-  { id: "tx1", penyewaNama: "Adi Nugroho", inisial: "AN", kamarNomor: "A-01", jumlah: 950_000, tanggal: "2026-07-21", metode: "Transfer BCA", status: "Berhasil" },
-  { id: "tx2", penyewaNama: "Sri Wulandari", inisial: "SW", kamarNomor: "B-03", jumlah: 1_350_000, tanggal: "2026-07-20", metode: "Transfer BRI", status: "Berhasil" },
-  { id: "tx3", penyewaNama: "Bagas Pratama", inisial: "BP", kamarNomor: "B-01", jumlah: 1_350_000, tanggal: "2026-07-18", metode: "QRIS", status: "Tertunda" },
-  { id: "tx4", penyewaNama: "Citra Amelia", inisial: "CA", kamarNomor: "C-01", jumlah: 1_800_000, tanggal: "2026-07-15", metode: "Tunai", status: "Berhasil" },
-  { id: "tx5", penyewaNama: "Farhan Ramadhan", inisial: "FR", kamarNomor: "A-02", jumlah: 950_000, tanggal: "2026-07-12", metode: "Transfer BCA", status: "Gagal" },
+  { id: "tx1", penghuniNama: "Adi Nugroho", inisial: "AN", kamarNomor: "A-01", jumlah: 950_000, tanggal: "2026-07-21", metode: "Transfer BCA", status: "Berhasil" },
+  { id: "tx2", penghuniNama: "Sri Wulandari", inisial: "SW", kamarNomor: "B-03", jumlah: 1_350_000, tanggal: "2026-07-20", metode: "Transfer BRI", status: "Berhasil" },
+  { id: "tx3", penghuniNama: "Bagas Pratama", inisial: "BP", kamarNomor: "B-01", jumlah: 1_350_000, tanggal: "2026-07-18", metode: "QRIS", status: "Tertunda" },
+  { id: "tx4", penghuniNama: "Citra Amelia", inisial: "CA", kamarNomor: "C-01", jumlah: 1_800_000, tanggal: "2026-07-15", metode: "Tunai", status: "Berhasil" },
+  { id: "tx5", penghuniNama: "Farhan Ramadhan", inisial: "FR", kamarNomor: "A-02", jumlah: 950_000, tanggal: "2026-07-12", metode: "Transfer BCA", status: "Gagal" },
 ];
 
 function hitungStats(): StatRingkasan[] {

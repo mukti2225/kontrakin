@@ -78,7 +78,7 @@ export default function RegisterPage() {
                 onClick={() => setRegistrationRole("tenant")}
                 className={`rounded-md px-3 py-2 text-sm font-medium transition ${registrationRole === "tenant" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               >
-                Penyewa
+                Penghuni
               </button>
               <button
                 type="button"
@@ -90,7 +90,7 @@ export default function RegisterPage() {
                 Pemilik Kost
               </button>
             </div>
-            <p className="text-xs text-muted-foreground">{registrationRole === "tenant" ? "Akun akan dibuat sebagai penyewa kontrakan." : "Akun akan dibuat sebagai pemilik kost dan diberi akses sesuai peran."}</p>
+            <p className="text-xs text-muted-foreground">{registrationRole === "tenant" ? "Akun akan dibuat sebagai penghuni kontrakan." : "Akun akan dibuat sebagai pemilik kost dan diberi akses sesuai peran."}</p>
           </div>
 
           <div className="space-y-2">

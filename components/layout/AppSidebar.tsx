@@ -3,28 +3,29 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Building2, LayoutDashboard, BedDouble, Users, Receipt, FileText, Settings, LogOut, MessageSquare, Activity } from "lucide-react";
-
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from "@/components/ui/sidebar";
 import { signOut } from "@/lib/auth/client";
 
 const ownerNavItems = [
-  { title: "Ringkasan", url: "/dashboard/owner", icon: LayoutDashboard },
-  { title: "Kamar", url: "/dashboard/owner/kamar", icon: BedDouble },
-  { title: "Penyewa", url: "/dashboard/owner/penyewa", icon: Users },
-  { title: "Pembayaran", url: "/dashboard/owner/pembayaran", icon: Receipt },
-  { title: "Kontrak", url: "/dashboard/owner/kontrak", icon: FileText },
+  { title: "Dashboard", url: "/dashboard/owner", icon: LayoutDashboard },
+  { title: "Manajemen Kamar", url: "/dashboard/owner/kamar", icon: BedDouble },
+  { title: "Daftar Penghuni", url: "/dashboard/owner/penghuni", icon: Users },
+  { title: "Keuangan dan Tagihan", url: "/dashboard/owner/tagihan", icon: Receipt },
+  { title: "Pemeliharaan", url: "/dashboard/owner/pemeliharaan", icon: Receipt },
+  { title: "Laporan Keuangan", url: "/dashboard/owner/laporan", icon: Receipt },
 ];
 
 const tenantNavItems = [
-  { title: "Ringkasan", url: "/dashboard/tenant", icon: LayoutDashboard },
+  { title: "Dashboard", url: "/dashboard/tenant", icon: LayoutDashboard },
   { title: "Tagihan Saya", url: "/dashboard/tenant/tagihan", icon: Receipt },
+  { title: "Kontrak & Aturan", url: "/dashboard/tenant/kontrak", icon: FileText },
   { title: "Lapor Keluhan", url: "/dashboard/tenant/keluhan", icon: MessageSquare },
-  { title: "Kontrak", url: "/dashboard/tenant/kontrak", icon: FileText },
 ];
 
 const superAdminNavItems = [
-  { title: "Ringkasan", url: "/dashboard/admin", icon: LayoutDashboard },
+  { title: "Dashboard", url: "/dashboard/admin", icon: LayoutDashboard },
   { title: "Daftar Pemilik Kos", url: "/dashboard/admin/users", icon: Users },
+  { title: "Paket dan Berlangganan", url: "/dashboard/admin/paket", icon: Users },
   { title: "Log Sistem", url: "/dashboard/admin/logs", icon: Activity },
 ];
 
@@ -52,7 +53,7 @@ export function AppSidebar() {
     basePath = "/dashboard/admin";
   } else if (isTenant) {
     currentNavItems = tenantNavItems;
-    roleTitle = "Penyewa";
+    roleTitle = "Penghuni";
     basePath = "/dashboard/tenant";
   }
 

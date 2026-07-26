@@ -15,7 +15,7 @@ export const Pricing = () => {
       price: "Rp 99rb",
       period: "/bulan",
       desc: "Untuk kontrakan atau kos yang mulai berkembang.",
-      features: ["Hingga 30 kamar", "Pengingat WhatsApp", "Portal penyewa", "Laporan keuangan lengkap"],
+      features: ["Hingga 30 kamar", "Pengingat WhatsApp", "Portal penghuni", "Laporan keuangan lengkap"],
       highlighted: true,
     },
     {

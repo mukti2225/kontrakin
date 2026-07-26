@@ -7,12 +7,12 @@ export interface Kamar {
   tipe: string;
   hargaBulanan: number;
   status: StatusKamar;
-  penyewaId?: string;
+  penghuniId?: string;
 }
 
 export type StatusPembayaran = "Berhasil" | "Tertunda" | "Gagal";
 
-export interface Penyewa {
+export interface Penghuni {
   id: string;
   nama: string;
   inisial: string;
@@ -25,7 +25,7 @@ export interface Penyewa {
 
 export interface Pembayaran {
   id: string;
-  penyewaNama: string;
+  penghuniNama: string;
   inisial: string;
   kamarNomor: string;
   jumlah: number;

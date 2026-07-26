@@ -37,7 +37,7 @@ export function RecentPayments({ data }: RecentPaymentsProps) {
                 <AvatarFallback className="bg-teal-50 text-xs font-medium text-teal-800">{tx.inisial}</AvatarFallback>
               </Avatar>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium">{tx.penyewaNama}</p>
+                <p className="truncate text-sm font-medium">{tx.penghuniNama}</p>
                 <p className="text-xs text-slate-500">
                   Kamar {tx.kamarNomor} &middot; {tx.metode}
                 </p>

@@ -5,7 +5,7 @@ export const Features = () => {
     {
       icon: Receipt,
       title: "Tagihan Otomatis",
-      desc: "Tagihan sewa terbit sendiri tiap bulan sesuai tanggal jatuh tempo masing-masing penyewa.",
+      desc: "Tagihan sewa terbit sendiri tiap bulan sesuai tanggal jatuh tempo masing-masing penghuni.",
     },
     {
       icon: MessageCircleMore,
@@ -29,8 +29,8 @@ export const Features = () => {
     },
     {
       icon: Users,
-      title: "Portal Penyewa",
-      desc: "Penyewa bisa cek tagihan dan riwayat pembayaran sendiri lewat tautan pribadi.",
+      title: "Portal Penghuni",
+      desc: "Penghuni bisa cek tagihan dan riwayat pembayaran sendiri lewat tautan pribadi.",
     },
   ];
 

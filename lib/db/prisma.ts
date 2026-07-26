@@ -1,4 +1,3 @@
-// @ts-ignore - load the generated TypeScript client source directly to avoid the stale package entrypoint.
 import { PrismaClient } from "../generated/prisma/client.ts";
 import { PrismaPg } from "@prisma/adapter-pg";
 

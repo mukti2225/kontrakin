@@ -7,6 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
+// Model untuk menyimpan data pengguna
 model User {
   id               String    @id
   name             String
@@ -18,14 +19,18 @@ model User {
   banExpires       DateTime?
   emailVerified    Boolean   @default(false)
   image            String?
+  kodeUndangan     String?   @unique
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   sessions         Session[]
   accounts         Account[]
 
+  kamarDimiliki    Kamar[]    @relation("KamarOwner")
+  penghuniDimiliki Penghuni[] @relation("PenghuniOwner")
+  penghuniProfil   Penghuni?  @relation("PenghuniUser")
+
   @@index([role])
   @@index([banned])
-  
   @@map("user")
 }
 
@@ -45,6 +50,7 @@ model Session {
   @@map("session")
 }
 
+// Model untuk menyimpan data akun pengguna (misalnya akun Google, GitHub, dll.)
 model Account {
   id                    String    @id
   accountId             String
@@ -73,4 +79,65 @@ model Verification {
   updatedAt  DateTime @updatedAt
 
   @@map("verification")
+}
+
+// Model untuk menyimpan data kamar kontrakan
+model Kamar {
+  id           String      @id @default(cuid())
+  nomor        String      @unique
+  lantai       Int
+  tipe         TipeKamar
+  hargaBulanan Int
+  status       StatusKamar @default(kosong)
+  catatan      String?
+  ownerId      String
+  owner        User        @relation("KamarOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  penghuni     Penghuni[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@unique([ownerId, nomor])
+}
+
+enum StatusKamar {
+  kosong
+  terisi
+  maintenance
+}
+
+enum TipeKamar {
+  Standard
+  Deluxe
+  VIP
+}
+
+// Model untuk menyimpan data penghuni kontrakan
+model Penghuni {
+  id             String          @id @default(cuid())
+  nama           String
+  noHp           String
+  email          String?
+  noKtp          String?         @unique
+  tanggalMasuk   DateTime
+  tanggalKeluar  DateTime?
+  status         StatusPenghuni  @default(aktif)
+  catatan        String?
+
+  ownerId       String
+  owner         User            @relation("PenghuniOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  userId        String?         @unique
+  user          User?           @relation("PenghuniUser", fields: [userId], references: [id])
+  
+  kamarId        String?
+  kamar          Kamar?          @relation(fields: [kamarId], references: [id])
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@map("penghuni")
+}
+
+enum StatusPenghuni {
+  aktif
+  nonaktif
 }

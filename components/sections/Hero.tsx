@@ -41,7 +41,7 @@ export const Hero = () => {
             Kelola kontrakan, bukan drama telat bayar.
           </h1>
           <p className="mt-5 max-w-[42ch] text-[16px] leading-relaxed text-[#4B4F58]">
-            Satu dasbor untuk catat penyewa, kirim tagihan otomatis, dan pantau kamar mana yang sudah lunas — tanpa buku catatan dan chat WhatsApp yang berantakan.
+            Satu dasbor untuk catat penghuni, kirim tagihan otomatis, dan pantau kamar mana yang sudah lunas — tanpa buku catatan dan chat WhatsApp yang berantakan.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a href="#coba" className="group flex items-center gap-1.5 rounded-full bg-[#12141B] px-5 py-3 text-[14px] font-medium text-[#FAFAF8] transition-colors hover:bg-[#0FA37F]">

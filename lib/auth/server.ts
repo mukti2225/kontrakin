@@ -39,6 +39,11 @@ export const auth = betterAuth({
         defaultValue: "tenant",
         input: true,
       },
+      kodeUndangan: {
+        type: "string",
+        required: false,
+        input: false,
+      },
     },
   },
 

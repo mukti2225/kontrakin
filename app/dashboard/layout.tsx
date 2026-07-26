@@ -9,7 +9,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-slate-50">{children}</SidebarInset>
+      <SidebarInset className="bg-slate-50">
+        {children}
+      </SidebarInset>
     </SidebarProvider>
   );
 }

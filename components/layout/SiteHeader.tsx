@@ -26,7 +26,7 @@ export function SiteHeader({ title, subtitle }: SiteHeaderProps) {
       <div className="hidden flex-1 max-w-sm items-center gap-3 sm:flex">
         <div className="relative w-full">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
-          <Input placeholder="Cari kamar atau penyewa" className="pl-8" />
+          <Input placeholder="Cari kamar atau penghuni" className="pl-8" />
         </div>
       </div>
 

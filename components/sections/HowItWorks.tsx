@@ -7,8 +7,8 @@ export const HowItWorks = () => {
     },
     {
       n: "02",
-      title: "Undang penyewa",
-      desc: "Kirim tautan undangan ke penyewa agar mereka bisa lihat tagihan sendiri.",
+      title: "Undang penghuni",
+      desc: "Kirim tautan undangan ke penghuni agar mereka bisa lihat tagihan sendiri.",
     },
     {
       n: "03",
