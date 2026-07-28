@@ -13,29 +13,31 @@ interface SiteHeaderProps {
 
 export function SiteHeader({ title, subtitle }: SiteHeaderProps) {
   return (
-    <header className="flex items-center sticky top-0 justify-between gap-4 border-b border-slate-200 bg-white px-4 py-3 sm:px-6 z-20">
+    <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-slate-100 bg-white px-4 py-3 sm:px-6">
       <div className="flex items-center gap-3">
-        <SidebarTrigger />
-        <Separator orientation="vertical" className="h-5" />
+        <SidebarTrigger className="rounded-lg text-slate-500 transition-colors duration-300 ease-out hover:bg-teal-50 hover:text-teal-700" />
+        <Separator orientation="vertical" className="h-5 bg-slate-200" />
         <div>
-          <h1 className="text-lg font-semibold leading-tight">{title}</h1>
+          <h1 className="text-lg font-semibold leading-tight text-slate-900">{title}</h1>
           {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
         </div>
       </div>
 
       <div className="hidden flex-1 max-w-sm items-center gap-3 sm:flex">
         <div className="relative w-full">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
-          <Input placeholder="Cari kamar atau penghuni" className="pl-8" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-teal-600/60" />
+          <Input placeholder="Cari kamar atau penghuni" className="rounded-full border-slate-200 bg-slate-50 pl-9 focus-visible:border-teal-500 focus-visible:ring-teal-500/30" />
         </div>
       </div>
 
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="relative rounded-full text-slate-500 transition-colors duration-300 ease-out hover:bg-teal-50 hover:text-teal-700">
           <Bell className="h-4 w-4" />
+          <span className="absolute right-2 top-2 size-1.5 rounded-full bg-yellow-400 ring-2 ring-white" />
         </Button>
-        <Avatar className="h-8 w-8">
-          <AvatarFallback className="bg-slate-200 text-xs text-slate-700">RD</AvatarFallback>
+        <Separator orientation="vertical" className="h-6 bg-slate-200" />
+        <Avatar className="h-8 w-8 ring-2 ring-teal-500/20">
+          <AvatarFallback className="bg-linear-to-br from-teal-500 to-teal-700 text-xs font-semibold text-white">RD</AvatarFallback>
         </Avatar>
       </div>
     </header>
