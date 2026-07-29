@@ -20,16 +20,9 @@ export async function SiteHeader({ subtitle }: SiteHeaderProps) {
         <Separator orientation="vertical" className="h-full bg-slate-200" />
         <div>
           <h1 className="text-lg font-semibold leading-tight text-slate-900">Hai, {user?.name}</h1>
-          {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
+          <p className="text-xs text-slate-500">{subtitle}</p>
         </div>
       </div>
-
-      {/* <div className="hidden flex-1 max-w-sm items-center gap-3 sm:flex">
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-teal-600/60" />
-          <Input placeholder="Cari kamar atau penghuni" className="rounded-full border-slate-200 bg-slate-50 pl-9 focus-visible:border-teal-500 focus-visible:ring-teal-500/30" />
-        </div>
-      </div> */}
 
       <div className="flex items-center gap-3">
         <Button variant="ghost" size="icon" className="relative rounded-full text-slate-500 transition-colors duration-300 ease-out hover:bg-teal-50 hover:text-teal-700">

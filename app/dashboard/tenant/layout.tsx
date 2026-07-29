@@ -11,7 +11,7 @@ export default async function TenantLayout({ children }: { children: React.React
 
   return (
     <>
-      <SiteHeader title="Dashboard" subtitle="Selamat datang di dashboard Anda" />
+      <SiteHeader subtitle="Selamat datang di dashboard Anda" />
       {children}
     </>
   );

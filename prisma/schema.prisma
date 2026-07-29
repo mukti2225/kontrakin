@@ -25,9 +25,10 @@ model User {
   sessions         Session[]
   accounts         Account[]
 
-  kamarDimiliki    Kamar[]    @relation("KamarOwner")
-  penghuniDimiliki Penghuni[] @relation("PenghuniOwner")
-  penghuniProfil   Penghuni?  @relation("PenghuniUser")
+  kamarDimiliki    Kamar[]     @relation("KamarOwner")
+  penghuniDimiliki Penghuni[]  @relation("PenghuniOwner")
+  penghuniProfil   Penghuni?   @relation("PenghuniUser")
+  transaksi        Transaksi[] @relation("TransaksiOwner")
 
   @@index([role])
   @@index([banned])
@@ -93,6 +94,7 @@ model Kamar {
   ownerId      String
   owner        User        @relation("KamarOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   penghuni     Penghuni[]
+  transaksi    Transaksi[]
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
@@ -128,8 +130,9 @@ model Penghuni {
   userId        String?         @unique
   user          User?           @relation("PenghuniUser", fields: [userId], references: [id])
   
-  kamarId        String?
-  kamar          Kamar?          @relation(fields: [kamarId], references: [id])
+  kamarId       String?
+  kamar         Kamar?          @relation(fields: [kamarId], references: [id])
+  transaksi     Transaksi[]
 
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
@@ -140,4 +143,20 @@ model Penghuni {
 enum StatusPenghuni {
   aktif
   nonaktif
+}
+
+model Transaksi {
+  id          String    @id @default(cuid())
+  jenis       String
+  kategori    String
+  jumlah      Int
+  tanggal     DateTime
+  keterangan  String?
+  kamarId     String?
+  kamar       Kamar?    @relation(fields: [kamarId], references: [id])
+  penghuniId  String?
+  penghuni    Penghuni? @relation(fields: [penghuniId], references: [id])
+  ownerId     String
+  owner       User      @relation("TransaksiOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
 }

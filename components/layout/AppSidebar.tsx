@@ -10,7 +10,7 @@ const ownerNavItems = [
   { title: "Dashboard", url: "/dashboard/owner", icon: LayoutDashboard },
   { title: "Manajemen Kamar", url: "/dashboard/owner/kamar", icon: BedDouble },
   { title: "Daftar Penghuni", url: "/dashboard/owner/penghuni", icon: Users },
-  { title: "Keuangan dan Tagihan", url: "/dashboard/owner/tagihan", icon: Receipt },
+  { title: "Keuangan dan Tagihan", url: "/dashboard/owner/keuangan", icon: Receipt },
   { title: "Pemeliharaan", url: "/dashboard/owner/pemeliharaan", icon: Receipt },
   { title: "Laporan Keuangan", url: "/dashboard/owner/laporan", icon: Receipt },
 ];
