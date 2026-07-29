@@ -5,30 +5,31 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getCurrentUser } from "@/lib/auth/get-current-user";
 
 interface SiteHeaderProps {
-  title: string;
   subtitle?: string;
 }
 
-export function SiteHeader({ title, subtitle }: SiteHeaderProps) {
+export async function SiteHeader({ subtitle }: SiteHeaderProps) {
+  const user = await getCurrentUser();
   return (
     <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-slate-100 bg-white px-4 py-3 sm:px-6">
       <div className="flex items-center gap-3">
         <SidebarTrigger className="rounded-lg text-slate-500 transition-colors duration-300 ease-out hover:bg-teal-50 hover:text-teal-700" />
-        <Separator orientation="vertical" className="h-5 bg-slate-200" />
+        <Separator orientation="vertical" className="h-full bg-slate-200" />
         <div>
-          <h1 className="text-lg font-semibold leading-tight text-slate-900">{title}</h1>
+          <h1 className="text-lg font-semibold leading-tight text-slate-900">Hai, {user?.name}</h1>
           {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
         </div>
       </div>
 
-      <div className="hidden flex-1 max-w-sm items-center gap-3 sm:flex">
+      {/* <div className="hidden flex-1 max-w-sm items-center gap-3 sm:flex">
         <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-teal-600/60" />
           <Input placeholder="Cari kamar atau penghuni" className="rounded-full border-slate-200 bg-slate-50 pl-9 focus-visible:border-teal-500 focus-visible:ring-teal-500/30" />
         </div>
-      </div>
+      </div> */}
 
       <div className="flex items-center gap-3">
         <Button variant="ghost" size="icon" className="relative rounded-full text-slate-500 transition-colors duration-300 ease-out hover:bg-teal-50 hover:text-teal-700">
