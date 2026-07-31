@@ -29,6 +29,7 @@ model User {
   penghuniDimiliki Penghuni[]  @relation("PenghuniOwner")
   penghuniProfil   Penghuni?   @relation("PenghuniUser")
   transaksi        Transaksi[] @relation("TransaksiOwner")
+  propertiDimiliki Properti[]  @relation("PropertiOwner")
 
   @@index([role])
   @@index([banned])
@@ -159,4 +160,30 @@ model Transaksi {
   ownerId     String
   owner       User      @relation("TransaksiOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
+}
+
+// Model untuk menyimpan data Properti (Kost, Kontrakan, Ruko)
+model Properti {
+  id          String         @id @default(cuid())
+  nama        String
+  tipe        TipeProperti
+  alamat      String
+  foto        String?
+  lokasiMaps  String?
+  fasilitas   String?
+  deskripsi   String?
+  
+  ownerId     String
+  owner       User           @relation("PropertiOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@map("properti")
+}
+
+enum TipeProperti {
+  Kost
+  Kontrakan
+  Ruko
 }

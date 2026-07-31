@@ -8,11 +8,11 @@ import { signOut } from "@/lib/auth/client";
 
 const ownerNavItems = [
   { title: "Dashboard", url: "/dashboard/owner", icon: LayoutDashboard },
+  { title: "Manajemen Properti", url: "/dashboard/owner/properti", icon: Building2 },
   { title: "Manajemen Kamar", url: "/dashboard/owner/kamar", icon: BedDouble },
   { title: "Daftar Penghuni", url: "/dashboard/owner/penghuni", icon: Users },
   { title: "Keuangan dan Tagihan", url: "/dashboard/owner/keuangan", icon: Receipt },
   { title: "Pemeliharaan", url: "/dashboard/owner/pemeliharaan", icon: Receipt },
-  { title: "Laporan Keuangan", url: "/dashboard/owner/laporan", icon: Receipt },
 ];
 
 const tenantNavItems = [
