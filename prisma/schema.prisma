@@ -86,7 +86,7 @@ model Verification {
 // Model untuk menyimpan data kamar kontrakan
 model Kamar {
   id           String      @id @default(cuid())
-  nomor        String      @unique
+  nomor        String
   lantai       Int
   tipe         TipeKamar
   hargaBulanan Int
@@ -94,12 +94,15 @@ model Kamar {
   catatan      String?
   ownerId      String
   owner        User        @relation("KamarOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  propertiId   String?
+  properti     Properti?   @relation("KamarProperti", fields: [propertiId], references: [id], onDelete: SetNull)
   penghuni     Penghuni[]
   transaksi    Transaksi[]
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
   @@unique([ownerId, nomor])
+  @@index([propertiId])
 }
 
 enum StatusKamar {
@@ -175,6 +178,7 @@ model Properti {
   
   ownerId     String
   owner       User           @relation("PropertiOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  kamar       Kamar[]        @relation("KamarProperti")
 
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
@@ -186,4 +190,5 @@ enum TipeProperti {
   Kost
   Kontrakan
   Ruko
+  Apartemen
 }

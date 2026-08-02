@@ -19,6 +19,7 @@ export interface KamarInput {
   hargaBulanan: number;
   status: "kosong" | "terisi" | "maintenance";
   penghuniId?: string | null;
+  propertiId?: string | null;
   catatan?: string;
 }
 
@@ -26,17 +27,22 @@ export async function getKamarList() {
   const ownerId = await requireOwnerId();
   return prisma.kamar.findMany({
     where: { ownerId },
-    include: { penghuni: { where: { status: "aktif" } } },
+    include: {
+      penghuni: { where: { status: "aktif" } },
+      properti: { select: { id: true, nama: true } },
+    },
     orderBy: { nomor: "asc" },
   });
 }
 
 export async function createKamar(data: KamarInput) {
   const ownerId = await requireOwnerId();
-  const { penghuniId, ...kamarData } = data;
+  const { penghuniId, propertiId, ...kamarData } = data;
 
   const kamar = await prisma.$transaction(async (tx) => {
-    const created = await tx.kamar.create({ data: { ...kamarData, ownerId } });
+    const created = await tx.kamar.create({
+      data: { ...kamarData, ownerId, propertiId: propertiId ?? null },
+    });
 
     if (kamarData.status === "terisi" && penghuniId) {
       await tx.penghuni.update({
@@ -47,7 +53,10 @@ export async function createKamar(data: KamarInput) {
 
     return tx.kamar.findUniqueOrThrow({
       where: { id: created.id },
-      include: { penghuni: { where: { status: "aktif" } } },
+      include: {
+        penghuni: { where: { status: "aktif" } },
+        properti: { select: { id: true, nama: true } },
+      },
     });
   });
 
@@ -57,7 +66,7 @@ export async function createKamar(data: KamarInput) {
 }
 
 export async function updateKamar(id: string, data: KamarInput) {
-  const { penghuniId, ...kamarData } = data;
+  const { penghuniId, propertiId, ...kamarData } = data;
 
   const kamar = await prisma.$transaction(async (tx) => {
     const penghuniLama = await tx.penghuni.findFirst({
@@ -80,11 +89,17 @@ export async function updateKamar(id: string, data: KamarInput) {
       });
     }
 
-    await tx.kamar.update({ where: { id }, data: kamarData });
+    await tx.kamar.update({
+      where: { id },
+      data: { ...kamarData, propertiId: propertiId ?? undefined },
+    });
 
     return tx.kamar.findUniqueOrThrow({
       where: { id },
-      include: { penghuni: { where: { status: "aktif" } } },
+      include: {
+        penghuni: { where: { status: "aktif" } },
+        properti: { select: { id: true, nama: true } },
+      },
     });
   });
 

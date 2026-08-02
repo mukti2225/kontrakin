@@ -1,9 +1,23 @@
 import { getKamarList } from "./action";
 import { getPenghuniAktif } from "../penghuni/action";
+import { getProperti } from "../properti/actions";
 import { KamarClient } from "./kamar-client";
 
 export default async function KamarPage() {
-  const [rooms, penghuniOptions] = await Promise.all([getKamarList(), getPenghuniAktif()]);
+  const [rooms, penghuniOptions, propertiList] = await Promise.all([
+    getKamarList(),
+    getPenghuniAktif(),
+    getProperti(),
+  ]);
 
-  return <KamarClient initialRooms={rooms} penghuniOptions={penghuniOptions} />;
+  // Sederhanakan properti menjadi { id, nama } untuk dropdown
+  const propertiOptions = propertiList.map((p) => ({ id: p.id, nama: p.nama }));
+
+  return (
+    <KamarClient
+      initialRooms={rooms}
+      penghuniOptions={penghuniOptions}
+      propertiOptions={propertiOptions}
+    />
+  );
 }

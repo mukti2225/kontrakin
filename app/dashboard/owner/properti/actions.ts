@@ -13,6 +13,11 @@ export async function getProperti() {
   const ownerId = await requireOwnerId();
   return prisma.properti.findMany({
     where: { ownerId },
+    include: {
+      kamar: {
+        include: { penghuni: { where: { status: "aktif" } } },
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
 }
@@ -23,22 +28,22 @@ export async function createProperti(formData: FormData) {
   const nama = formData.get("nama") as string;
   const tipe = formData.get("tipe") as TipeProperti;
   const alamat = formData.get("alamat") as string;
-  
+
   const fotoFile = formData.get("foto") as File | null;
   let foto: string | null = null;
-  
+
   if (fotoFile && fotoFile.size > 0) {
     const bytes = await fotoFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    
+
     const uploadDir = join(process.cwd(), "public", "uploads");
     if (!existsSync(uploadDir)) {
       await mkdir(uploadDir, { recursive: true });
     }
-    
-    const fileName = `${Date.now()}-${fotoFile.name.replace(/\s+/g, '-')}`;
+
+    const fileName = `${Date.now()}-${fotoFile.name.replace(/\s+/g, "-")}`;
     const filePath = join(uploadDir, fileName);
-    
+
     await writeFile(filePath, buffer);
     foto = `/uploads/${fileName}`;
   }
@@ -73,7 +78,7 @@ export async function updateProperti(id: string, formData: FormData) {
   const nama = formData.get("nama") as string;
   const tipe = formData.get("tipe") as TipeProperti;
   const alamat = formData.get("alamat") as string;
-  
+
   const lokasiMaps = formData.get("lokasiMaps") as string | null;
   const fasilitas = formData.get("fasilitas") as string | null;
   const deskripsi = formData.get("deskripsi") as string | null;
@@ -86,19 +91,19 @@ export async function updateProperti(id: string, formData: FormData) {
 
   const fotoFile = formData.get("foto") as File | null;
   let foto = existing.foto; // Keep existing photo by default
-  
+
   if (fotoFile && fotoFile.size > 0) {
     const bytes = await fotoFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    
+
     const uploadDir = join(process.cwd(), "public", "uploads");
     if (!existsSync(uploadDir)) {
       await mkdir(uploadDir, { recursive: true });
     }
-    
-    const fileName = `${Date.now()}-${fotoFile.name.replace(/\s+/g, '-')}`;
+
+    const fileName = `${Date.now()}-${fotoFile.name.replace(/\s+/g, "-")}`;
     const filePath = join(uploadDir, fileName);
-    
+
     await writeFile(filePath, buffer);
     foto = `/uploads/${fileName}`;
   } else {

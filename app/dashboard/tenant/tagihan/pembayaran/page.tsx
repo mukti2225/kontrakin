@@ -97,11 +97,13 @@ export default async function PembayaranPage() {
                 <div className="grid gap-3 sm:grid-cols-2">
                   {group.options.map((opt) => (
                     <label key={opt.id} className="relative cursor-pointer group">
-                      <input type="radio" name="metode" value={opt.id} className="peer sr-only" required />
+                      <input type="radio" name="metode" value={opt.id} className="sr-only peer" required />
                       <div className="flex items-center justify-between p-4 rounded-xl border-2 border-border/50 bg-card hover:bg-muted/50 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-sm transition-all duration-200">
                         <div className="flex items-center gap-3">
-                          <div className="w-4 h-4 rounded-full border-2 border-muted-foreground peer-checked:border-primary flex items-center justify-center group-hover:border-primary/50 transition-colors">
-                            <div className="w-2 h-2 rounded-full bg-primary scale-0 peer-checked:scale-100 transition-transform" />
+                          {/* Lingkaran Luar Radio */}
+                          <div className="w-4 h-4 rounded-full border-2 border-muted-foreground group-hover:border-primary/50 group-has-checked:border-primary flex items-center justify-center transition-colors">
+                            {/* Lingkaran Dalam / Fill Radio */}
+                            <div className="w-2 h-2 rounded-full bg-primary scale-0 group-has-checked:scale-100 transition-transform duration-200" />
                           </div>
                           <span className="font-semibold text-foreground">{opt.label}</span>
                         </div>

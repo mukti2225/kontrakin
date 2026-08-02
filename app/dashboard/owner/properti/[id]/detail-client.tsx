@@ -1,71 +1,55 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useMemo, useTransition } from "react";
 import Link from "next/link";
 import type { Kamar, Penghuni, Properti } from "@/lib/generated/prisma/client";
-import { Bed, Building2, DoorOpen, MoreVertical, Pencil, Plus, Search, Trash2, Users, Wrench } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
-import { createKamar, updateKamar, deleteKamar, type KamarInput } from "./action";
+import { ArrowLeft, Bed, DoorOpen, MapPin, MoreVertical, Pencil, Plus, Search, Trash2, Users, Wrench } from "lucide-react";
 
-// ---------------------------------------------------------------------------
-// Tipe data
-// ---------------------------------------------------------------------------
+import { createUnit, updateUnit, deleteUnit, type UnitInput } from "./actions";
+
+// ─── TYPES ───────────────────────────────────────────────────────────────────
 
 type StatusKamar = "kosong" | "terisi" | "maintenance";
 type TipeKamar = "Standard" | "Deluxe" | "VIP";
-type KamarDenganPenghuni = Kamar & { penghuni: Penghuni[]; properti: { id: string; nama: string } | null };
+type KamarDenganPenghuni = Kamar & { penghuni: Penghuni[] };
+type PropertiDenganKamar = Properti & { kamar: KamarDenganPenghuni[] };
 
-interface KamarFormState {
-  nomor: string;
-  lantai: string;
-  tipe: TipeKamar;
-  hargaBulanan: string;
-  status: StatusKamar;
-  penghuniId: string;
-  propertiId: string;
-  catatan: string;
-}
-
-interface KamarFormErrors {
-  nomor?: string;
-  hargaBulanan?: string;
-  penghuniId?: string;
-}
-
-const FORM_KOSONG: KamarFormState = {
-  nomor: "",
-  lantai: "1",
-  tipe: "Standard",
-  hargaBulanan: "",
-  status: "kosong",
-  penghuniId: "",
-  propertiId: "",
-  catatan: "",
-};
+// ─── CONSTANTS ───────────────────────────────────────────────────────────────
 
 const STATUS_LABEL: Record<StatusKamar, string> = {
   kosong: "Kosong",
   terisi: "Terisi",
-  maintenance: "Maintenance",
+  maintenance: "Perbaikan",
 };
 
 const STATUS_BADGE_CLASS: Record<StatusKamar, string> = {
   kosong: "bg-emerald-100 text-emerald-700 hover:bg-emerald-100",
   terisi: "bg-blue-100 text-blue-700 hover:bg-blue-100",
   maintenance: "bg-amber-100 text-amber-700 hover:bg-amber-100",
+};
+
+const FORM_KOSONG = {
+  nomor: "",
+  lantai: "1",
+  tipe: "Standard" as TipeKamar,
+  hargaBulanan: "",
+  status: "kosong" as StatusKamar,
+  penghuniId: "",
+  catatan: "",
 };
 
 function formatRupiah(nilai: number) {
@@ -76,131 +60,121 @@ function formatRupiah(nilai: number) {
   }).format(nilai);
 }
 
-// ---------------------------------------------------------------------------
-// Komponen
-// ---------------------------------------------------------------------------
+// ─── COMPONENT ───────────────────────────────────────────────────────────────
 
-interface KamarClientProps {
-  initialRooms: KamarDenganPenghuni[];
+interface PropertiDetailClientProps {
+  properti: PropertiDenganKamar;
   penghuniOptions: Penghuni[];
-  propertiOptions: { id: string; nama: string }[];
 }
 
-export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: KamarClientProps) {
-  const [rooms, setRooms] = useState<KamarDenganPenghuni[]>(initialRooms);
+export function PropertiDetailClient({ properti, penghuniOptions }: PropertiDetailClientProps) {
+  const [units, setUnits] = useState<KamarDenganPenghuni[]>(properti.kamar);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusKamar | "semua">("semua");
   const [isPending, startTransition] = useTransition();
 
+  // Form state
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState<KamarFormState>(FORM_KOSONG);
-  const [errors, setErrors] = useState<KamarFormErrors>({});
+  const [form, setForm] = useState(FORM_KOSONG);
+  const [errors, setErrors] = useState<{ nomor?: string; hargaBulanan?: string; penghuniId?: string }>({});
 
   const [deleteTarget, setDeleteTarget] = useState<KamarDenganPenghuni | null>(null);
 
+  // Penghuni yang tersedia: belum punya kamar, atau sedang di kamar yang diedit
   const opsiPenghuni = useMemo(() => {
     return penghuniOptions.filter((p) => p.kamarId === null || p.kamarId === editingId);
   }, [penghuniOptions, editingId]);
 
   const selectedPenghuni = opsiPenghuni.find((p) => p.id === form.penghuniId);
 
-  const selectedProperti = propertiOptions.find((p) => p.id === form.propertiId);
-
-  const filteredRooms = useMemo(() => {
-    return rooms
-      .filter((room) => (statusFilter === "semua" ? true : room.status === statusFilter))
-      .filter((room) => {
+  // Filter & sort units
+  const filteredUnits = useMemo(() => {
+    return units
+      .filter((u) => (statusFilter === "semua" ? true : u.status === statusFilter))
+      .filter((u) => {
         const kata = search.trim().toLowerCase();
         if (!kata) return true;
-        const namaPenghuni = room.penghuni[0]?.nama.toLowerCase() ?? "";
-        return room.nomor.toLowerCase().includes(kata) || namaPenghuni.includes(kata);
+        const namaPenghuni = u.penghuni[0]?.nama.toLowerCase() ?? "";
+        return u.nomor.toLowerCase().includes(kata) || namaPenghuni.includes(kata);
       })
       .sort((a, b) => a.nomor.localeCompare(b.nomor));
-  }, [rooms, search, statusFilter]);
+  }, [units, search, statusFilter]);
 
-  const ringkasan = useMemo(() => {
-    const total = rooms.length;
-    const terisi = rooms.filter((r) => r.status === "terisi").length;
-    const kosong = rooms.filter((r) => r.status === "kosong").length;
-    const maintenance = rooms.filter((r) => r.status === "maintenance").length;
+  // Statistik
+  const stats = useMemo(() => {
+    const total = units.length;
+    const terisi = units.filter((u) => u.status === "terisi").length;
+    const kosong = units.filter((u) => u.status === "kosong").length;
+    const maintenance = units.filter((u) => u.status === "maintenance").length;
     const okupansi = total === 0 ? 0 : Math.round((terisi / total) * 100);
     return { total, terisi, kosong, maintenance, okupansi };
-  }, [rooms]);
+  }, [units]);
 
-  // -------------------------------------------------------------------------
-  // Alur CRUD
-  // -------------------------------------------------------------------------
+  // ── FORM HANDLERS ──────────────────────────────────────────────────────────
 
-  function bukaTambahKamar() {
+  function bukaTambah() {
     setEditingId(null);
     setForm(FORM_KOSONG);
     setErrors({});
     setFormOpen(true);
   }
 
-  function bukaEditKamar(room: KamarDenganPenghuni) {
-    setEditingId(room.id);
+  function bukaEdit(unit: KamarDenganPenghuni) {
+    setEditingId(unit.id);
     setForm({
-      nomor: room.nomor,
-      lantai: String(room.lantai),
-      tipe: room.tipe as TipeKamar,
-      hargaBulanan: String(room.hargaBulanan),
-      status: room.status as StatusKamar,
-      penghuniId: room.penghuni[0]?.id ?? "",
-      propertiId: room.properti?.id ?? "",
-      catatan: room.catatan ?? "",
+      nomor: unit.nomor,
+      lantai: String(unit.lantai),
+      tipe: unit.tipe as TipeKamar,
+      hargaBulanan: String(unit.hargaBulanan),
+      status: unit.status as StatusKamar,
+      penghuniId: unit.penghuni[0]?.id ?? "",
+      catatan: unit.catatan ?? "",
     });
     setErrors({});
     setFormOpen(true);
   }
 
-  function validateForm(): KamarFormErrors {
-    const newErrors: KamarFormErrors = {};
-    if (!form.nomor.trim()) newErrors.nomor = "Nomor kamar wajib diisi";
-    if (!form.hargaBulanan || Number(form.hargaBulanan) <= 0) {
-      newErrors.hargaBulanan = "Harga bulanan harus lebih dari 0";
-    }
-    if (form.status === "terisi" && !form.penghuniId) {
-      newErrors.penghuniId = "Pilih penghuni yang sudah terdaftar";
-    }
-    return newErrors;
+  function validateForm() {
+    const e: typeof errors = {};
+    if (!form.nomor.trim()) e.nomor = "Nomor unit wajib diisi";
+    if (!form.hargaBulanan || Number(form.hargaBulanan) <= 0) e.hargaBulanan = "Harga bulanan harus lebih dari 0";
+    if (form.status === "terisi" && !form.penghuniId) e.penghuniId = "Pilih penghuni yang sudah terdaftar";
+    return e;
   }
 
   function submitForm() {
     const validationErrors = validateForm();
     setErrors(validationErrors);
-
     if (Object.keys(validationErrors).length > 0) {
       toast.error("Lengkapi dulu field yang wajib diisi");
       return;
     }
 
-    const payload: KamarInput = {
+    const payload: UnitInput = {
       nomor: form.nomor.trim(),
       lantai: Number(form.lantai) || 1,
       tipe: form.tipe,
       hargaBulanan: Number(form.hargaBulanan),
       status: form.status,
       penghuniId: form.status === "terisi" ? form.penghuniId : null,
-      propertiId: form.propertiId || null,
       catatan: form.catatan.trim() || undefined,
     };
 
     startTransition(async () => {
       try {
         if (editingId) {
-          const updated = await updateKamar(editingId, payload);
-          setRooms((prev) => prev.map((r) => (r.id === editingId ? updated : r)));
-          toast.success(`Kamar ${payload.nomor} berhasil diperbarui`);
+          const updated = await updateUnit(editingId, properti.id, payload);
+          setUnits((prev) => prev.map((u) => (u.id === editingId ? updated : u)));
+          toast.success(`Unit ${payload.nomor} berhasil diperbarui`);
         } else {
-          const created = await createKamar(payload);
-          setRooms((prev) => [...prev, created]);
-          toast.success(`Kamar ${payload.nomor} berhasil ditambahkan`);
+          const created = await createUnit(properti.id, payload);
+          setUnits((prev) => [...prev, created]);
+          toast.success(`Unit ${payload.nomor} berhasil ditambahkan`);
         }
         setFormOpen(false);
       } catch {
-        toast.error("Gagal menyimpan data kamar. Pastikan nomor kamar belum dipakai.");
+        toast.error("Gagal menyimpan unit. Pastikan nomor unit belum dipakai di properti ini.");
       }
     });
   }
@@ -208,68 +182,86 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
   function konfirmasiHapus() {
     if (!deleteTarget) return;
     const target = deleteTarget;
-
     startTransition(async () => {
       try {
-        await deleteKamar(target.id);
-        setRooms((prev) => prev.filter((r) => r.id !== target.id));
-        toast.success(`Kamar ${target.nomor} berhasil dihapus`);
+        await deleteUnit(target.id, properti.id);
+        setUnits((prev) => prev.filter((u) => u.id !== target.id));
+        toast.success(`Unit ${target.nomor} berhasil dihapus`);
       } catch {
-        toast.error("Gagal menghapus kamar");
+        toast.error("Gagal menghapus unit");
       } finally {
         setDeleteTarget(null);
       }
     });
   }
 
-  // -------------------------------------------------------------------------
-  // Render
-  // -------------------------------------------------------------------------
+  // ── RENDER ─────────────────────────────────────────────────────────────────
 
   return (
     <div className="p-6 space-y-6">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">Manajemen Kamar</h1>
-        <p className="text-muted-foreground">Kelola semua kamar lintas properti, status hunian, dan penempatan penghuni.</p>
+      {/* Breadcrumb / Back */}
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="sm" className="h-8 gap-1.5 px-2" render={<Link href="/dashboard/owner/properti" />}>
+          <ArrowLeft className="w-4 h-4" />
+          Properti
+        </Button>
+        <span className="text-muted-foreground text-sm">/</span>
+        <span className="text-sm font-medium truncate">{properti.nama}</span>
       </div>
 
-      {/* Ringkasan */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Header properti */}
+      <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border bg-muted/30">
+        {properti.foto && <img src={properti.foto} alt={properti.nama} className="w-full sm:w-32 h-32 sm:h-24 object-cover rounded-lg shrink-0" />}
+        <div className="flex-1 min-w-0 space-y-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="text-xl font-bold">{properti.nama}</h1>
+            <Badge variant="secondary">{properti.tipe}</Badge>
+          </div>
+          <p className="text-sm text-muted-foreground flex items-start gap-1.5">
+            <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+            {properti.alamat}
+          </p>
+          {properti.fasilitas && <p className="text-xs text-muted-foreground">🏠 {properti.fasilitas}</p>}
+        </div>
+      </div>
+
+      {/* Statistik */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Kamar</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-1 pt-3 px-4">
+            <CardTitle className="text-xs font-medium text-muted-foreground">Total Unit</CardTitle>
             <DoorOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{ringkasan.total}</div>
+          <CardContent className="pb-3 px-4">
+            <div className="text-2xl font-bold">{stats.total}</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Terisi</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between pb-1 pt-3 px-4">
+            <CardTitle className="text-xs font-medium text-muted-foreground">Terisi</CardTitle>
+            <Users className="h-4 w-4 text-blue-500" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{ringkasan.terisi}</div>
-            <p className="text-xs text-muted-foreground">Okupansi {ringkasan.okupansi}%</p>
+          <CardContent className="pb-3 px-4">
+            <div className="text-2xl font-bold text-blue-600">{stats.terisi}</div>
+            <p className="text-xs text-muted-foreground">Okupansi {stats.okupansi}%</p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Kosong</CardTitle>
-            <Bed className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between pb-1 pt-3 px-4">
+            <CardTitle className="text-xs font-medium text-muted-foreground">Kosong</CardTitle>
+            <Bed className="h-4 w-4 text-emerald-500" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{ringkasan.kosong}</div>
+          <CardContent className="pb-3 px-4">
+            <div className="text-2xl font-bold text-emerald-600">{stats.kosong}</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Maintenance</CardTitle>
-            <Wrench className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between pb-1 pt-3 px-4">
+            <CardTitle className="text-xs font-medium text-muted-foreground">Perbaikan</CardTitle>
+            <Wrench className="h-4 w-4 text-amber-500" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{ringkasan.maintenance}</div>
+          <CardContent className="pb-3 px-4">
+            <div className="text-2xl font-bold text-amber-600">{stats.maintenance}</div>
           </CardContent>
         </Card>
       </div>
@@ -279,7 +271,7 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
         <div className="flex flex-1 flex-col gap-3 sm:flex-row">
           <div className="relative w-full sm:w-72">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Cari nomor kamar atau penghuni..." className="pl-8" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <Input placeholder="Cari nomor unit atau penghuni..." className="pl-8" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
           <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusKamar | "semua")}>
             <SelectTrigger className="w-full sm:w-44">
@@ -289,24 +281,23 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
               <SelectItem value="semua">Semua status</SelectItem>
               <SelectItem value="kosong">Kosong</SelectItem>
               <SelectItem value="terisi">Terisi</SelectItem>
-              <SelectItem value="maintenance">Maintenance</SelectItem>
+              <SelectItem value="maintenance">Perbaikan</SelectItem>
             </SelectContent>
           </Select>
         </div>
-        <Button onClick={bukaTambahKamar} disabled={isPending}>
+        <Button onClick={bukaTambah} disabled={isPending}>
           <Plus className="mr-2 h-4 w-4" />
-          Tambah Kamar
+          Tambah Unit
         </Button>
       </div>
 
-      {/* Tabel kamar */}
+      {/* Tabel unit */}
       <Card>
         <CardContent className="px-4">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nomor</TableHead>
-                <TableHead>Properti</TableHead>
+                <TableHead>No. Unit</TableHead>
                 <TableHead>Lantai</TableHead>
                 <TableHead>Tipe</TableHead>
                 <TableHead>Harga / Bulan</TableHead>
@@ -316,39 +307,25 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredRooms.length === 0 && (
+              {filteredUnits.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={8} className="py-10 text-center text-muted-foreground">
-                    Tidak ada kamar yang cocok dengan pencarian/filter.
+                  <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
+                    {units.length === 0 ? "Belum ada unit. Tambahkan unit pertama untuk properti ini." : "Tidak ada unit yang cocok dengan pencarian/filter."}
                   </TableCell>
                 </TableRow>
               )}
-              {filteredRooms.map((room) => (
-                <TableRow key={room.id}>
-                  <TableCell className="font-medium">
-                    <Link href={`/dashboard/owner/kamar/${room.id}`} className="hover:underline">
-                      {room.nomor}
-                    </Link>
-                  </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {room.properti ? (
-                      <Link href={`/dashboard/owner/properti/${room.properti.id}`} className="hover:underline flex items-center gap-1">
-                        <Building2 className="w-3 h-3" />
-                        {room.properti.nama}
-                      </Link>
-                    ) : (
-                      <span className="text-muted-foreground/50">—</span>
-                    )}
-                  </TableCell>
-                  <TableCell>{room.lantai}</TableCell>
-                  <TableCell>{room.tipe}</TableCell>
-                  <TableCell>{formatRupiah(room.hargaBulanan)}</TableCell>
+              {filteredUnits.map((unit) => (
+                <TableRow key={unit.id}>
+                  <TableCell className="font-medium">{unit.nomor}</TableCell>
+                  <TableCell>{unit.lantai}</TableCell>
+                  <TableCell>{unit.tipe}</TableCell>
+                  <TableCell>{formatRupiah(unit.hargaBulanan)}</TableCell>
                   <TableCell>
-                    <Badge variant="secondary" className={STATUS_BADGE_CLASS[room.status as StatusKamar]}>
-                      {STATUS_LABEL[room.status as StatusKamar]}
+                    <Badge variant="secondary" className={STATUS_BADGE_CLASS[unit.status as StatusKamar]}>
+                      {STATUS_LABEL[unit.status as StatusKamar]}
                     </Badge>
                   </TableCell>
-                  <TableCell>{room.penghuni[0]?.nama ?? "—"}</TableCell>
+                  <TableCell>{unit.penghuni[0]?.nama ?? "—"}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger
@@ -359,11 +336,11 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
                         }
                       ></DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => bukaEditKamar(room)}>
+                        <DropdownMenuItem onClick={() => bukaEdit(unit)}>
                           <Pencil className="mr-2 h-4 w-4" />
                           Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => setDeleteTarget(room)}>
+                        <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => setDeleteTarget(unit)}>
                           <Trash2 className="mr-2 h-4 w-4" />
                           Hapus
                         </DropdownMenuItem>
@@ -377,33 +354,18 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
         </CardContent>
       </Card>
 
-      {/* Dialog Tambah / Edit */}
+      {/* Dialog Tambah / Edit Unit */}
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{editingId ? "Edit Kamar" : "Tambah Kamar Baru"}</DialogTitle>
-            <DialogDescription>{editingId ? "Perbarui detail kamar di bawah ini." : "Isi detail kamar yang ingin ditambahkan."}</DialogDescription>
+            <DialogTitle>{editingId ? "Edit Unit" : "Tambah Unit Baru"}</DialogTitle>
+            <DialogDescription>{editingId ? "Perbarui detail unit di bawah ini." : `Tambahkan unit baru ke properti "${properti.nama}".`}</DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-2">
-            <div className="grid gap-2">
-              <Label>Properti (Opsional)</Label>
-              <Select value={form.propertiId} onValueChange={(v) => setForm((f) => ({ ...f, propertiId: v === "none" ? "" : (v ?? "") }))}>
-                <SelectTrigger id="propertiId">{selectedProperti ? <span className="flex-1 truncate">{selectedProperti.nama}</span> : <SelectValue placeholder="Pilih Properti terdaftar" />}</SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Tidak terhubung ke properti</SelectItem>
-                  {propertiOptions.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.nama}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="nomor">Nomor Kamar</Label>
+                <Label htmlFor="nomor">Nomor Unit</Label>
                 <Input id="nomor" placeholder="Contoh: A-01" value={form.nomor} onChange={(e) => setForm((f) => ({ ...f, nomor: e.target.value }))} />
                 {errors.nomor && <p className="text-sm text-destructive">{errors.nomor}</p>}
               </div>
@@ -415,7 +377,7 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
 
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label>Tipe Kamar</Label>
+                <Label>Tipe Unit</Label>
                 <Select value={form.tipe} onValueChange={(v) => setForm((f) => ({ ...f, tipe: v as TipeKamar }))}>
                   <SelectTrigger>
                     <SelectValue />
@@ -443,7 +405,7 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
                 <SelectContent>
                   <SelectItem value="kosong">Kosong</SelectItem>
                   <SelectItem value="terisi">Terisi</SelectItem>
-                  <SelectItem value="maintenance">Maintenance</SelectItem>
+                  <SelectItem value="maintenance">Perbaikan</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -452,15 +414,7 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
               <div className="grid gap-2">
                 <Label htmlFor="penghuniId">Nama Penghuni</Label>
                 <Select value={form.penghuniId} onValueChange={(v) => setForm((f) => ({ ...f, penghuniId: v ?? "" }))}>
-                  <SelectTrigger id="penghuniId">
-                    {selectedPenghuni ? (
-                      <span className="flex-1 truncate">
-                        {selectedPenghuni.nama} — {selectedPenghuni.noHp}
-                      </span>
-                    ) : (
-                      <SelectValue placeholder="Pilih penghuni terdaftar" />
-                    )}
-                  </SelectTrigger>
+                  <SelectTrigger id="penghuniId">{selectedPenghuni ? <span className="flex-1 truncate">{selectedPenghuni.nama}</span> : <SelectValue placeholder="Pilih penghuni terdaftar" />}</SelectTrigger>
                   <SelectContent>
                     {opsiPenghuni.length === 0 && <div className="px-2 py-3 text-sm text-muted-foreground">Belum ada penghuni tersedia. Daftarkan dulu di halaman Penghuni.</div>}
                     {opsiPenghuni.map((p) => (
@@ -476,7 +430,7 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
 
             <div className="grid gap-2">
               <Label htmlFor="catatan">Catatan (opsional)</Label>
-              <Textarea id="catatan" placeholder="Catatan tambahan, misalnya kondisi kamar" value={form.catatan} onChange={(e) => setForm((f) => ({ ...f, catatan: e.target.value }))} />
+              <Textarea id="catatan" placeholder="Catatan tambahan mengenai unit ini..." value={form.catatan} onChange={(e) => setForm((f) => ({ ...f, catatan: e.target.value }))} />
             </div>
           </div>
 
@@ -485,7 +439,7 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
               Batal
             </Button>
             <Button onClick={submitForm} disabled={isPending}>
-              {isPending ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Tambah Kamar"}
+              {isPending ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Tambah Unit"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -495,8 +449,8 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions }: 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Hapus kamar ini?</AlertDialogTitle>
-            <AlertDialogDescription>Kamar {deleteTarget?.nomor} akan dihapus secara permanen dan tidak dapat dikembalikan. Pastikan tidak ada penghuni aktif sebelum menghapus.</AlertDialogDescription>
+            <AlertDialogTitle>Hapus unit ini?</AlertDialogTitle>
+            <AlertDialogDescription>Unit {deleteTarget?.nomor} akan dihapus secara permanen. Pastikan tidak ada penghuni aktif sebelum menghapus.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
