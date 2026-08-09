@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div>
-            <h3 className="mb-4 text-lg font-bold text-white">Kontrakin</h3>
+            <h3 className="mb-4 text-lg font-bold text-white">HuniLink</h3>
             <p className="text-sm text-gray-400">Solusi digital terbaik untuk mengembangkan bisnis dan teknologi masa depan Anda.</p>
           </div>
 
@@ -46,7 +46,7 @@ export default function Footer() {
 
         <Separator className="my-8 bg-gray-800" />
 
-        <div className="text-center text-xs text-gray-500">&copy; {new Date().getFullYear()} Kontrakin. All rights reserved.</div>
+        <div className="text-center text-xs text-gray-500">&copy; {new Date().getFullYear()} HuniLink. All rights reserved.</div>
       </div>
     </footer>
   );

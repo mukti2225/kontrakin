@@ -5,11 +5,11 @@ import type { Kamar, StatusKamar } from "@/lib/types";
 
 function statusStyle(status: StatusKamar) {
   switch (status) {
-    case "Terisi":
+    case "terisi":
       return "bg-teal-50 text-teal-800 border-teal-200";
-    case "Kosong":
+    case "kosong":
       return "bg-amber-50 text-amber-800 border-amber-200";
-    case "Perbaikan":
+    case "maintenance":
       return "bg-rose-50 text-rose-800 border-rose-200";
   }
 }

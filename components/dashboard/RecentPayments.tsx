@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { formatRupiah } from "@/lib/services/dashboard";
-import type { Pembayaran, StatusPembayaran } from "@/lib/types";
+import type { PembayaranDTO, StatusPembayaran } from "@/lib/types";
 
 function statusVariant(status: StatusPembayaran) {
   if (status === "Berhasil") return "default" as const;
@@ -14,7 +14,7 @@ function statusVariant(status: StatusPembayaran) {
 }
 
 interface RecentPaymentsProps {
-  data: Pembayaran[];
+  data: PembayaranDTO[];
 }
 
 export function RecentPayments({ data }: RecentPaymentsProps) {

@@ -70,7 +70,7 @@ export function AppSidebar() {
                 </div>
                 <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
                   <span className="truncate text-lg font-bold tracking-tight">
-                    Kontrak<span className="text-yellow-300">in</span>
+                    Huni<span className="text-yellow-300">Link</span>
                   </span>
                   <span className="truncate text-xs text-white/70">Portal {roleTitle}</span>
                 </div>

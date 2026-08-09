@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <>
-      <SiteHeader title="Dashboard" subtitle="Selamat datang di dashboard Anda" />
+      <SiteHeader subtitle="Selamat datang di dashboard Anda" />
       {children}
     </>
   );

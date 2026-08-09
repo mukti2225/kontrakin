@@ -62,7 +62,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md rounded-xl border bg-background p-8 shadow">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold">Buat Akun</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Daftar untuk mulai menggunakan Kontrakin</p>
+          <p className="mt-2 text-sm text-muted-foreground">Daftar untuk mulai menggunakan HuniLink</p>
         </div>
 
         {error && <div className="mb-4 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive text-center">{error}</div>}

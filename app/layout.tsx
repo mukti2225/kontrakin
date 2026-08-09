@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kontrakin - Platform Manajemen Pemilik Kost/Kontrakan",
+  title: "HuniLink - Platform Manajemen Kost/Kontrakan",
   description: "Sistem Manajemen Kontrakan yang memudahkan pemilik kontrakan untuk mengelola properti mereka dengan efisien dan efektif.",
 };
 
