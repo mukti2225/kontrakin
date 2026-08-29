@@ -1,83 +1,76 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import DirectionalFloatCard from "@/components/ui/DirectionalFloatCard";
+
+const heroImage = "https://www.figma.com/api/mcp/asset/a3cf68c8-2b25-4ae9-81f7-402116aa0e74.png";
+const statusIcon = "https://www.figma.com/api/mcp/asset/5ebe4a08-851c-492d-8cda-6e1cf6c8e23f.svg";
+const roomIcon = "https://www.figma.com/api/mcp/asset/540af2ed-bf95-4f28-ba88-ebf25afe60f1.svg";
 
 export const Hero = () => {
-  type RoomStatus = "lunas" | "jatuh-tempo" | "nunggak";
-
-  const STATUS_STYLES: Record<RoomStatus, { bg: string; text: string; label: string }> = {
-    lunas: { bg: "bg-[#E3F5EF]", text: "text-[#0FA37F]", label: "Lunas" },
-    "jatuh-tempo": { bg: "bg-[#FDF1DC]", text: "text-[#B87706]", label: "Jatuh tempo" },
-    nunggak: { bg: "bg-[#FBE7E6]", text: "text-[#C43D37]", label: "Nunggak" },
-  };
-
-  const ROOMS: { code: string; status: RoomStatus }[] = [
-    { code: "A1", status: "lunas" },
-    { code: "A2", status: "lunas" },
-    { code: "A3", status: "jatuh-tempo" },
-    { code: "B1", status: "lunas" },
-    { code: "B2", status: "nunggak" },
-    { code: "B3", status: "lunas" },
+  const metrics = [
+    ["500+", "PEMILIK PROPERTI"],
+    ["12K+", "KAMAR DIKELOLA"],
+    ["99%", "TINGKAT SEWA"],
+    ["24/7", "DUKUNGAN PELANGGAN"],
   ];
 
-  const RoomStatusCard = ({ code, status }: { code: string; status: RoomStatus }) => {
-    const s = STATUS_STYLES[status];
-    return (
-      <div className={`flex flex-col items-center justify-center rounded-lg ${s.bg} px-3 py-3`}>
-        <span className="text-[13px] font-semibold text-[#12141B]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-          {code}
-        </span>
-        <span className={`mt-1 text-[10px] font-medium ${s.text}`}>{s.label}</span>
-      </div>
-    );
-  };
-
   return (
-    <section id="beranda" className="border-b border-[#E5E5E0] bg-[#FAFAF8]">
-      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-28">
-        <div>
-          <span className="inline-block text-[12px] font-medium uppercase tracking-[0.08em] text-[#0FA37F]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-            Untuk pemilik kontrakan &amp; kos
-          </span>
-          <h1 className="mt-4 max-w-[14ch] text-[40px] font-semibold leading-[1.1] tracking-tight text-[#12141B] md:text-[52px]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            Kelola kontrakan, bukan drama telat bayar.
+    <section id="beranda" className="relative overflow-hidden border-b border-[#dbe5e2] bg-[#f7faf9]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_0%,rgba(0,77,77,0.14),transparent_38%)]" />
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 sm:px-8 md:grid-cols-2 md:gap-8 md:px-10 md:py-20">
+        <div className="landing-reveal max-w-xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#bec9c8]/40 bg-[#e6e9e8] px-4 py-2 text-xs font-medium text-[#1f2937]">
+            <span className="size-2 rounded-full bg-[#10b981]" /> Digunakan oleh 500+ Pemilik Properti
+          </div>
+          <h1 className="mt-7 max-w-[11ch] text-5xl font-extrabold leading-[1.08] tracking-[-0.04em] text-[#1f2937] sm:text-6xl">
+            Kelola Kost <span className="text-[#004d4d]">Lebih Cerdas,</span> Bukan Lebih Keras.
           </h1>
-          <p className="mt-5 max-w-[42ch] text-[16px] leading-relaxed text-[#4B4F58]">
-            Satu dasbor untuk catat penghuni, kirim tagihan otomatis, dan pantau kamar mana yang sudah lunas — tanpa buku catatan dan chat WhatsApp yang berantakan.
+          <p className="mt-7 max-w-xl text-base leading-7 text-[#4b5563] sm:text-lg">
+            Tinggalkan cara lama. Huni Link menghadirkan solusi modern untuk manajemen properti Anda, dari otomatisasi tagihan hingga pemantauan kamar real-time dalam satu platform elegan.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a href="#coba" className="group flex items-center gap-1.5 rounded-full bg-[#12141B] px-5 py-3 text-[14px] font-medium text-[#FAFAF8] transition-colors hover:bg-[#0FA37F]">
-              Coba Gratis 14 Hari
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <a href="/register" className="group inline-flex items-center gap-2 rounded-xl bg-[#004d4d] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#003b3b]">
+              Mulai Transformasi Sekarang
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
             </a>
-            <a href="#cara-kerja" className="text-[14px] font-medium text-[#4B4F58] hover:text-[#12141B]">
-              Lihat cara kerjanya →
+            <a href="#cara" className="inline-flex items-center gap-2 rounded-xl border border-[#bec9c8] bg-white px-5 py-3.5 text-sm font-semibold text-[#1f2937] hover:border-[#004d4d]">
+              Lihat Demo Interaktif
             </a>
           </div>
-          <p className="mt-6 text-[13px] text-[#8A8E97]">Tanpa kartu kredit. Bisa dipakai untuk 1 sampai 100+ unit.</p>
+          <div className="mt-6 flex items-center gap-2 text-xs text-[#6b7280]">
+            <CheckCircle2 className="size-4 text-[#10b981]" /> Siap dipakai dalam hitungan menit
+          </div>
         </div>
 
-        {/* Signature widget preview */}
-        <div className="relative mx-auto w-full max-w-380px">
-          <div className="rounded-2xl border border-[#E5E5E0] bg-white p-5 shadow-[0_20px_50px_-20px_rgba(18,20,27,0.25)]">
-            <div className="flex items-center justify-between">
-              <span className="text-[13px] font-medium text-[#12141B]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                Kos Melati — Juli 2026
-              </span>
-              <span className="text-[11px] text-[#8A8E97]">6 kamar</span>
+        <div className="landing-reveal relative mx-auto w-full max-w-xl [animation-delay:180ms]">
+          <img src={heroImage} alt="Tampilan dashboard Huni Link" className="landing-float relative z-10 w-full rounded-2xl shadow-[0_24px_50px_rgba(0,77,77,0.18)]" />
+          <DirectionalFloatCard className="landing-float landing-float-card absolute left-[-8px] top-[8%] z-20 flex items-center gap-3 rounded-2xl border border-white/30 bg-white/70 p-3 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)] backdrop-blur-md hover:shadow-[0_18px_24px_-6px_rgba(0,77,77,0.2)] sm:left-[-24px] sm:p-[17px]">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#10b981]/20 sm:size-12">
+              <img src={statusIcon} alt="" className="size-4 sm:size-5" />
             </div>
-            <div className="mt-4 grid grid-cols-3 gap-2.5">
-              {ROOMS.map((room) => (
-                <RoomStatusCard key={room.code} {...room} />
-              ))}
+            <div className="pr-1">
+              <p className="text-[11px] leading-4 text-[#4b5563] sm:text-xs">Status Tagihan</p>
+              <p className="text-xs font-bold leading-5 text-[#1f2937] sm:text-sm">Lunas (24 Kamar)</p>
             </div>
-            <div className="mt-4 flex items-center justify-between border-t border-[#E5E5E0] pt-4">
-              <span className="text-[12px] text-[#8A8E97]">Total tertagih</span>
-              <span className="text-[14px] font-semibold text-[#12141B]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                Rp 9.600.000
-              </span>
+          </DirectionalFloatCard>
+          <DirectionalFloatCard className="landing-float landing-float-card absolute bottom-[8%] right-[-8px] z-20 flex items-center gap-3 rounded-2xl border border-white/30 bg-white/70 px-3 py-3 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)] backdrop-blur-md [animation-delay:700ms] hover:shadow-[0_18px_24px_-6px_rgba(0,77,77,0.2)] sm:bottom-[10%] sm:right-[-24px] sm:px-[17px] sm:pb-6 sm:pt-[17px]">
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#004d4d]/10">
+              <img src={roomIcon} alt="" className="h-2 w-3" />
             </div>
-          </div>
-          <div className="absolute -bottom-4 -left-4 -z-10 h-full w-full rounded-2xl border-2 border-[#0FA37F]/30" />
+            <div>
+              <p className="text-[11px] leading-4 text-[#4b5563] sm:text-xs">Tersedia</p>
+              <p className="text-xs font-bold leading-5 text-[#1f2937] sm:text-sm">Kamar A-03</p>
+            </div>
+          </DirectionalFloatCard>
         </div>
+      </div>
+
+      <div className="grid grid-cols-2 bg-white sm:grid-cols-4">
+        {metrics.map(([value, label], index) => (
+          <div key={label} className="landing-reveal px-6 py-8 text-center transition-colors duration-300 hover:bg-[#f0faf7] last:border-r-0" style={{ animationDelay: `${index * 90}ms` }}>
+            <strong className="block text-lg font-bold text-[#004d4d]">{value}</strong>
+            <span className="text-[11px] font-medium text-[#6b7280]">{label}</span>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -2,24 +2,41 @@
 
 import { useMemo, useState, useTransition } from "react";
 import type { Kamar, Penghuni, Transaksi } from "@/lib/generated/prisma/client";
-import { ArrowDownCircle, ArrowUpCircle, Pencil, Plus, Search, Trash2, Wallet } from "lucide-react";
+import {
+  Search,
+  Plus,
+  Download,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  AlertTriangle,
+  TrendingUp,
+  MessageSquare,
+  Bell,
+  MoreVertical,
+  FileText,
+  Pencil,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  SlidersHorizontal,
+} from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 import { createTransaksi, updateTransaksi, deleteTransaksi, type TransaksiInput } from "./action";
 
-type TransaksiDenganRelasi = Transaksi & { kamar: Kamar | null; penghuni: Penghuni | null };
+// ─── Types ────────────────────────────────────────────────────────────────────
 
+type TransaksiDenganRelasi = Transaksi & { kamar: Kamar | null; penghuni: Penghuni | null };
 type Jenis = "pemasukan" | "pengeluaran";
 
 const KATEGORI_PEMASUKAN = ["Sewa Kamar", "Deposit", "Lainnya"];
@@ -53,11 +70,76 @@ function formKosong(): FormState {
   };
 }
 
-const formatRupiah = new Intl.NumberFormat("id-ID", {
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const fmt = new Intl.NumberFormat("id-ID", {
   style: "currency",
   currency: "IDR",
   minimumFractionDigits: 0,
 });
+
+function formatRupiah(n: number) {
+  return fmt.format(n);
+}
+
+function formatRupiahShort(n: number) {
+  if (n >= 1_000_000_000) return `Rp ${(n / 1_000_000_000).toFixed(1)}M`;
+  if (n >= 1_000_000) return `Rp ${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `Rp ${(n / 1_000).toFixed(0)}K`;
+  return formatRupiah(n);
+}
+
+const MONTH_NAMES = [
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember",
+];
+
+function formatTanggal(date: Date | string) {
+  const d = new Date(date);
+  return `${d.getDate().toString().padStart(2, "0")} ${MONTH_NAMES[d.getMonth()].slice(0, 3)} ${d.getFullYear()}`;
+}
+
+// ─── Status config ────────────────────────────────────────────────────────────
+// In a real billing system these would come from a dedicated Tagihan model.
+// Here we derive "tagihan" status from transaksi.kategori and jenis.
+
+type TagihanStatus = "lunas" | "menunggu_validasi" | "tunggakan" | "belum_bayar";
+type PeriodeTagihan = "Bulanan" | "Tahunan (Cicil)";
+
+function getTagihanStatus(t: TransaksiDenganRelasi): TagihanStatus {
+  if (t.jenis === "pemasukan" && t.kategori === "Sewa Kamar") return "lunas";
+  if (t.jenis === "pemasukan") return "menunggu_validasi";
+  return "belum_bayar";
+}
+
+function getPeriode(t: TransaksiDenganRelasi): PeriodeTagihan {
+  return t.keterangan?.toLowerCase().includes("tahunan") ? "Tahunan (Cicil)" : "Bulanan";
+}
+
+const STATUS_CONFIG: Record<TagihanStatus, { label: string; dot: string; badge: string }> = {
+  lunas: {
+    label: "Lunas",
+    dot: "bg-emerald-500",
+    badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  },
+  menunggu_validasi: {
+    label: "Menunggu Validasi",
+    dot: "bg-amber-500",
+    badge: "bg-amber-50 text-amber-700 border-amber-200",
+  },
+  tunggakan: {
+    label: "Tunggakan",
+    dot: "bg-rose-500",
+    badge: "bg-rose-50 text-rose-700 border-rose-200",
+  },
+  belum_bayar: {
+    label: "Belum Bayar",
+    dot: "bg-slate-400",
+    badge: "bg-slate-100 text-slate-600 border-slate-200",
+  },
+};
+
+// ─── Props ────────────────────────────────────────────────────────────────────
 
 interface KeuanganClientProps {
   transaksi: TransaksiDenganRelasi[];
@@ -65,36 +147,72 @@ interface KeuanganClientProps {
   penghuniList: Penghuni[];
 }
 
+// ─── Pagination config ────────────────────────────────────────────────────────
+
+const PAGE_SIZE = 10;
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
 export function KeuanganClient({ transaksi, kamarList, penghuniList }: KeuanganClientProps) {
   const [list, setList] = useState<TransaksiDenganRelasi[]>(transaksi);
   const [search, setSearch] = useState("");
-  const [filterJenis, setFilterJenis] = useState<Jenis | "semua">("semua");
+  const [page, setPage] = useState(1);
   const [isPending, startTransition] = useTransition();
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(formKosong());
   const [errors, setErrors] = useState<FormErrors>({});
-
   const [deleteTarget, setDeleteTarget] = useState<TransaksiDenganRelasi | null>(null);
 
+  // ── Current month ─────────────────────────────────────────────────────────
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  const periodeLabel = `${MONTH_NAMES[currentMonth]} ${currentYear}`;
+
+  const isThisMonth = (d: Date | string) => {
+    const date = new Date(d);
+    return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+  };
+
+  // ── Stats ─────────────────────────────────────────────────────────────────
+  const stats = useMemo(() => {
+    const thisMonth = list.filter((t) => isThisMonth(t.tanggal));
+    const totalTagihan = thisMonth
+      .filter((t) => t.jenis === "pemasukan")
+      .reduce((s, t) => s + t.jumlah, 0);
+
+    const lunas = thisMonth.filter((t) => t.jenis === "pemasukan" && t.kategori === "Sewa Kamar").length;
+    const totalKamar = kamarList.length;
+    const menunggu = thisMonth.filter((t) => t.jenis === "pemasukan" && t.kategori !== "Sewa Kamar").length;
+    const tunggakan = penghuniList.length - lunas > 0 ? penghuniList.length - lunas : 0;
+    const totalTunggakan = thisMonth
+      .filter((t) => getTagihanStatus(t) === "tunggakan")
+      .reduce((s, t) => s + t.jumlah, 0);
+
+    return { totalTagihan, lunas, totalKamar, menunggu, tunggakan, totalTunggakan };
+  }, [list, kamarList, penghuniList]);
+
+  // ── Filtered list ─────────────────────────────────────────────────────────
   const filtered = useMemo(() => {
     const kata = search.trim().toLowerCase();
     return list
-      .filter((t) => filterJenis === "semua" || t.jenis === filterJenis)
-      .filter((t) => !kata || t.kategori.toLowerCase().includes(kata) || (t.keterangan ?? "").toLowerCase().includes(kata) || (t.penghuni?.nama ?? "").toLowerCase().includes(kata))
+      .filter((t) => {
+        if (!kata) return true;
+        return (
+          (t.penghuni?.nama ?? "").toLowerCase().includes(kata) ||
+          (t.kamar?.nomor ?? "").toLowerCase().includes(kata) ||
+          t.kategori.toLowerCase().includes(kata)
+        );
+      })
       .sort((a, b) => new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime());
-  }, [list, search, filterJenis]);
+  }, [list, search]);
 
-  const ringkasan = useMemo(() => {
-    const totalPemasukan = list.filter((t) => t.jenis === "pemasukan").reduce((sum, t) => sum + t.jumlah, 0);
-    const totalPengeluaran = list.filter((t) => t.jenis === "pengeluaran").reduce((sum, t) => sum + t.jumlah, 0);
-    return {
-      totalPemasukan,
-      totalPengeluaran,
-      saldo: totalPemasukan - totalPengeluaran,
-    };
-  }, [list]);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  // ── CRUD ──────────────────────────────────────────────────────────────────
 
   function kategoriUntuk(jenis: Jenis) {
     return jenis === "pemasukan" ? KATEGORI_PEMASUKAN : KATEGORI_PENGELUARAN;
@@ -158,7 +276,7 @@ export function KeuanganClient({ transaksi, kamarList, penghuniList }: KeuanganC
         } else {
           const created = await createTransaksi(payload);
           setList((prev) => [created, ...prev]);
-          toast.success("Transaksi berhasil dicatat");
+          toast.success("Tagihan berhasil dicatat");
         }
         setFormOpen(false);
       } catch {
@@ -183,131 +301,339 @@ export function KeuanganClient({ transaksi, kamarList, penghuniList }: KeuanganC
     });
   }
 
+  // ── Render ────────────────────────────────────────────────────────────────
+
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">Keuangan</h1>
-        <p className="text-muted-foreground">Semua pemasukan dan pengeluaran kos, termasuk pembayaran sewa yang tercatat otomatis dari halaman Penghuni.</p>
-      </div>
+    <div className="space-y-6 px-4 py-6 sm:px-6 lg:px-8">
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card>
-          <CardContent className="flex items-center gap-3 py-4">
-            <ArrowUpCircle className="h-8 w-8 text-emerald-600" />
-            <div>
-              <p className="text-sm text-muted-foreground">Total Pemasukan</p>
-              <p className="text-lg font-semibold">{formatRupiah.format(ringkasan.totalPemasukan)}</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="flex items-center gap-3 py-4">
-            <ArrowDownCircle className="h-8 w-8 text-rose-600" />
-            <div>
-              <p className="text-sm text-muted-foreground">Total Pengeluaran</p>
-              <p className="text-lg font-semibold">{formatRupiah.format(ringkasan.totalPengeluaran)}</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="flex items-center gap-3 py-4">
-            <Wallet className="h-8 w-8 text-sky-600" />
-            <div>
-              <p className="text-sm text-muted-foreground">Saldo</p>
-              <p className="text-lg font-semibold">{formatRupiah.format(ringkasan.saldo)}</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative w-full sm:w-72">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Cari kategori, keterangan, penghuni..." className="pl-8" value={search} onChange={(e) => setSearch(e.target.value)} />
-          </div>
-          <Select value={filterJenis} onValueChange={(v) => setFilterJenis(v as Jenis | "semua")}>
-            <SelectTrigger className="w-full sm:w-40">
-              <SelectValue placeholder="Semua jenis" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="semua">Semua Jenis</SelectItem>
-              <SelectItem value="pemasukan">Pemasukan</SelectItem>
-              <SelectItem value="pengeluaran">Pengeluaran</SelectItem>
-            </SelectContent>
-          </Select>
+      {/* ── Section header ───────────────────────────────────────── */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-slate-900">Ringkasan Bulan Ini</h1>
+          <p className="mt-0.5 text-sm text-slate-500">Periode {periodeLabel}</p>
         </div>
-        <Button onClick={bukaTambah} disabled={isPending}>
-          <Plus className="mr-2 h-4 w-4" />
-          Catat Transaksi
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Month selector (UI only) */}
+          <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50">
+            <Calendar className="size-3.5" />
+            {MONTH_NAMES[currentMonth].slice(0, 3)} {currentYear}
+            <ChevronRight className="size-3 text-slate-400" />
+          </button>
+          <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50">
+            <Download className="size-3.5" />
+            Export
+          </button>
+        </div>
       </div>
 
-      <Card>
-        <CardContent className="px-4">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Tanggal</TableHead>
-                <TableHead>Jenis</TableHead>
-                <TableHead>Kategori</TableHead>
-                <TableHead>Terkait</TableHead>
-                <TableHead className="text-right">Jumlah</TableHead>
-                <TableHead className="w-20" />
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="py-10 text-center text-muted-foreground">
-                    Belum ada transaksi.
-                  </TableCell>
-                </TableRow>
-              )}
-              {filtered.map((t) => (
-                <TableRow key={t.id}>
-                  <TableCell>{new Date(t.tanggal).toISOString().slice(0, 10)}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className={t.jenis === "pemasukan" ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-100" : "bg-rose-100 text-rose-700 hover:bg-rose-100"}>
-                      {t.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="font-medium">{t.kategori}</TableCell>
-                  <TableCell className="text-muted-foreground">{t.penghuni ? `${t.penghuni.nama}${t.kamar ? ` (Kamar ${t.kamar.nomor})` : ""}` : t.kamar ? `Kamar ${t.kamar.nomor}` : "-"}</TableCell>
-                  <TableCell className={`text-right font-medium ${t.jenis === "pemasukan" ? "text-emerald-600" : "text-rose-600"}`}>
-                    {t.jenis === "pemasukan" ? "+" : "-"}
-                    {formatRupiah.format(t.jumlah)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex justify-end gap-1">
-                      <Button variant="ghost" size="icon" onClick={() => bukaEdit(t)} disabled={isPending}>
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget(t)} disabled={isPending}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      {/* ── Stat cards ───────────────────────────────────────────── */}
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {/* Total Tagihan — teal */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 p-5 shadow-sm shadow-teal-200/60">
+          <button className="absolute right-3 top-3 flex size-7 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/30">
+            <ChevronRight className="size-3.5" />
+          </button>
+          <p className="text-sm font-medium text-white/80">Total Tagihan</p>
+          <p className="mt-2 text-3xl font-bold text-white">
+            {formatRupiahShort(stats.totalTagihan)}
+          </p>
+          <div className="mt-3 flex items-center gap-1.5">
+            <span className="flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-xs font-semibold text-white">
+              <TrendingUp className="size-3" />
+              +5.2% dari bulan lalu
+            </span>
+          </div>
+        </div>
 
-      {/* Dialog Tambah/Edit Transaksi */}
+        {/* Lunas */}
+        <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between">
+            <p className="text-sm font-medium text-slate-500">Lunas</p>
+            <CheckCircle2 className="size-5 text-emerald-500" />
+          </div>
+          <p className="mt-2 text-3xl font-bold text-slate-800">{stats.lunas}</p>
+          <p className="mt-0.5 text-xs text-slate-500">/ {stats.totalKamar} Kamar</p>
+          {/* Progress bar */}
+          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100">
+            <div
+              className="h-full rounded-full bg-emerald-500 transition-all"
+              style={{ width: `${stats.totalKamar > 0 ? (stats.lunas / stats.totalKamar) * 100 : 0}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Menunggu Validasi */}
+        <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between">
+            <p className="text-sm font-medium text-slate-500">Menunggu Validasi</p>
+            <Clock className="size-5 text-amber-500" />
+          </div>
+          <p className="mt-2 text-3xl font-bold text-slate-800">{stats.menunggu}</p>
+          {stats.menunggu > 0 && (
+            <p className="mt-2 text-xs font-semibold text-amber-600">Perlu dicek hari ini</p>
+          )}
+        </div>
+
+        {/* Tunggakan */}
+        <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between">
+            <p className="text-sm font-medium text-slate-500">Tunggakan</p>
+            <AlertTriangle className="size-5 text-rose-500" />
+          </div>
+          <p className="mt-2 text-3xl font-bold text-rose-600">{stats.tunggakan}</p>
+          <p className="mt-0.5 text-xs text-slate-500">Penghuni</p>
+          {stats.totalTunggakan > 0 && (
+            <p className="mt-2 text-xs font-medium text-rose-600">
+              Total: {formatRupiah(stats.totalTunggakan)}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* ── Daftar Tagihan ───────────────────────────────────────── */}
+      <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+        {/* Table header */}
+        <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
+          <h2 className="text-base font-semibold text-slate-800">Daftar Tagihan</h2>
+          <div className="flex items-center gap-2">
+            {/* Search */}
+            <div className="relative hidden sm:block">
+              <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Cari penghuni atau kamar..."
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                className="w-56 rounded-xl border border-slate-200 bg-slate-50 py-1.5 pl-8 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-teal-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/20 transition"
+              />
+            </div>
+            {/* Filter icon */}
+            <button className="flex size-8 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50">
+              <SlidersHorizontal className="size-3.5" />
+            </button>
+            {/* Buat Tagihan */}
+            <button
+              onClick={bukaTambah}
+              disabled={isPending}
+              className="flex items-center gap-1.5 rounded-xl bg-teal-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-700 active:scale-[0.98] disabled:opacity-60"
+            >
+              <Plus className="size-3.5" />
+              <span className="hidden sm:inline">Buat Tagihan</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile search */}
+        <div className="relative px-4 py-2 sm:hidden">
+          <Search className="pointer-events-none absolute left-7 top-1/2 size-3.5 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Cari penghuni atau kamar..."
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pl-8 pr-3 text-sm placeholder:text-slate-400 focus:border-teal-400 focus:outline-none transition"
+          />
+        </div>
+
+        {/* Column headers */}
+        <div className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-x-4 border-b border-slate-100 bg-slate-50/60 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400 max-sm:hidden">
+          <span>Kamar / Penghuni</span>
+          <span>Nominal</span>
+          <span>Jatuh Tempo</span>
+          <span>Status</span>
+          <span className="text-right">Aksi</span>
+        </div>
+
+        {/* Rows */}
+        {paginated.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+            <FileText className="size-10 text-slate-300" />
+            <p className="text-sm text-slate-500">
+              {search ? "Tidak ada tagihan yang cocok." : "Belum ada transaksi tercatat."}
+            </p>
+          </div>
+        ) : (
+          <ul className="divide-y divide-slate-50">
+            {paginated.map((t) => {
+              const status = getTagihanStatus(t);
+              const cfg = STATUS_CONFIG[status];
+              const isTunggakan = status === "tunggakan";
+              const isMenunggu = status === "menunggu_validasi";
+              const isLunas = status === "lunas";
+              const isBelum = status === "belum_bayar";
+              const isOverdue = new Date(t.tanggal) < now && !isLunas;
+
+              return (
+                <li
+                  key={t.id}
+                  className="grid grid-cols-1 gap-3 px-5 py-4 transition hover:bg-slate-50/70 sm:grid-cols-[2fr_1fr_1fr_1fr_auto] sm:items-center"
+                >
+                  {/* Kamar / Penghuni */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-sm font-bold text-slate-600">
+                      {t.kamar?.nomor ?? "—"}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">
+                        {t.penghuni?.nama ?? t.kategori}
+                      </p>
+                      <p className="text-xs text-slate-500">{getPeriode(t)}</p>
+                    </div>
+                  </div>
+
+                  {/* Nominal */}
+                  <div className="sm:block">
+                    <span className="text-sm font-semibold text-slate-700">
+                      {formatRupiah(t.jumlah)}
+                    </span>
+                    {isTunggakan && (
+                      <p className="text-xs font-semibold text-rose-600">
+                        Tunggakan: {formatRupiah(t.jumlah)}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Jatuh Tempo */}
+                  <div>
+                    <span
+                      className={`text-sm font-medium ${
+                        isOverdue && !isLunas ? "text-rose-600" : "text-slate-700"
+                      }`}
+                    >
+                      {formatTanggal(t.tanggal)}
+                      {isOverdue && !isLunas && (
+                        <span className="ml-1 text-xs">⊘</span>
+                      )}
+                    </span>
+                  </div>
+
+                  {/* Status badge */}
+                  <div>
+                    <span
+                      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${cfg.badge}`}
+                    >
+                      <span className={`size-1.5 rounded-full ${cfg.dot}`} />
+                      {cfg.label}
+                    </span>
+                  </div>
+
+                  {/* Aksi */}
+                  <div className="flex items-center justify-end gap-2">
+                    {isMenunggu && (
+                      <button className="rounded-xl bg-teal-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-teal-700">
+                        Cek &amp; Validasi
+                      </button>
+                    )}
+                    {isTunggakan && (
+                      <>
+                        <button className="flex size-8 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50">
+                          <MessageSquare className="size-3.5" />
+                        </button>
+                        <button className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">
+                          Ingatkan
+                        </button>
+                      </>
+                    )}
+                    {isLunas && (
+                      <div className="flex size-8 items-center justify-center text-slate-400">
+                        <FileText className="size-3.5" />
+                      </div>
+                    )}
+                    {/* 3-dot menu */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger
+                        render={
+                          <button
+                            disabled={isPending}
+                            className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-50"
+                          >
+                            <MoreVertical className="size-3.5" />
+                          </button>
+                        }
+                      />
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => bukaEdit(t)}>
+                          <Pencil className="mr-2 h-4 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onClick={() => setDeleteTarget(t)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Hapus
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between border-t border-slate-100 px-5 py-3">
+          <p className="text-xs text-slate-500">
+            Menampilkan {Math.min((page - 1) * PAGE_SIZE + 1, filtered.length)}–
+            {Math.min(page * PAGE_SIZE, filtered.length)} dari {filtered.length} data
+          </p>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="flex size-7 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-40"
+            >
+              <ChevronLeft className="size-3.5" />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
+              .map((p, idx, arr) => (
+                <span key={p}>
+                  {idx > 0 && arr[idx - 1] !== p - 1 && (
+                    <span className="px-1 text-xs text-slate-400">…</span>
+                  )}
+                  <button
+                    onClick={() => setPage(p)}
+                    className={`flex size-7 items-center justify-center rounded-lg text-xs font-medium transition ${
+                      p === page
+                        ? "bg-teal-600 text-white shadow-sm"
+                        : "border border-slate-200 text-slate-600 hover:bg-slate-50"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                </span>
+              ))}
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="flex size-7 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-40"
+            >
+              <ChevronRight className="size-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Dialog Tambah/Edit ────────────────────────────────────── */}
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{editingId ? "Edit Transaksi" : "Catat Transaksi Baru"}</DialogTitle>
-            <DialogDescription>{editingId ? "Perbarui data transaksi." : "Isi data pemasukan atau pengeluaran kos."}</DialogDescription>
+            <DialogTitle>{editingId ? "Edit Transaksi" : "Buat Tagihan Baru"}</DialogTitle>
+            <DialogDescription>
+              {editingId ? "Perbarui data transaksi." : "Isi data pemasukan atau pengeluaran kos."}
+            </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="jenis">Jenis</Label>
-                <Select value={form.jenis} onValueChange={(v) => setForm((f) => ({ ...f, jenis: v as Jenis, kategori: "" }))}>
+                <Select
+                  value={form.jenis}
+                  onValueChange={(v) => setForm((f) => ({ ...f, jenis: v as Jenis, kategori: "" }))}
+                >
                   <SelectTrigger id="jenis">
                     <SelectValue />
                   </SelectTrigger>
@@ -319,15 +645,16 @@ export function KeuanganClient({ transaksi, kamarList, penghuniList }: KeuanganC
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="kategori">Kategori</Label>
-                <Select value={form.kategori} onValueChange={(v) => setForm((f) => ({ ...f, kategori: v ?? "" }))}>
+                <Select
+                  value={form.kategori}
+                  onValueChange={(v) => setForm((f) => ({ ...f, kategori: v ?? "" }))}
+                >
                   <SelectTrigger id="kategori">
                     <SelectValue placeholder="Pilih kategori" />
                   </SelectTrigger>
                   <SelectContent>
                     {kategoriUntuk(form.jenis).map((k) => (
-                      <SelectItem key={k} value={k}>
-                        {k}
-                      </SelectItem>
+                      <SelectItem key={k} value={k}>{k}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -338,13 +665,27 @@ export function KeuanganClient({ transaksi, kamarList, penghuniList }: KeuanganC
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="jumlah">Jumlah (Rp)</Label>
-                <Input id="jumlah" type="number" min={0} placeholder="0" value={form.jumlah} onChange={(e) => setForm((f) => ({ ...f, jumlah: e.target.value }))} />
+                <Input
+                  id="jumlah"
+                  type="number"
+                  min={0}
+                  placeholder="0"
+                  value={form.jumlah}
+                  onChange={(e) => setForm((f) => ({ ...f, jumlah: e.target.value }))}
+                />
                 {errors.jumlah && <p className="text-sm text-destructive">{errors.jumlah}</p>}
-                {form.jumlah && !Number.isNaN(Number(form.jumlah)) && <p className="text-xs text-muted-foreground">{formatRupiah.format(Number(form.jumlah))}</p>}
+                {form.jumlah && !Number.isNaN(Number(form.jumlah)) && (
+                  <p className="text-xs text-muted-foreground">{formatRupiah(Number(form.jumlah))}</p>
+                )}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="tanggal">Tanggal</Label>
-                <Input id="tanggal" type="date" value={form.tanggal} onChange={(e) => setForm((f) => ({ ...f, tanggal: e.target.value }))} />
+                <Input
+                  id="tanggal"
+                  type="date"
+                  value={form.tanggal}
+                  onChange={(e) => setForm((f) => ({ ...f, tanggal: e.target.value }))}
+                />
                 {errors.tanggal && <p className="text-sm text-destructive">{errors.tanggal}</p>}
               </div>
             </div>
@@ -352,32 +693,34 @@ export function KeuanganClient({ transaksi, kamarList, penghuniList }: KeuanganC
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="kamar">Kamar (opsional)</Label>
-                <Select value={form.kamarId || "none"} onValueChange={(v) => setForm((f) => ({ ...f, kamarId: v === "none" ? "" : String(v) }))}>
+                <Select
+                  value={form.kamarId || "none"}
+                  onValueChange={(v) => setForm((f) => ({ ...f, kamarId: v === "none" ? "" : String(v) }))}
+                >
                   <SelectTrigger id="kamar">
                     <SelectValue placeholder="Tidak terkait kamar" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="none">Tidak terkait kamar</SelectItem>
                     {kamarList.map((k) => (
-                      <SelectItem key={k.id} value={k.id}>
-                        Kamar {k.nomor}
-                      </SelectItem>
+                      <SelectItem key={k.id} value={k.id}>Kamar {k.nomor}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="penghuni">Penghuni (opsional)</Label>
-                <Select value={form.penghuniId || "none"} onValueChange={(v) => setForm((f) => ({ ...f, penghuniId: v === "none" ? "" : String(v) }))}>
+                <Select
+                  value={form.penghuniId || "none"}
+                  onValueChange={(v) => setForm((f) => ({ ...f, penghuniId: v === "none" ? "" : String(v) }))}
+                >
                   <SelectTrigger id="penghuni">
                     <SelectValue placeholder="Tidak terkait penghuni" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="none">Tidak terkait penghuni</SelectItem>
                     {penghuniList.map((p) => (
-                      <SelectItem key={p.id} value={p.id}>
-                        {p.nama}
-                      </SelectItem>
+                      <SelectItem key={p.id} value={p.id}>{p.nama}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -386,7 +729,11 @@ export function KeuanganClient({ transaksi, kamarList, penghuniList }: KeuanganC
 
             <div className="grid gap-2">
               <Label htmlFor="keterangan">Keterangan (opsional)</Label>
-              <Textarea id="keterangan" value={form.keterangan} onChange={(e) => setForm((f) => ({ ...f, keterangan: e.target.value }))} />
+              <Textarea
+                id="keterangan"
+                value={form.keterangan}
+                onChange={(e) => setForm((f) => ({ ...f, keterangan: e.target.value }))}
+              />
             </div>
           </div>
 
@@ -395,24 +742,29 @@ export function KeuanganClient({ transaksi, kamarList, penghuniList }: KeuanganC
               Batal
             </Button>
             <Button onClick={submit} disabled={isPending}>
-              {isPending ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Catat"}
+              {isPending ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Buat Tagihan"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Konfirmasi hapus */}
+      {/* ── Konfirmasi Hapus ──────────────────────────────────────── */}
       <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus transaksi ini?</AlertDialogTitle>
             <AlertDialogDescription>
-              Transaksi {deleteTarget?.kategori} sebesar {deleteTarget ? formatRupiah.format(deleteTarget.jumlah) : ""} akan dihapus permanen.
+              Transaksi {deleteTarget?.kategori} sebesar{" "}
+              {deleteTarget ? formatRupiah(deleteTarget.jumlah) : ""} akan dihapus permanen.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
-            <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={konfirmasiHapus} disabled={isPending}>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={konfirmasiHapus}
+              disabled={isPending}
+            >
               {isPending ? "Menghapus..." : "Hapus"}
             </AlertDialogAction>
           </AlertDialogFooter>

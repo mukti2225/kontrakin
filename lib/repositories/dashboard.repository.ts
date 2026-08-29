@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db/prisma";
-import type { Kamar, Transaksi, Penghuni } from "@/lib/generated/prisma";
+import type { Kamar, Transaksi, Penghuni } from "@/lib/types";
 
 export class DashboardRepository {
   /**
@@ -35,7 +35,9 @@ export class DashboardRepository {
   }
 
   /**
-   * Mengambil total pendapatan bulan ini (contoh sederhana)
+   * Mengambil total pemasukan bulan ini sesuai dengan halaman keuangan.
+   * Dashboard harus menghitung angka yang sama dengan transaksi pemasukan
+   * yang tampil di halaman Keuangan.
    */
   async getPendapatanBulanIni(ownerId?: string): Promise<number> {
     const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -43,7 +45,7 @@ export class DashboardRepository {
     const result = await prisma.transaksi.aggregate({
       where: {
         ownerId: ownerId ? ownerId : undefined,
-        kategori: "Pembayaran Sewa", // Asumsi kategori
+        jenis: "pemasukan",
         tanggal: {
           gte: startOfMonth,
         },

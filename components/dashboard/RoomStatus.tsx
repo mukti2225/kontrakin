@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { formatRupiah } from "@/lib/services/dashboard";
+import { formatRupiah } from "@/lib/utils";
 import type { Kamar, StatusKamar } from "@/lib/types";
 
 function statusStyle(status: StatusKamar) {

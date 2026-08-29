@@ -11,7 +11,7 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
 
   return (
     <>
-      <SiteHeader subtitle="Selamat datang di dashboard Anda" />
+      <SiteHeader/>
       {children}
     </>
   );

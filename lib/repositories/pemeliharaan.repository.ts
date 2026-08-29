@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db/prisma";
-import type { Pemeliharaan, Prisma } from "@/lib/generated/prisma";
+import type { Pemeliharaan } from "@/lib/types";
+import type { Prisma } from "@/lib/generated/prisma/client";
 
 export class PemeliharaanRepository {
   /**

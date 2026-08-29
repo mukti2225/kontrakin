@@ -38,7 +38,7 @@ export default async function TenantKeluhanPage() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto space-y-6">
+    <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-slate-900">Keluhan & Pemeliharaan</h1>
       </div>
@@ -52,8 +52,7 @@ export default async function TenantKeluhanPage() {
               <CardDescription>Sampaikan keluhan terkait fasilitas kamar atau properti.</CardDescription>
             </CardHeader>
             <CardContent>
-              <form action={submitKeluhan} className="space-y-4"
-              >
+              <form action={submitKeluhan} className="space-y-4">
                 <input type="hidden" name="penghuniId" value={penghuniId} />
                 <input type="hidden" name="ownerId" value={ownerId} />
                 <input type="hidden" name="kamarId" value={kamarId} />

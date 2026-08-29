@@ -1,8 +1,10 @@
-import { PropertiClient } from "./properti-client";
+import PropertiKamarClient from "./properti-kamar-client";
 import { getProperti } from "./actions";
+import { getKamarList } from "../kamar/action";
+import { getPenghuniAktif } from "../penghuni/action";
 
 export default async function PropertiPage() {
-  const propertiList = await getProperti();
+  const [propertiList, kamarList, penghuniOptions] = await Promise.all([getProperti(), getKamarList(), getPenghuniAktif()]);
 
-  return <PropertiClient data={propertiList} />;
+  return <PropertiKamarClient propertiData={propertiList} kamarData={kamarList} penghuniOptions={penghuniOptions} />;
 }

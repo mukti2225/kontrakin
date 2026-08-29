@@ -5,7 +5,7 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis } f
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { formatRupiah } from "@/lib/services/dashboard";
+import { formatRupiah } from "@/lib/utils";
 import type { TitikData } from "@/lib/types";
 
 interface RevenueChartProps {

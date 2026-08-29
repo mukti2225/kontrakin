@@ -1,6 +1,6 @@
-import type { Kamar } from '@/lib/generated/prisma';
+import type { Kamar } from "@/lib/types";
 
-export type StatusPembayaran = 'Berhasil' | 'Tertunda' | 'Gagal';
+export type StatusPembayaran = "Berhasil" | "Tertunda" | "Gagal";
 
 export interface TitikData {
   bulan: string;
@@ -13,7 +13,7 @@ export interface StatRingkasan {
   value: string;
   delta: string;
   naik: boolean;
-  icon: 'revenue' | 'occupancy' | 'tenants' | 'overdue';
+  icon: "revenue" | "occupancy" | "tenants" | "overdue";
 }
 
 // DTO untuk list Penghuni di UI yang butuh data gabungan
@@ -52,8 +52,8 @@ export interface PemeliharaanDTO {
   id: string;
   judul: string;
   deskripsi: string;
-  status: 'menunggu' | 'diproses' | 'selesai';
-  prioritas: 'rendah' | 'sedang' | 'tinggi';
+  status: "menunggu" | "diproses" | "selesai";
+  prioritas: "rendah" | "sedang" | "tinggi";
   kategori: string;
   foto: string | null;
   penghuniNama?: string;

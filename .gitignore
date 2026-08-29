@@ -38,6 +38,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
-/lib/generated/prisma
+.vscode/
+AGENTS.md
+ARCHITECTURE.md
+MEMORY.md

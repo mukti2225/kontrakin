@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db/prisma";
 import { requireOwner } from "@/lib/auth/get-current-user";
 import { revalidatePath } from "next/cache";
 
-const KAMAR_PATH = "/dashboard/owner/kamar";
+const PROPERTI_PATH = "/dashboard/owner/properti";
 const PENGHUNI_PATH = "/dashboard/owner/penghuni";
 
 async function requireOwnerId() {
@@ -60,7 +60,7 @@ export async function createKamar(data: KamarInput) {
     });
   });
 
-  revalidatePath(KAMAR_PATH);
+  revalidatePath(PROPERTI_PATH);
   revalidatePath(PENGHUNI_PATH);
   return kamar;
 }
@@ -103,12 +103,12 @@ export async function updateKamar(id: string, data: KamarInput) {
     });
   });
 
-  revalidatePath(KAMAR_PATH);
+  revalidatePath(PROPERTI_PATH);
   revalidatePath(PENGHUNI_PATH);
   return kamar;
 }
 
 export async function deleteKamar(id: string) {
   await prisma.kamar.delete({ where: { id } });
-  revalidatePath(KAMAR_PATH);
+  revalidatePath(PROPERTI_PATH);
 }

@@ -5,7 +5,7 @@ import { requireOwner } from "@/lib/auth/get-current-user";
 import { revalidatePath } from "next/cache";
 
 const PENGHUNI_PATH = "/dashboard/owner/penghuni";
-const KAMAR_PATH = "/dashboard/owner/kamar";
+const PROPERTI_PATH = "/dashboard/owner/properti";
 
 async function requireOwnerId() {
   const user = await requireOwner(); // harus melempar error kalau bukan owner / belum login
@@ -82,7 +82,7 @@ export async function updatePenghuni(id: string, data: PenghuniInput) {
     },
   });
   revalidatePath(PENGHUNI_PATH);
-  revalidatePath(KAMAR_PATH);
+  revalidatePath(PROPERTI_PATH);
   return penghuni;
 }
 
@@ -114,7 +114,7 @@ export async function nonaktifkanPenghuni(id: string) {
   });
 
   revalidatePath(PENGHUNI_PATH);
-  revalidatePath(KAMAR_PATH);
+  revalidatePath(PROPERTI_PATH);
   return penghuni;
 }
 
@@ -129,5 +129,5 @@ export async function deletePenghuni(id: string) {
 
   await prisma.penghuni.delete({ where: { id } });
   revalidatePath(PENGHUNI_PATH);
-  revalidatePath(KAMAR_PATH);
+  revalidatePath(PROPERTI_PATH);
 }

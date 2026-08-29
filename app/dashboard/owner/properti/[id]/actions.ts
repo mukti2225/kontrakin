@@ -94,7 +94,7 @@ export async function createUnit(propertiId: string, data: UnitInput) {
   });
 
   revalidatePath(`${PROPERTI_PATH}/${propertiId}`);
-  revalidatePath("/dashboard/owner/kamar");
+  revalidatePath("/dashboard/owner/properti");
   revalidatePath("/dashboard/owner/penghuni");
   return kamar;
 }
@@ -133,7 +133,7 @@ export async function updateUnit(kamarId: string, propertiId: string, data: Unit
   });
 
   revalidatePath(`${PROPERTI_PATH}/${propertiId}`);
-  revalidatePath("/dashboard/owner/kamar");
+  revalidatePath("/dashboard/owner/properti");
   revalidatePath("/dashboard/owner/penghuni");
   return kamar;
 }
@@ -152,5 +152,5 @@ export async function deleteUnit(kamarId: string, propertiId: string) {
   await prisma.kamar.delete({ where: { id: kamarId } });
 
   revalidatePath(`${PROPERTI_PATH}/${propertiId}`);
-  revalidatePath("/dashboard/owner/kamar");
+  revalidatePath("/dashboard/owner/properti");
 }

@@ -6,11 +6,12 @@ import type { Kamar, Penghuni, Properti } from "@/lib/generated/prisma/client";
 import { FormProperti } from "./form-properti";
 import { deleteProperti } from "./actions";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { MapPin, Home, Info, Edit, Trash, Plus, DoorOpen, Users, Bed, Wrench, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 // Tipe lengkap dengan relasi kamar + penghuni aktif
 type KamarDenganPenghuni = Kamar & { penghuni: Penghuni[] };
@@ -38,7 +39,7 @@ export function PropertiClient({ data }: { data: PropertiDenganKamar[] }) {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       {/* HEADER & TOMBOL TAMBAH */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-1">
@@ -144,10 +145,10 @@ export function PropertiClient({ data }: { data: PropertiDenganKamar[] }) {
                   {/* TOMBOL AKSI */}
                   <div className="flex items-center gap-2 mt-auto pt-2 border-t">
                     {/* Lihat Unit — link ke halaman detail */}
-                    <Button variant="default" size="sm" className="flex-1" render={<Link href={`/dashboard/owner/properti/${item.id}`} />}>
+                    <Link href={`/dashboard/owner/properti/${item.id}`} className={cn(buttonVariants({ variant: "default", size: "sm" }), "flex-1")}>
                       <DoorOpen className="w-3.5 h-3.5 mr-1.5" />
                       Kelola Unit
-                    </Button>
+                    </Link>
 
                     <Button variant="outline" size="sm" className="h-8 px-2" onClick={() => setEditingId(item.id)}>
                       <Edit className="w-3.5 h-3.5" />

@@ -1,40 +1,35 @@
 export const HowItWorks = () => {
   const STEPS = [
     {
-      n: "01",
-      title: "Tambahkan properti & kamar",
-      desc: "Masukkan nama properti, jumlah kamar, dan harga sewa masing-masing unit.",
+      n: "1",
+      title: "Daftar & Atur Properti",
+      desc: "Buat akun, masukkan detail properti, dan mulai kelola unit Anda.",
     },
     {
-      n: "02",
-      title: "Undang penghuni",
-      desc: "Kirim tautan undangan ke penghuni agar mereka bisa lihat tagihan sendiri.",
+      n: "2",
+      title: "Sistem Bekerja Otomatis",
+      desc: "Biarkan Huni Link menagihkan dan mencatat pembayaran secara otomatis.",
     },
     {
-      n: "03",
-      title: "Tagihan jalan otomatis",
-      desc: "Sistem menagih, mengingatkan, dan mencatat pembayaran tanpa kamu pantau manual.",
+      n: "3",
+      title: "Pantau Pertumbuhan",
+      desc: "Lihat laporan keuangan dan performa properti kapan pun Anda membutuhkannya.",
     },
   ];
 
   return (
-    <section id="cara" className="border-y border-[#E5E5E0] bg-white py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[#0FA37F]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-          Cara kerja
-        </span>
-        <h2 className="mt-3 max-w-[30ch] text-[30px] font-semibold tracking-tight text-[#12141B] md:text-[36px]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-          Tiga langkah, langsung jalan hari itu juga.
-        </h2>
-
-        <div className="mt-14 grid grid-cols-1 gap-10 md:grid-cols-3">
-          {STEPS.map((step) => (
-            <div key={step.n} className="relative pl-0">
-              <span className="text-[13px] font-medium text-[#0FA37F]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+    <section id="cara" className="bg-[#f7faf9] px-6 py-16 sm:px-8 md:px-10 md:py-20">
+      <div className="mx-auto max-w-6xl text-center">
+        <h2 className="text-3xl font-bold text-[#1f2937] sm:text-4xl">Cara Kerja yang Sederhana</h2>
+        <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-[#6b7280]">Tidak perlu rumit untuk mendapatkan manajemen properti yang lebih baik.</p>
+        <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
+          {STEPS.map((step, index) => (
+            <div key={step.n} className="landing-reveal group relative px-3" style={{ animationDelay: `${index * 110}ms` }}>
+              <span className="mx-auto flex size-8 items-center justify-center rounded-full bg-[#006060] text-xs font-bold text-white transition duration-300 group-hover:scale-110 group-hover:shadow-[0_0_0_7px_rgba(0,96,96,0.12)]">
                 {step.n}
               </span>
-              <h3 className="mt-3 text-[17px] font-semibold text-[#12141B]">{step.title}</h3>
-              <p className="mt-2 text-[14px] leading-relaxed text-[#6B7280]">{step.desc}</p>
+              <h3 className="mt-4 text-base font-bold text-[#1f2937]">{step.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-[#6b7280]">{step.desc}</p>
             </div>
           ))}
         </div>

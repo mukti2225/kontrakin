@@ -4,7 +4,7 @@ import { useState, useMemo, useTransition } from "react";
 import Link from "next/link";
 import type { Kamar, Penghuni, Properti } from "@/lib/generated/prisma/client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 import { ArrowLeft, Bed, DoorOpen, MapPin, MoreVertical, Pencil, Plus, Search, Trash2, Users, Wrench } from "lucide-react";
 
@@ -201,10 +202,10 @@ export function PropertiDetailClient({ properti, penghuniOptions }: PropertiDeta
     <div className="p-6 space-y-6">
       {/* Breadcrumb / Back */}
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="sm" className="h-8 gap-1.5 px-2" render={<Link href="/dashboard/owner/properti" />}>
+        <Link href="/dashboard/owner/properti" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "h-8 gap-1.5 px-2")}>
           <ArrowLeft className="w-4 h-4" />
           Properti
-        </Button>
+        </Link>
         <span className="text-muted-foreground text-sm">/</span>
         <span className="text-sm font-medium truncate">{properti.nama}</span>
       </div>
