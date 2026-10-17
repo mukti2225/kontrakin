@@ -45,23 +45,23 @@ export default function LoginPage() {
     <main className="min-h-screen bg-[#f7f9fc]">
       <div className="flex min-h-screen">
         <section className="relative hidden min-h-screen w-1/2 overflow-hidden bg-[#f1f4f3] lg:block">
-          <img src="https://www.figma.com/api/mcp/asset/cc3d5184-2bef-4111-b68d-5281b0351fc9.png" alt="Interior properti Huni Link" className="absolute inset-0 size-full object-cover" />
+          <img src="https://www.figma.com/api/mcp/asset/cc3d5184-2bef-4111-b68d-5281b0351fc9.png" alt="Interior properti Kontrakin" className="absolute inset-0 size-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#004d4d]/80 via-[#004d4d]/35 to-[#004d4d]/20" />
           <Link href="/" className="absolute left-8 top-8 z-10 flex items-center gap-2 text-2xl font-bold text-white">
             <span className="flex size-10 items-center justify-center rounded-xl bg-white text-[#006060] shadow-md">▦</span>
-            Huni Link
+            Kontrakin
           </Link>
           <div className="absolute bottom-12 left-12 z-10 max-w-md text-white">
-            <h2 className="text-3xl font-bold leading-10">Kelola Properti Anda dengan Mudah</h2>
-            <p className="mt-4 text-base leading-6 text-white/90">Huni Link memberikan solusi komprehensif untuk manajemen kost dan apartemen modern.</p>
+            <h2 className="text-3xl font-bold leading-10">Rental Property Operating System</h2>
+            <p className="mt-4 text-base leading-6 text-white/90">Platform operasional terpadu untuk pemilik kos, apartemen, staf pengelola, dan portal penghuni.</p>
           </div>
         </section>
 
         <section className="flex w-full items-center justify-center bg-white px-6 py-12 lg:w-1/2 lg:px-12">
           <div className="w-full max-w-md">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold leading-10 text-[#181c1c]">Selamat Datang Kembali</h1>
-              <p className="mt-2 text-sm text-[#3e4948]">Silakan masukkan detail akun Anda untuk melanjutkan.</p>
+              <h1 className="text-3xl font-bold leading-10 text-[#181c1c]">Masuk ke Kontrakin</h1>
+              <p className="mt-2 text-sm text-[#3e4948]">Masukkan email dan kata sandi Anda untuk mengakses workspace Anda.</p>
             </div>
 
             {error && <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-3 text-center text-sm text-red-700">{error}</div>}
@@ -129,10 +129,13 @@ export default function LoginPage() {
               <span className="font-bold text-[#4285f4]">G</span> Google
             </button>
             <p className="mt-6 text-center text-sm text-[#3e4948]">
-              Belum punya akun?{" "}
-              <Link href="/register" className="font-medium text-[#004d4d] hover:underline">
-                Daftar Sekarang
+              Belum memiliki akun Owner?{" "}
+              <Link href="/register" className="font-semibold text-[#004d4d] hover:underline">
+                Mulai Sekarang
               </Link>
+            </p>
+            <p className="mt-2 text-center text-xs text-[#87918f]">
+              Penyewa / Tenant: Akses portal diberikan via tautan aktivasi oleh pemilik properti.
             </p>
           </div>
         </section>

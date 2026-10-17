@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { Kamar, Penghuni, Properti } from "@/lib/generated/prisma/client";
 import {
   Search,
@@ -25,9 +26,11 @@ import {
   Wrench,
   Bed,
   Users,
+  Download,
 } from "lucide-react";
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DestructiveDialog } from "@/components/ui/destructive-dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -35,7 +38,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { DataTablePagination } from "@/components/ui/data-table-controls";
+import {
+  FormField,
+  CurrencyInput,
+  SubmitButton,
+  UnsavedChangesDialog,
+} from "@/components/form/form-controls";
 import { toast } from "sonner";
+import { exportToCSV } from "@/lib/utils/export-csv";
 
 import { createKamar, updateKamar, deleteKamar, type KamarInput } from "./action";
 
@@ -90,17 +109,17 @@ const STATUS_CONFIG: Record<StatusKamar, { label: string; dot: string; badge: st
   terisi: {
     label: "TERISI",
     dot: "bg-emerald-500",
-    badge: "bg-white/90 text-slate-800 border-slate-200",
+    badge: "bg-emerald-50 text-emerald-800 border-emerald-200",
   },
   kosong: {
     label: "KOSONG",
     dot: "bg-slate-400",
-    badge: "bg-white/90 text-slate-800 border-slate-200",
+    badge: "bg-slate-100 text-slate-700 border-slate-200",
   },
   maintenance: {
-    label: "MAINTENANCE",
+    label: "PERBAIKAN",
     dot: "bg-amber-500",
-    badge: "bg-white/90 text-slate-800 border-slate-200",
+    badge: "bg-amber-50 text-amber-800 border-amber-200",
   },
 };
 
@@ -134,8 +153,8 @@ function RoomPlaceholder({ nomor, index }: { nomor: string; index: number }) {
 
 function TunggakanBadge() {
   return (
-    <span className="flex items-center gap-1 rounded-full bg-rose-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
-      <span className="size-1.5 rounded-full bg-white" />
+    <span className="flex items-center gap-1.5 rounded-full border border-rose-200 bg-rose-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-rose-700 shadow-xs">
+      <span className="size-1.5 rounded-full bg-rose-500" />
       TUNGGAKAN
     </span>
   );
@@ -346,9 +365,13 @@ interface KamarClientProps {
 }
 
 export function KamarClient({ initialRooms, penghuniOptions, propertiOptions, selectedPropertiId }: KamarClientProps) {
+  const searchParams = useSearchParams();
+  const initialStatus = searchParams?.get("status") || "semua";
+
   const [rooms, setRooms] = useState<KamarDenganPenghuni[]>(initialRooms);
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState<string>("semua");
+  const [statusFilter, setStatusFilter] = useState<string>(initialStatus);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [isPending, startTransition] = useTransition();
 
@@ -357,6 +380,22 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions, se
   const [form, setForm] = useState<KamarFormState>(FORM_KOSONG);
   const [errors, setErrors] = useState<KamarFormErrors>({});
   const [deleteTarget, setDeleteTarget] = useState<KamarDenganPenghuni | null>(null);
+
+  // ── Form UX: Dirty State & Unsaved Changes Guard (Batch 20) ──────────────────
+  const [initialFormSnapshot, setInitialFormSnapshot] = useState<string>(JSON.stringify(FORM_KOSONG));
+  const [dirtyConfirmOpen, setDirtyConfirmOpen] = useState(false);
+
+  const isDirty = useMemo(() => {
+    return JSON.stringify(form) !== initialFormSnapshot;
+  }, [form, initialFormSnapshot]);
+
+  function handleRequestClose() {
+    if (isDirty) {
+      setDirtyConfirmOpen(true);
+    } else {
+      setFormOpen(false);
+    }
+  }
 
   // ── Derived ─────────────────────────────────────────────────────────────────
 
@@ -394,13 +433,31 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions, se
         return r.lantai === Number(activeTab);
       })
       .filter((r) => {
+        if (statusFilter === "semua") return true;
+        if (statusFilter === "tunggakan") return hasTunggakan(r);
+        return r.status === statusFilter;
+      })
+      .filter((r) => {
         const kata = search.trim().toLowerCase();
         if (!kata) return true;
         const namaPenghuni = r.penghuni[0]?.nama.toLowerCase() ?? "";
         return r.nomor.toLowerCase().includes(kata) || namaPenghuni.includes(kata);
       })
       .sort((a, b) => a.nomor.localeCompare(b.nomor));
-  }, [rooms, search, activeTab, selectedPropertiId]);
+  }, [rooms, search, activeTab, statusFilter, selectedPropertiId]);
+
+  // ── Pagination (Batch 19) ──────────────────────────────────────────────────
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, activeTab, statusFilter, selectedPropertiId]);
+
+  const paginatedRooms = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredRooms.slice(start, start + pageSize);
+  }, [filteredRooms, currentPage, pageSize]);
 
   // ── First properti name for the heading ────────────────────────────────────
   const propertiName =
@@ -408,18 +465,44 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions, se
       ? propertiOptions.find((p) => p.id === selectedPropertiId)?.nama
       : rooms.find((r) => r.properti)?.properti?.nama) ?? "Manajemen Kamar";
 
-  // ── CRUD ─────────────────────────────────────────────────────────────────────
+  function handleExportCSV() {
+    const headers = [
+      "Nomor Kamar",
+      "Lantai",
+      "Tipe",
+      "Harga Bulanan",
+      "Status",
+      "Nama Penyewa",
+      "Properti",
+    ];
+    const rows = filteredRooms.map((r) => [
+      r.nomor,
+      r.lantai,
+      r.tipe,
+      r.hargaBulanan,
+      r.status,
+      r.penghuni[0]?.nama || "Kosong",
+      r.properti?.nama || "-",
+    ]);
+    exportToCSV("daftar_kamar", headers, rows);
+    toast.success("Daftar kamar berhasil diekspor ke CSV");
+  }
 
   function bukaTambahKamar() {
     setEditingId(null);
-    setForm(FORM_KOSONG);
+    const defaultForm: KamarFormState = {
+      ...FORM_KOSONG,
+      propertiId: selectedPropertiId || propertiOptions[0]?.id || "",
+    };
+    setForm(defaultForm);
+    setInitialFormSnapshot(JSON.stringify(defaultForm));
     setErrors({});
     setFormOpen(true);
   }
 
   function bukaEditKamar(room: KamarDenganPenghuni) {
     setEditingId(room.id);
-    setForm({
+    const editForm: KamarFormState = {
       nomor: room.nomor,
       lantai: String(room.lantai),
       tipe: room.tipe as TipeKamar,
@@ -428,7 +511,9 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions, se
       penghuniId: room.penghuni[0]?.id ?? "",
       propertiId: room.properti?.id ?? "",
       catatan: room.catatan ?? "",
-    });
+    };
+    setForm(editForm);
+    setInitialFormSnapshot(JSON.stringify(editForm));
     setErrors({});
     setFormOpen(true);
   }
@@ -522,9 +607,12 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions, se
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <button className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50">
-            <Filter className="size-3.5" />
-            Filter
+          <button
+            onClick={handleExportCSV}
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50"
+          >
+            <Download className="size-3.5" />
+            Ekspor CSV
           </button>
           <button
             onClick={bukaTambahKamar}
@@ -624,29 +712,97 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions, se
         </div>
       </div>
 
-      {/* ── Search bar ────────────────────────────────────────────── */}
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
-        <input
-          type="text"
-          placeholder="Cari kamar atau tenant..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-700 placeholder:text-slate-400 focus:border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400/20 transition"
-        />
+      {/* ── Search & Status Filters ──────────────────────────────── */}
+      <div className="flex flex-col gap-3 rounded-2xl border border-slate-100 bg-white p-3.5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Cari kamar atau tenant..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2 pl-9 pr-4 text-sm text-slate-700 placeholder:text-slate-400 focus:border-teal-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/20 transition"
+          />
+        </div>
+
+        {/* Status Filter Pills */}
+        <div className="flex flex-wrap items-center gap-1 rounded-xl bg-slate-100 p-1">
+          {[
+            { id: "semua", label: `Semua (${ringkasan.total})` },
+            { id: "terisi", label: `Terisi (${ringkasan.terisi})` },
+            { id: "kosong", label: `Kosong (${ringkasan.kosong})` },
+            { id: "tunggakan", label: `Tunggakan (${ringkasan.tunggakan})` },
+          ].map((pill) => (
+            <button
+              key={pill.id}
+              onClick={() => setStatusFilter(pill.id)}
+              className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+                statusFilter === pill.id
+                  ? "bg-white text-teal-800 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              {pill.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── Room grid ─────────────────────────────────────────────── */}
       {filteredRooms.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-200 py-16 text-center">
-          <Bed className="mx-auto size-10 text-slate-300" />
-          <p className="mt-3 text-sm text-slate-500">
-            Tidak ada kamar yang cocok dengan pencarian / filter.
-          </p>
+        <div className="rounded-2xl border border-dashed border-slate-200 bg-white/50 p-12 text-center">
+          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+            <Bed className="size-6" />
+          </div>
+          {rooms.length === 0 ? (
+            <>
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-200 mb-3">
+                <span>Langkah 2 dari 5 Setup Portofolio</span>
+              </div>
+              <h3 className="mt-2 text-base font-semibold text-slate-800">Belum ada unit kamar</h3>
+              <p className="mx-auto mt-1.5 max-w-sm text-sm text-slate-500">
+                Tambahkan unit kamar pertama untuk mulai mengelola status ketersediaan, harga sewa bulanan, dan penetapan penghuni.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                <Button
+                  onClick={bukaTambahKamar}
+                  className="rounded-xl bg-teal-600 px-4 py-2 font-medium text-white shadow-sm hover:bg-teal-700"
+                >
+                  <Plus className="mr-1.5 size-4" />
+                  Tambah Kamar Pertama
+                </Button>
+                <Link
+                  href="/dashboard/owner"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition"
+                >
+                  Panduan Setup
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <h3 className="mt-4 text-base font-semibold text-slate-800">Tidak ada kamar yang cocok</h3>
+              <p className="mx-auto mt-1.5 max-w-sm text-sm text-slate-500">
+                Tidak ada unit kamar yang sesuai dengan kata kunci pencarian atau filter lantai Anda.
+              </p>
+              <div className="mt-5">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSearch("");
+                    setActiveTab("semua");
+                  }}
+                  className="rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50"
+                >
+                  Reset Filter &amp; Pencarian
+                </Button>
+              </div>
+            </>
+          )}
         </div>
-      ) : (
+      ) : viewMode === "grid" ? (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {filteredRooms.map((room, idx) => (
+          {paginatedRooms.map((room, idx) => (
             <RoomCard
               key={room.id}
               room={room}
@@ -657,208 +813,412 @@ export function KamarClient({ initialRooms, penghuniOptions, propertiOptions, se
             />
           ))}
         </div>
-      )}
+      ) : (
+        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+          {/* Mobile Cards (Hidden on md+) */}
+          <div className="md:hidden divide-y divide-slate-100">
+            {paginatedRooms.map((room) => {
+              const cfg = STATUS_CONFIG[room.status as StatusKamar] || STATUS_CONFIG.kosong;
+              const tunggakan = hasTunggakan(room);
+              const penyewa = room.penghuni[0];
+              return (
+                <div
+                  key={room.id}
+                  onClick={() => bukaEditKamar(room)}
+                  className="p-4 hover:bg-slate-50/70 transition-colors cursor-pointer active:bg-slate-100"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <span className="font-bold text-slate-900 text-sm">Kamar {room.nomor}</span>
+                      <span className="ml-2 text-xs text-slate-500 font-medium">Lantai {room.lantai} • {room.tipe}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {tunggakan && <TunggakanBadge />}
+                      <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold ${cfg.badge}`}>
+                        <span className={`size-1.5 rounded-full ${cfg.dot}`} />
+                        {cfg.label}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between text-xs text-slate-600">
+                    <span className="text-slate-500">{penyewa ? `Penyewa: ${penyewa.nama}` : "Belum ada penyewa"}</span>
+                    <span className="font-bold text-slate-900">{formatRupiah(room.hargaBulanan)}/bln</span>
+                  </div>
+                  <div className="mt-3 flex items-center justify-end gap-1.5 pt-2 border-t border-slate-50" onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => bukaEditKamar(room)}
+                      className="h-7 px-2.5 text-xs rounded-lg border-slate-200"
+                    >
+                      <Pencil className="mr-1 size-3 text-slate-500" />
+                      Edit
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setDeleteTarget(room)}
+                      className="h-7 px-2 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg"
+                    >
+                      <Trash2 className="size-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-      {/* ── Load more ─────────────────────────────────────────────── */}
-      {filteredRooms.length > 0 && (
-        <div className="pt-2 text-center">
-          <button className="text-sm font-semibold text-teal-600 hover:underline">
-            Muat Lebih Banyak...
-          </button>
+          {/* Desktop Table with Sticky Header (Hidden on < md) */}
+          <div className="hidden md:block overflow-x-auto">
+            <Table>
+              <TableHeader className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-xs border-b border-slate-100">
+                <TableRow>
+                  <TableHead className="px-5 py-3 text-xs font-bold text-slate-600">Nomor Kamar</TableHead>
+                  <TableHead className="px-5 py-3 text-xs font-bold text-slate-600">Lantai &amp; Tipe</TableHead>
+                  <TableHead className="px-5 py-3 text-xs font-bold text-slate-600">Tarif / Bulan</TableHead>
+                  <TableHead className="px-5 py-3 text-xs font-bold text-slate-600">Status</TableHead>
+                  <TableHead className="px-5 py-3 text-xs font-bold text-slate-600">Penyewa Aktif</TableHead>
+                  <TableHead className="px-5 py-3 text-xs font-bold text-slate-600">Properti</TableHead>
+                  <TableHead className="px-5 py-3 text-xs font-bold text-slate-600 text-right">Aksi</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-slate-100">
+                {paginatedRooms.map((room) => {
+                  const cfg = STATUS_CONFIG[room.status as StatusKamar] || STATUS_CONFIG.kosong;
+                  const tunggakan = hasTunggakan(room);
+                  const penyewa = room.penghuni[0];
+                  return (
+                    <TableRow
+                      key={room.id}
+                      onClick={() => bukaEditKamar(room)}
+                      className="cursor-pointer hover:bg-slate-50/80 transition-colors group"
+                    >
+                      <TableCell className="px-5 py-3.5 font-bold text-slate-900 group-hover:text-teal-700 transition-colors">
+                        Kamar {room.nomor}
+                      </TableCell>
+                      <TableCell className="px-5 py-3.5 text-xs text-slate-600">
+                        Lantai {room.lantai} • <span className="font-medium text-slate-700">{room.tipe}</span>
+                      </TableCell>
+                      <TableCell className="px-5 py-3.5 font-bold text-slate-900 text-sm">
+                        {formatRupiah(room.hargaBulanan)}
+                        <span className="text-[10px] font-normal text-slate-400">/bln</span>
+                      </TableCell>
+                      <TableCell className="px-5 py-3.5">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${cfg.badge}`}>
+                            <span className={`size-1.5 rounded-full ${cfg.dot}`} />
+                            {cfg.label}
+                          </span>
+                          {tunggakan && <TunggakanBadge />}
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-5 py-3.5 text-xs text-slate-700">
+                        {penyewa ? (
+                          <div>
+                            <span className="font-semibold text-slate-900">{penyewa.nama}</span>
+                            {penyewa.noHp && <div className="text-[11px] font-mono text-slate-400">+{penyewa.noHp}</div>}
+                          </div>
+                        ) : (
+                          <span className="text-slate-400 italic">Belum terisi</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="px-5 py-3.5 text-xs text-slate-500">
+                        {room.properti?.nama || "Kost Utama"}
+                      </TableCell>
+                      <TableCell className="px-5 py-3.5 text-right" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => bukaEditKamar(room)}
+                            className="h-8 rounded-xl border-slate-200 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                          >
+                            <Pencil className="mr-1 size-3 text-slate-500" />
+                            Edit
+                          </Button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger
+                              render={
+                                <Button variant="ghost" size="icon" className="size-8 rounded-xl text-slate-500">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              }
+                            />
+                            <DropdownMenuContent align="end" className="rounded-xl">
+                              <DropdownMenuItem onClick={() => bukaEditKamar(room)}>
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Edit Kamar
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="text-destructive focus:text-destructive"
+                                onClick={() => setDeleteTarget(room)}
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Hapus Kamar
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       )}
 
-      {/* ── Dialog Tambah / Edit ──────────────────────────────────── */}
-      <Dialog open={formOpen} onOpenChange={setFormOpen}>
-        <DialogContent className="sm:max-w-md">
+      {/* ── Table Pagination Bar ──────────────────────────────────── */}
+      {filteredRooms.length > 0 && (
+        <div className="p-4 rounded-2xl border border-slate-100 bg-white shadow-xs">
+          <DataTablePagination
+            currentPage={currentPage}
+            pageSize={pageSize}
+            totalItems={filteredRooms.length}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setCurrentPage(1);
+            }}
+            pageSizeOptions={[8, 12, 24, 48]}
+            itemLabel="kamar"
+          />
+        </div>
+      )}
+
+      {/* ── Dialog Tambah / Edit (Batch 20 Form Standardization) ──── */}
+      <Dialog
+        open={formOpen}
+        onOpenChange={(open) => {
+          if (!open) handleRequestClose();
+          else setFormOpen(true);
+        }}
+      >
+        <DialogContent className="sm:max-w-md rounded-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{editingId ? "Edit Kamar" : "Tambah Kamar Baru"}</DialogTitle>
+            <DialogTitle>{editingId ? "Edit Unit Kamar" : "Tambah Kamar Baru"}</DialogTitle>
             <DialogDescription>
               {editingId
-                ? "Perbarui detail kamar di bawah ini."
-                : "Isi detail kamar yang ingin ditambahkan."}
+                ? "Perbarui spesifikasi dan tarif sewa unit kamar di bawah ini."
+                : "Tentukan nomor kamar, tarif bulanan, dan properti yang sesuai."}
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 py-2">
-            <div className="grid gap-2">
-              <Label>Properti (Opsional)</Label>
-              <Select
-                value={form.propertiId}
-                onValueChange={(v) =>
-                  setForm((f) => ({ ...f, propertiId: v === "none" ? "" : (v ?? "") }))
-                }
-              >
-                <SelectTrigger id="propertiId">
-                  {selectedProperti ? (
-                    <span className="flex-1 truncate">{selectedProperti.nama}</span>
-                  ) : (
-                    <SelectValue placeholder="Pilih Properti terdaftar" />
-                  )}
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Tidak terhubung ke properti</SelectItem>
-                  {propertiOptions.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.nama}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="nomor">Nomor Kamar</Label>
-                <Input
-                  id="nomor"
-                  placeholder="Contoh: A-01"
-                  value={form.nomor}
-                  onChange={(e) => setForm((f) => ({ ...f, nomor: e.target.value }))}
-                />
-                {errors.nomor && <p className="text-sm text-destructive">{errors.nomor}</p>}
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="lantai">Lantai</Label>
-                <Input
-                  id="lantai"
-                  type="number"
-                  min={1}
-                  value={form.lantai}
-                  onChange={(e) => setForm((f) => ({ ...f, lantai: e.target.value }))}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label>Tipe Kamar</Label>
+          <div className="space-y-4 py-2">
+            {/* Properti */}
+            <FormField
+              label="Properti"
+              description="Hubungkan unit ini dengan bangunan properti atau cabang kos"
+            >
+              {({ id }) => (
                 <Select
-                  value={form.tipe}
-                  onValueChange={(v) => setForm((f) => ({ ...f, tipe: v as TipeKamar }))}
+                  value={form.propertiId}
+                  onValueChange={(v) =>
+                    setForm((f) => ({ ...f, propertiId: v === "none" ? "" : (v ?? "") }))
+                  }
                 >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Standard">Standard</SelectItem>
-                    <SelectItem value="Deluxe">Deluxe</SelectItem>
-                    <SelectItem value="VIP">VIP</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="harga">Harga / Bulan (Rp)</Label>
-                <Input
-                  id="harga"
-                  type="number"
-                  min={0}
-                  placeholder="850000"
-                  value={form.hargaBulanan}
-                  onChange={(e) => setForm((f) => ({ ...f, hargaBulanan: e.target.value }))}
-                />
-                {errors.hargaBulanan && (
-                  <p className="text-sm text-destructive">{errors.hargaBulanan}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid gap-2">
-              <Label>Status</Label>
-              <Select
-                value={form.status}
-                onValueChange={(v) => setForm((f) => ({ ...f, status: v as StatusKamar }))}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="kosong">Kosong</SelectItem>
-                  <SelectItem value="terisi">Terisi</SelectItem>
-                  <SelectItem value="maintenance">Maintenance</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {form.status === "terisi" && (
-              <div className="grid gap-2">
-                <Label htmlFor="penghuniId">Nama Penghuni</Label>
-                <Select
-                  value={form.penghuniId}
-                  onValueChange={(v) => setForm((f) => ({ ...f, penghuniId: v ?? "" }))}
-                >
-                  <SelectTrigger id="penghuniId">
-                    {selectedPenghuni ? (
-                      <span className="flex-1 truncate">
-                        {selectedPenghuni.nama} — {selectedPenghuni.noHp}
-                      </span>
+                  <SelectTrigger id={id} className="rounded-xl">
+                    {selectedProperti ? (
+                      <span className="flex-1 truncate">{selectedProperti.nama}</span>
                     ) : (
-                      <SelectValue placeholder="Pilih penghuni terdaftar" />
+                      <SelectValue placeholder="Pilih properti terdaftar" />
                     )}
                   </SelectTrigger>
-                  <SelectContent>
-                    {opsiPenghuni.length === 0 && (
-                      <div className="px-2 py-3 text-sm text-muted-foreground">
-                        Belum ada penghuni tersedia. Daftarkan dulu di halaman Penghuni.
-                      </div>
-                    )}
-                    {opsiPenghuni.map((p) => (
+                  <SelectContent className="rounded-xl">
+                    <SelectItem value="none">Tidak terhubung ke properti spesifik</SelectItem>
+                    {propertiOptions.map((p) => (
                       <SelectItem key={p.id} value={p.id}>
-                        {p.nama} — {p.noHp}
+                        {p.nama}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                {errors.penghuniId && (
-                  <p className="text-sm text-destructive">{errors.penghuniId}</p>
+              )}
+            </FormField>
+
+            {/* Nomor & Lantai */}
+            <div className="grid grid-cols-2 gap-3">
+              <FormField label="Nomor Kamar" required error={errors.nomor}>
+                {({ id, "aria-invalid": ariaInvalid }) => (
+                  <Input
+                    id={id}
+                    placeholder="Contoh: A-01"
+                    value={form.nomor}
+                    onChange={(e) => setForm((f) => ({ ...f, nomor: e.target.value }))}
+                    className={`rounded-xl ${ariaInvalid ? "border-rose-300 focus:border-rose-400" : ""}`}
+                  />
                 )}
-              </div>
+              </FormField>
+
+              <FormField label="Lantai" required>
+                {({ id }) => (
+                  <Input
+                    id={id}
+                    type="number"
+                    min={1}
+                    value={form.lantai}
+                    onChange={(e) => setForm((f) => ({ ...f, lantai: e.target.value }))}
+                    className="rounded-xl"
+                  />
+                )}
+              </FormField>
+            </div>
+
+            {/* Tipe & Tarif Bulanan */}
+            <div className="grid grid-cols-2 gap-3">
+              <FormField label="Tipe Kamar" required>
+                {() => (
+                  <Select
+                    value={form.tipe}
+                    onValueChange={(v) => setForm((f) => ({ ...f, tipe: v as TipeKamar }))}
+                  >
+                    <SelectTrigger className="rounded-xl">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl">
+                      <SelectItem value="Standard">Standard</SelectItem>
+                      <SelectItem value="Deluxe">Deluxe</SelectItem>
+                      <SelectItem value="VIP">VIP</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              </FormField>
+
+              <FormField
+                label="Tarif / Bulan"
+                required
+                error={errors.hargaBulanan}
+              >
+                {({ id, "aria-invalid": ariaInvalid }) => (
+                  <CurrencyInput
+                    id={id}
+                    value={form.hargaBulanan}
+                    onChange={(val) => setForm((f) => ({ ...f, hargaBulanan: String(val) }))}
+                    hasError={ariaInvalid}
+                    placeholder="850.000"
+                  />
+                )}
+              </FormField>
+            </div>
+
+            {/* Status Kamar */}
+            <FormField label="Status Ketersediaan" required>
+              {() => (
+                <Select
+                  value={form.status}
+                  onValueChange={(v) => setForm((f) => ({ ...f, status: v as StatusKamar }))}
+                >
+                  <SelectTrigger className="rounded-xl">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl">
+                    <SelectItem value="kosong">Kosong (Siap Disewa)</SelectItem>
+                    <SelectItem value="terisi">Terisi (Ada Penghuni)</SelectItem>
+                    <SelectItem value="maintenance">Dalam Perbaikan (Maintenance)</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            </FormField>
+
+            {/* Penghuni (Bila Status Terisi) */}
+            {form.status === "terisi" && (
+              <FormField
+                label="Penghuni Terdaftar"
+                required
+                error={errors.penghuniId}
+                description="Pilih penyewa yang menempati kamar ini"
+              >
+                {({ id }) => (
+                  <Select
+                    value={form.penghuniId}
+                    onValueChange={(v) => setForm((f) => ({ ...f, penghuniId: v ?? "" }))}
+                  >
+                    <SelectTrigger id={id} className="rounded-xl">
+                      {selectedPenghuni ? (
+                        <span className="flex-1 truncate">
+                          {selectedPenghuni.nama} — {selectedPenghuni.noHp}
+                        </span>
+                      ) : (
+                        <SelectValue placeholder="Pilih penghuni terdaftar" />
+                      )}
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl">
+                      {opsiPenghuni.length === 0 && (
+                        <div className="px-3 py-2 text-xs text-slate-500">
+                          Belum ada data penghuni kosong. Daftarkan di menu Penghuni.
+                        </div>
+                      )}
+                      {opsiPenghuni.map((p) => (
+                        <SelectItem key={p.id} value={p.id}>
+                          {p.nama} — {p.noHp}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </FormField>
             )}
 
-            <div className="grid gap-2">
-              <Label htmlFor="catatan">Catatan (opsional)</Label>
-              <Textarea
-                id="catatan"
-                placeholder="Catatan tambahan, misalnya kondisi kamar"
-                value={form.catatan}
-                onChange={(e) => setForm((f) => ({ ...f, catatan: e.target.value }))}
-              />
-            </div>
+            {/* Catatan */}
+            <FormField
+              label="Catatan Kamar"
+              description="Inventaris fasilitas, token listrik, atau catatan kondisi"
+            >
+              {({ id }) => (
+                <Textarea
+                  id={id}
+                  placeholder="Contoh: AC sharp 0.5 PK, meteran listrik 24391..."
+                  value={form.catatan}
+                  onChange={(e) => setForm((f) => ({ ...f, catatan: e.target.value }))}
+                  className="rounded-xl text-xs"
+                />
+              )}
+            </FormField>
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setFormOpen(false)} disabled={isPending}>
+          <DialogFooter className="gap-2 sm:gap-0 pt-2 border-t border-slate-100">
+            <Button
+              variant="outline"
+              onClick={handleRequestClose}
+              disabled={isPending}
+              className="rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+            >
               Batal
             </Button>
-            <Button onClick={submitForm} disabled={isPending}>
-              {isPending ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Tambah Kamar"}
-            </Button>
+            <SubmitButton
+              onClick={submitForm}
+              isPending={isPending}
+              loadingText="Menyimpan..."
+              className="text-xs"
+            >
+              {editingId ? "Simpan Perubahan" : "Tambah Kamar"}
+            </SubmitButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* ── Konfirmasi Hapus ─────────────────────────────────────── */}
-      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Hapus kamar ini?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Kamar {deleteTarget?.nomor} akan dihapus secara permanen dan tidak dapat dikembalikan.
-              Pastikan tidak ada penghuni aktif sebelum menghapus.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={konfirmasiHapus}
-              disabled={isPending}
-            >
-              {isPending ? "Menghapus..." : "Hapus"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* ── Dirty Form Warning Dialog (Batch 20) ──────────────────── */}
+      <UnsavedChangesDialog
+        open={dirtyConfirmOpen}
+        onOpenChange={setDirtyConfirmOpen}
+        onConfirmDiscard={() => {
+          setDirtyConfirmOpen(false);
+          setFormOpen(false);
+        }}
+      />
+
+      {/* ── Konfirmasi Hapus (Batch 21: Destructive Confirmation) ──── */}
+      <DestructiveDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        onConfirm={konfirmasiHapus}
+        title="Hapus Kamar Secara Permanen?"
+        entityName={deleteTarget ? `Kamar ${deleteTarget.nomor}` : undefined}
+        description="Unit kamar akan dihapus secara permanen dari properti. Pastikan tidak ada penghuni aktif sebelum menghapus."
+        confirmLabel="Hapus Kamar"
+        isPending={isPending}
+      />
     </div>
   );
 }

@@ -6,14 +6,15 @@ export default async function DashboardPage() {
 
   if (!user) redirect("/login");
 
-  switch (user.role) {
-    case "super-admin":
-      redirect("/dashboard/admin");
-    case "owner":
-      redirect("/dashboard/owner");
-    case "tenant":
-      redirect("/dashboard/tenant");
-    default:
-      redirect("/unauthorized");
+  const normalizedRole = user.role?.toLowerCase().replace(/[^a-z]/g, "") || "";
+
+  if (normalizedRole === "superadmin" || normalizedRole === "admin") {
+    redirect("/dashboard/admin");
+  } else if (normalizedRole === "owner" || normalizedRole === "staff") {
+    redirect("/dashboard/owner");
+  } else if (normalizedRole === "tenant") {
+    redirect("/dashboard/tenant");
+  } else {
+    redirect("/unauthorized");
   }
 }

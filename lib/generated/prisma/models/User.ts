@@ -254,6 +254,9 @@ export type UserWhereInput = {
   penghuniProfil?: Prisma.XOR<Prisma.PenghuniNullableScalarRelationFilter, Prisma.PenghuniWhereInput> | null
   propertiDimiliki?: Prisma.PropertiListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  organizations?: Prisma.OrganizationUserListRelationFilter
+  auditLogs?: Prisma.AuditLogListRelationFilter
+  tenantUsers?: Prisma.TenantUserListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -278,6 +281,9 @@ export type UserOrderByWithRelationInput = {
   penghuniProfil?: Prisma.PenghuniOrderByWithRelationInput
   propertiDimiliki?: Prisma.PropertiOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
+  organizations?: Prisma.OrganizationUserOrderByRelationAggregateInput
+  auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  tenantUsers?: Prisma.TenantUserOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -305,6 +311,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   penghuniProfil?: Prisma.XOR<Prisma.PenghuniNullableScalarRelationFilter, Prisma.PenghuniWhereInput> | null
   propertiDimiliki?: Prisma.PropertiListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  organizations?: Prisma.OrganizationUserListRelationFilter
+  auditLogs?: Prisma.AuditLogListRelationFilter
+  tenantUsers?: Prisma.TenantUserListRelationFilter
 }, "id" | "email" | "kodeUndangan">
 
 export type UserOrderByWithAggregationInput = {
@@ -367,6 +376,9 @@ export type UserCreateInput = {
   penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -391,6 +403,9 @@ export type UserUncheckedCreateInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -415,6 +430,9 @@ export type UserUpdateInput = {
   penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -439,6 +457,9 @@ export type UserUncheckedUpdateInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -595,6 +616,36 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
+export type UserCreateNestedOneWithoutOrganizationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrganizationsInput, Prisma.UserUncheckedCreateWithoutOrganizationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrganizationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOrganizationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrganizationsInput, Prisma.UserUncheckedCreateWithoutOrganizationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrganizationsInput
+  upsert?: Prisma.UserUpsertWithoutOrganizationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrganizationsInput, Prisma.UserUpdateWithoutOrganizationsInput>, Prisma.UserUncheckedUpdateWithoutOrganizationsInput>
+}
+
+export type UserCreateNestedOneWithoutAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
+  upsert?: Prisma.UserUpsertWithoutAuditLogsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+}
+
 export type UserCreateNestedOneWithoutKamarDimilikiInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutKamarDimilikiInput, Prisma.UserUncheckedCreateWithoutKamarDimilikiInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutKamarDimilikiInput
@@ -681,6 +732,20 @@ export type UserUpdateOneRequiredWithoutPemeliharaanNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPemeliharaanInput, Prisma.UserUpdateWithoutPemeliharaanInput>, Prisma.UserUncheckedUpdateWithoutPemeliharaanInput>
 }
 
+export type UserCreateNestedOneWithoutTenantUsersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTenantUsersInput, Prisma.UserUncheckedCreateWithoutTenantUsersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTenantUsersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTenantUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTenantUsersInput, Prisma.UserUncheckedCreateWithoutTenantUsersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTenantUsersInput
+  upsert?: Prisma.UserUpsertWithoutTenantUsersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTenantUsersInput, Prisma.UserUpdateWithoutTenantUsersInput>, Prisma.UserUncheckedUpdateWithoutTenantUsersInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id: string
   name: string
@@ -702,6 +767,9 @@ export type UserCreateWithoutSessionsInput = {
   penghuniDimiliki?: Prisma.PenghuniCreateNestedManyWithoutOwnerInput
   penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -725,6 +793,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   penghuniDimiliki?: Prisma.PenghuniUncheckedCreateNestedManyWithoutOwnerInput
   penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -764,6 +835,9 @@ export type UserUpdateWithoutSessionsInput = {
   penghuniDimiliki?: Prisma.PenghuniUpdateManyWithoutOwnerNestedInput
   penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -787,6 +861,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   penghuniDimiliki?: Prisma.PenghuniUncheckedUpdateManyWithoutOwnerNestedInput
   penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -810,6 +887,9 @@ export type UserCreateWithoutAccountsInput = {
   penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -833,6 +913,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -872,6 +955,9 @@ export type UserUpdateWithoutAccountsInput = {
   penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -895,6 +981,249 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutOrganizationsInput = {
+  id: string
+  name: string
+  email: string
+  role?: string
+  registrationRole?: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  emailVerified?: boolean
+  image?: string | null
+  kodeUndangan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamarDimiliki?: Prisma.KamarCreateNestedManyWithoutOwnerInput
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutOwnerInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutOwnerInput
+  penghuniDimiliki?: Prisma.PenghuniCreateNestedManyWithoutOwnerInput
+  penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
+  propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOrganizationsInput = {
+  id: string
+  name: string
+  email: string
+  role?: string
+  registrationRole?: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  emailVerified?: boolean
+  image?: string | null
+  kodeUndangan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamarDimiliki?: Prisma.KamarUncheckedCreateNestedManyWithoutOwnerInput
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutOwnerInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutOwnerInput
+  penghuniDimiliki?: Prisma.PenghuniUncheckedCreateNestedManyWithoutOwnerInput
+  penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
+  propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOrganizationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrganizationsInput, Prisma.UserUncheckedCreateWithoutOrganizationsInput>
+}
+
+export type UserUpsertWithoutOrganizationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOrganizationsInput, Prisma.UserUncheckedUpdateWithoutOrganizationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrganizationsInput, Prisma.UserUncheckedCreateWithoutOrganizationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOrganizationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOrganizationsInput, Prisma.UserUncheckedUpdateWithoutOrganizationsInput>
+}
+
+export type UserUpdateWithoutOrganizationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  registrationRole?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kodeUndangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamarDimiliki?: Prisma.KamarUpdateManyWithoutOwnerNestedInput
+  transaksi?: Prisma.TransaksiUpdateManyWithoutOwnerNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutOwnerNestedInput
+  penghuniDimiliki?: Prisma.PenghuniUpdateManyWithoutOwnerNestedInput
+  penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
+  propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOrganizationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  registrationRole?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kodeUndangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamarDimiliki?: Prisma.KamarUncheckedUpdateManyWithoutOwnerNestedInput
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutOwnerNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutOwnerNestedInput
+  penghuniDimiliki?: Prisma.PenghuniUncheckedUpdateManyWithoutOwnerNestedInput
+  penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
+  propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAuditLogsInput = {
+  id: string
+  name: string
+  email: string
+  role?: string
+  registrationRole?: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  emailVerified?: boolean
+  image?: string | null
+  kodeUndangan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamarDimiliki?: Prisma.KamarCreateNestedManyWithoutOwnerInput
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutOwnerInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutOwnerInput
+  penghuniDimiliki?: Prisma.PenghuniCreateNestedManyWithoutOwnerInput
+  penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
+  propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAuditLogsInput = {
+  id: string
+  name: string
+  email: string
+  role?: string
+  registrationRole?: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  emailVerified?: boolean
+  image?: string | null
+  kodeUndangan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamarDimiliki?: Prisma.KamarUncheckedCreateNestedManyWithoutOwnerInput
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutOwnerInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutOwnerInput
+  penghuniDimiliki?: Prisma.PenghuniUncheckedCreateNestedManyWithoutOwnerInput
+  penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
+  propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAuditLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+}
+
+export type UserUpsertWithoutAuditLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsInput, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAuditLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsInput, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+}
+
+export type UserUpdateWithoutAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  registrationRole?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kodeUndangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamarDimiliki?: Prisma.KamarUpdateManyWithoutOwnerNestedInput
+  transaksi?: Prisma.TransaksiUpdateManyWithoutOwnerNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutOwnerNestedInput
+  penghuniDimiliki?: Prisma.PenghuniUpdateManyWithoutOwnerNestedInput
+  penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
+  propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  registrationRole?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kodeUndangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamarDimiliki?: Prisma.KamarUncheckedUpdateManyWithoutOwnerNestedInput
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutOwnerNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutOwnerNestedInput
+  penghuniDimiliki?: Prisma.PenghuniUncheckedUpdateManyWithoutOwnerNestedInput
+  penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
+  propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutKamarDimilikiInput = {
@@ -918,6 +1247,9 @@ export type UserCreateWithoutKamarDimilikiInput = {
   penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutKamarDimilikiInput = {
@@ -941,6 +1273,9 @@ export type UserUncheckedCreateWithoutKamarDimilikiInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutKamarDimilikiInput = {
@@ -980,6 +1315,9 @@ export type UserUpdateWithoutKamarDimilikiInput = {
   penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutKamarDimilikiInput = {
@@ -1003,6 +1341,9 @@ export type UserUncheckedUpdateWithoutKamarDimilikiInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPenghuniDimilikiInput = {
@@ -1026,6 +1367,9 @@ export type UserCreateWithoutPenghuniDimilikiInput = {
   penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPenghuniDimilikiInput = {
@@ -1049,6 +1393,9 @@ export type UserUncheckedCreateWithoutPenghuniDimilikiInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPenghuniDimilikiInput = {
@@ -1077,6 +1424,9 @@ export type UserCreateWithoutPenghuniProfilInput = {
   penghuniDimiliki?: Prisma.PenghuniCreateNestedManyWithoutOwnerInput
   propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPenghuniProfilInput = {
@@ -1100,6 +1450,9 @@ export type UserUncheckedCreateWithoutPenghuniProfilInput = {
   penghuniDimiliki?: Prisma.PenghuniUncheckedCreateNestedManyWithoutOwnerInput
   propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPenghuniProfilInput = {
@@ -1139,6 +1492,9 @@ export type UserUpdateWithoutPenghuniDimilikiInput = {
   penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPenghuniDimilikiInput = {
@@ -1162,6 +1518,9 @@ export type UserUncheckedUpdateWithoutPenghuniDimilikiInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutPenghuniProfilInput = {
@@ -1196,6 +1555,9 @@ export type UserUpdateWithoutPenghuniProfilInput = {
   penghuniDimiliki?: Prisma.PenghuniUpdateManyWithoutOwnerNestedInput
   propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPenghuniProfilInput = {
@@ -1219,6 +1581,9 @@ export type UserUncheckedUpdateWithoutPenghuniProfilInput = {
   penghuniDimiliki?: Prisma.PenghuniUncheckedUpdateManyWithoutOwnerNestedInput
   propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransaksiInput = {
@@ -1242,6 +1607,9 @@ export type UserCreateWithoutTransaksiInput = {
   penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransaksiInput = {
@@ -1265,6 +1633,9 @@ export type UserUncheckedCreateWithoutTransaksiInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransaksiInput = {
@@ -1304,6 +1675,9 @@ export type UserUpdateWithoutTransaksiInput = {
   penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransaksiInput = {
@@ -1327,6 +1701,9 @@ export type UserUncheckedUpdateWithoutTransaksiInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPropertiDimilikiInput = {
@@ -1350,6 +1727,9 @@ export type UserCreateWithoutPropertiDimilikiInput = {
   penghuniDimiliki?: Prisma.PenghuniCreateNestedManyWithoutOwnerInput
   penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPropertiDimilikiInput = {
@@ -1373,6 +1753,9 @@ export type UserUncheckedCreateWithoutPropertiDimilikiInput = {
   penghuniDimiliki?: Prisma.PenghuniUncheckedCreateNestedManyWithoutOwnerInput
   penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPropertiDimilikiInput = {
@@ -1412,6 +1795,9 @@ export type UserUpdateWithoutPropertiDimilikiInput = {
   penghuniDimiliki?: Prisma.PenghuniUpdateManyWithoutOwnerNestedInput
   penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPropertiDimilikiInput = {
@@ -1435,6 +1821,9 @@ export type UserUncheckedUpdateWithoutPropertiDimilikiInput = {
   penghuniDimiliki?: Prisma.PenghuniUncheckedUpdateManyWithoutOwnerNestedInput
   penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPemeliharaanInput = {
@@ -1458,6 +1847,9 @@ export type UserCreateWithoutPemeliharaanInput = {
   penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPemeliharaanInput = {
@@ -1481,6 +1873,9 @@ export type UserUncheckedCreateWithoutPemeliharaanInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
   propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPemeliharaanInput = {
@@ -1520,6 +1915,9 @@ export type UserUpdateWithoutPemeliharaanInput = {
   penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPemeliharaanInput = {
@@ -1543,6 +1941,129 @@ export type UserUncheckedUpdateWithoutPemeliharaanInput = {
   penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
   propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTenantUsersInput = {
+  id: string
+  name: string
+  email: string
+  role?: string
+  registrationRole?: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  emailVerified?: boolean
+  image?: string | null
+  kodeUndangan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamarDimiliki?: Prisma.KamarCreateNestedManyWithoutOwnerInput
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutOwnerInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutOwnerInput
+  penghuniDimiliki?: Prisma.PenghuniCreateNestedManyWithoutOwnerInput
+  penghuniProfil?: Prisma.PenghuniCreateNestedOneWithoutUserInput
+  propertiDimiliki?: Prisma.PropertiCreateNestedManyWithoutOwnerInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+}
+
+export type UserUncheckedCreateWithoutTenantUsersInput = {
+  id: string
+  name: string
+  email: string
+  role?: string
+  registrationRole?: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  emailVerified?: boolean
+  image?: string | null
+  kodeUndangan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamarDimiliki?: Prisma.KamarUncheckedCreateNestedManyWithoutOwnerInput
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutOwnerInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutOwnerInput
+  penghuniDimiliki?: Prisma.PenghuniUncheckedCreateNestedManyWithoutOwnerInput
+  penghuniProfil?: Prisma.PenghuniUncheckedCreateNestedOneWithoutUserInput
+  propertiDimiliki?: Prisma.PropertiUncheckedCreateNestedManyWithoutOwnerInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+}
+
+export type UserCreateOrConnectWithoutTenantUsersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTenantUsersInput, Prisma.UserUncheckedCreateWithoutTenantUsersInput>
+}
+
+export type UserUpsertWithoutTenantUsersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTenantUsersInput, Prisma.UserUncheckedUpdateWithoutTenantUsersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTenantUsersInput, Prisma.UserUncheckedCreateWithoutTenantUsersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTenantUsersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTenantUsersInput, Prisma.UserUncheckedUpdateWithoutTenantUsersInput>
+}
+
+export type UserUpdateWithoutTenantUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  registrationRole?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kodeUndangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamarDimiliki?: Prisma.KamarUpdateManyWithoutOwnerNestedInput
+  transaksi?: Prisma.TransaksiUpdateManyWithoutOwnerNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutOwnerNestedInput
+  penghuniDimiliki?: Prisma.PenghuniUpdateManyWithoutOwnerNestedInput
+  penghuniProfil?: Prisma.PenghuniUpdateOneWithoutUserNestedInput
+  propertiDimiliki?: Prisma.PropertiUpdateManyWithoutOwnerNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTenantUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  registrationRole?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kodeUndangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamarDimiliki?: Prisma.KamarUncheckedUpdateManyWithoutOwnerNestedInput
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutOwnerNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutOwnerNestedInput
+  penghuniDimiliki?: Prisma.PenghuniUncheckedUpdateManyWithoutOwnerNestedInput
+  penghuniProfil?: Prisma.PenghuniUncheckedUpdateOneWithoutUserNestedInput
+  propertiDimiliki?: Prisma.PropertiUncheckedUpdateManyWithoutOwnerNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 
@@ -1558,6 +2079,9 @@ export type UserCountOutputType = {
   penghuniDimiliki: number
   propertiDimiliki: number
   sessions: number
+  organizations: number
+  auditLogs: number
+  tenantUsers: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1568,6 +2092,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   penghuniDimiliki?: boolean | UserCountOutputTypeCountPenghuniDimilikiArgs
   propertiDimiliki?: boolean | UserCountOutputTypeCountPropertiDimilikiArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+  organizations?: boolean | UserCountOutputTypeCountOrganizationsArgs
+  auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+  tenantUsers?: boolean | UserCountOutputTypeCountTenantUsersArgs
 }
 
 /**
@@ -1629,6 +2156,27 @@ export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.SessionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOrganizationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrganizationUserWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTenantUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantUserWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1652,6 +2200,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   penghuniProfil?: boolean | Prisma.User$penghuniProfilArgs<ExtArgs>
   propertiDimiliki?: boolean | Prisma.User$propertiDimilikiArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  organizations?: boolean | Prisma.User$organizationsArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  tenantUsers?: boolean | Prisma.User$tenantUsersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1713,6 +2264,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   penghuniProfil?: boolean | Prisma.User$penghuniProfilArgs<ExtArgs>
   propertiDimiliki?: boolean | Prisma.User$propertiDimilikiArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  organizations?: boolean | Prisma.User$organizationsArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  tenantUsers?: boolean | Prisma.User$tenantUsersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1729,6 +2283,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     penghuniProfil: Prisma.$PenghuniPayload<ExtArgs> | null
     propertiDimiliki: Prisma.$PropertiPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
+    organizations: Prisma.$OrganizationUserPayload<ExtArgs>[]
+    auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    tenantUsers: Prisma.$TenantUserPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2146,6 +2703,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   penghuniProfil<T extends Prisma.User$penghuniProfilArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$penghuniProfilArgs<ExtArgs>>): Prisma.Prisma__PenghuniClient<runtime.Types.Result.GetResult<Prisma.$PenghuniPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   propertiDimiliki<T extends Prisma.User$propertiDimilikiArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$propertiDimilikiArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  organizations<T extends Prisma.User$organizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tenantUsers<T extends Prisma.User$tenantUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tenantUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2765,6 +3325,78 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * User.organizations
+ */
+export type User$organizationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrganizationUser
+   */
+  select?: Prisma.OrganizationUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrganizationUser
+   */
+  omit?: Prisma.OrganizationUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationUserInclude<ExtArgs> | null
+  where?: Prisma.OrganizationUserWhereInput
+  orderBy?: Prisma.OrganizationUserOrderByWithRelationInput | Prisma.OrganizationUserOrderByWithRelationInput[]
+  cursor?: Prisma.OrganizationUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrganizationUserScalarFieldEnum | Prisma.OrganizationUserScalarFieldEnum[]
+}
+
+/**
+ * User.auditLogs
+ */
+export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditLog
+   */
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditLog
+   */
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.tenantUsers
+ */
+export type User$tenantUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantUser
+   */
+  select?: Prisma.TenantUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantUser
+   */
+  omit?: Prisma.TenantUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantUserInclude<ExtArgs> | null
+  where?: Prisma.TenantUserWhereInput
+  orderBy?: Prisma.TenantUserOrderByWithRelationInput | Prisma.TenantUserOrderByWithRelationInput[]
+  cursor?: Prisma.TenantUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantUserScalarFieldEnum | Prisma.TenantUserScalarFieldEnum[]
 }
 
 /**

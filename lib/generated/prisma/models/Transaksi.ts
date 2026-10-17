@@ -45,6 +45,7 @@ export type TransaksiMinAggregateOutputType = {
   penghuniId: string | null
   createdAt: Date | null
   ownerId: string | null
+  organizationId: string | null
 }
 
 export type TransaksiMaxAggregateOutputType = {
@@ -58,6 +59,7 @@ export type TransaksiMaxAggregateOutputType = {
   penghuniId: string | null
   createdAt: Date | null
   ownerId: string | null
+  organizationId: string | null
 }
 
 export type TransaksiCountAggregateOutputType = {
@@ -71,6 +73,7 @@ export type TransaksiCountAggregateOutputType = {
   penghuniId: number
   createdAt: number
   ownerId: number
+  organizationId: number
   _all: number
 }
 
@@ -94,6 +97,7 @@ export type TransaksiMinAggregateInputType = {
   penghuniId?: true
   createdAt?: true
   ownerId?: true
+  organizationId?: true
 }
 
 export type TransaksiMaxAggregateInputType = {
@@ -107,6 +111,7 @@ export type TransaksiMaxAggregateInputType = {
   penghuniId?: true
   createdAt?: true
   ownerId?: true
+  organizationId?: true
 }
 
 export type TransaksiCountAggregateInputType = {
@@ -120,6 +125,7 @@ export type TransaksiCountAggregateInputType = {
   penghuniId?: true
   createdAt?: true
   ownerId?: true
+  organizationId?: true
   _all?: true
 }
 
@@ -220,6 +226,7 @@ export type TransaksiGroupByOutputType = {
   penghuniId: string | null
   createdAt: Date
   ownerId: string
+  organizationId: string | null
   _count: TransaksiCountAggregateOutputType | null
   _avg: TransaksiAvgAggregateOutputType | null
   _sum: TransaksiSumAggregateOutputType | null
@@ -256,9 +263,11 @@ export type TransaksiWhereInput = {
   penghuniId?: Prisma.StringNullableFilter<"Transaksi"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
   ownerId?: Prisma.StringFilter<"Transaksi"> | string
+  organizationId?: Prisma.StringNullableFilter<"Transaksi"> | string | null
   kamar?: Prisma.XOR<Prisma.KamarNullableScalarRelationFilter, Prisma.KamarWhereInput> | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   penghuni?: Prisma.XOR<Prisma.PenghuniNullableScalarRelationFilter, Prisma.PenghuniWhereInput> | null
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
 }
 
 export type TransaksiOrderByWithRelationInput = {
@@ -272,9 +281,11 @@ export type TransaksiOrderByWithRelationInput = {
   penghuniId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   kamar?: Prisma.KamarOrderByWithRelationInput
   owner?: Prisma.UserOrderByWithRelationInput
   penghuni?: Prisma.PenghuniOrderByWithRelationInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
 }
 
 export type TransaksiWhereUniqueInput = Prisma.AtLeast<{
@@ -291,9 +302,11 @@ export type TransaksiWhereUniqueInput = Prisma.AtLeast<{
   penghuniId?: Prisma.StringNullableFilter<"Transaksi"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
   ownerId?: Prisma.StringFilter<"Transaksi"> | string
+  organizationId?: Prisma.StringNullableFilter<"Transaksi"> | string | null
   kamar?: Prisma.XOR<Prisma.KamarNullableScalarRelationFilter, Prisma.KamarWhereInput> | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   penghuni?: Prisma.XOR<Prisma.PenghuniNullableScalarRelationFilter, Prisma.PenghuniWhereInput> | null
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
 }, "id">
 
 export type TransaksiOrderByWithAggregationInput = {
@@ -307,6 +320,7 @@ export type TransaksiOrderByWithAggregationInput = {
   penghuniId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TransaksiCountOrderByAggregateInput
   _avg?: Prisma.TransaksiAvgOrderByAggregateInput
   _max?: Prisma.TransaksiMaxOrderByAggregateInput
@@ -328,6 +342,7 @@ export type TransaksiScalarWhereWithAggregatesInput = {
   penghuniId?: Prisma.StringNullableWithAggregatesFilter<"Transaksi"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Transaksi"> | Date | string
   ownerId?: Prisma.StringWithAggregatesFilter<"Transaksi"> | string
+  organizationId?: Prisma.StringNullableWithAggregatesFilter<"Transaksi"> | string | null
 }
 
 export type TransaksiCreateInput = {
@@ -341,6 +356,7 @@ export type TransaksiCreateInput = {
   kamar?: Prisma.KamarCreateNestedOneWithoutTransaksiInput
   owner: Prisma.UserCreateNestedOneWithoutTransaksiInput
   penghuni?: Prisma.PenghuniCreateNestedOneWithoutTransaksiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutTransaksiInput
 }
 
 export type TransaksiUncheckedCreateInput = {
@@ -354,6 +370,7 @@ export type TransaksiUncheckedCreateInput = {
   penghuniId?: string | null
   createdAt?: Date | string
   ownerId: string
+  organizationId?: string | null
 }
 
 export type TransaksiUpdateInput = {
@@ -367,6 +384,7 @@ export type TransaksiUpdateInput = {
   kamar?: Prisma.KamarUpdateOneWithoutTransaksiNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutTransaksiNestedInput
   penghuni?: Prisma.PenghuniUpdateOneWithoutTransaksiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutTransaksiNestedInput
 }
 
 export type TransaksiUncheckedUpdateInput = {
@@ -380,6 +398,7 @@ export type TransaksiUncheckedUpdateInput = {
   penghuniId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TransaksiCreateManyInput = {
@@ -393,6 +412,7 @@ export type TransaksiCreateManyInput = {
   penghuniId?: string | null
   createdAt?: Date | string
   ownerId: string
+  organizationId?: string | null
 }
 
 export type TransaksiUpdateManyMutationInput = {
@@ -416,6 +436,7 @@ export type TransaksiUncheckedUpdateManyInput = {
   penghuniId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TransaksiListRelationFilter = {
@@ -439,6 +460,7 @@ export type TransaksiCountOrderByAggregateInput = {
   penghuniId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
 }
 
 export type TransaksiAvgOrderByAggregateInput = {
@@ -456,6 +478,7 @@ export type TransaksiMaxOrderByAggregateInput = {
   penghuniId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
 }
 
 export type TransaksiMinOrderByAggregateInput = {
@@ -469,6 +492,7 @@ export type TransaksiMinOrderByAggregateInput = {
   penghuniId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
 }
 
 export type TransaksiSumOrderByAggregateInput = {
@@ -514,6 +538,48 @@ export type TransaksiUncheckedUpdateManyWithoutOwnerNestedInput = {
   connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
   update?: Prisma.TransaksiUpdateWithWhereUniqueWithoutOwnerInput | Prisma.TransaksiUpdateWithWhereUniqueWithoutOwnerInput[]
   updateMany?: Prisma.TransaksiUpdateManyWithWhereWithoutOwnerInput | Prisma.TransaksiUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
+}
+
+export type TransaksiCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.TransaksiCreateWithoutOrganizationInput, Prisma.TransaksiUncheckedCreateWithoutOrganizationInput> | Prisma.TransaksiCreateWithoutOrganizationInput[] | Prisma.TransaksiUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.TransaksiCreateOrConnectWithoutOrganizationInput | Prisma.TransaksiCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.TransaksiCreateManyOrganizationInputEnvelope
+  connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+}
+
+export type TransaksiUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.TransaksiCreateWithoutOrganizationInput, Prisma.TransaksiUncheckedCreateWithoutOrganizationInput> | Prisma.TransaksiCreateWithoutOrganizationInput[] | Prisma.TransaksiUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.TransaksiCreateOrConnectWithoutOrganizationInput | Prisma.TransaksiCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.TransaksiCreateManyOrganizationInputEnvelope
+  connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+}
+
+export type TransaksiUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.TransaksiCreateWithoutOrganizationInput, Prisma.TransaksiUncheckedCreateWithoutOrganizationInput> | Prisma.TransaksiCreateWithoutOrganizationInput[] | Prisma.TransaksiUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.TransaksiCreateOrConnectWithoutOrganizationInput | Prisma.TransaksiCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.TransaksiUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.TransaksiUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.TransaksiCreateManyOrganizationInputEnvelope
+  set?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  disconnect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  delete?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  update?: Prisma.TransaksiUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.TransaksiUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.TransaksiUpdateManyWithWhereWithoutOrganizationInput | Prisma.TransaksiUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
+}
+
+export type TransaksiUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.TransaksiCreateWithoutOrganizationInput, Prisma.TransaksiUncheckedCreateWithoutOrganizationInput> | Prisma.TransaksiCreateWithoutOrganizationInput[] | Prisma.TransaksiUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.TransaksiCreateOrConnectWithoutOrganizationInput | Prisma.TransaksiCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.TransaksiUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.TransaksiUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.TransaksiCreateManyOrganizationInputEnvelope
+  set?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  disconnect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  delete?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  update?: Prisma.TransaksiUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.TransaksiUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.TransaksiUpdateManyWithWhereWithoutOrganizationInput | Prisma.TransaksiUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
 }
 
@@ -611,6 +677,7 @@ export type TransaksiCreateWithoutOwnerInput = {
   createdAt?: Date | string
   kamar?: Prisma.KamarCreateNestedOneWithoutTransaksiInput
   penghuni?: Prisma.PenghuniCreateNestedOneWithoutTransaksiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutTransaksiInput
 }
 
 export type TransaksiUncheckedCreateWithoutOwnerInput = {
@@ -623,6 +690,7 @@ export type TransaksiUncheckedCreateWithoutOwnerInput = {
   kamarId?: string | null
   penghuniId?: string | null
   createdAt?: Date | string
+  organizationId?: string | null
 }
 
 export type TransaksiCreateOrConnectWithoutOwnerInput = {
@@ -665,6 +733,59 @@ export type TransaksiScalarWhereInput = {
   penghuniId?: Prisma.StringNullableFilter<"Transaksi"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
   ownerId?: Prisma.StringFilter<"Transaksi"> | string
+  organizationId?: Prisma.StringNullableFilter<"Transaksi"> | string | null
+}
+
+export type TransaksiCreateWithoutOrganizationInput = {
+  id?: string
+  jenis: string
+  kategori: string
+  jumlah: number
+  tanggal: Date | string
+  keterangan?: string | null
+  createdAt?: Date | string
+  kamar?: Prisma.KamarCreateNestedOneWithoutTransaksiInput
+  owner: Prisma.UserCreateNestedOneWithoutTransaksiInput
+  penghuni?: Prisma.PenghuniCreateNestedOneWithoutTransaksiInput
+}
+
+export type TransaksiUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  jenis: string
+  kategori: string
+  jumlah: number
+  tanggal: Date | string
+  keterangan?: string | null
+  kamarId?: string | null
+  penghuniId?: string | null
+  createdAt?: Date | string
+  ownerId: string
+}
+
+export type TransaksiCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.TransaksiWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransaksiCreateWithoutOrganizationInput, Prisma.TransaksiUncheckedCreateWithoutOrganizationInput>
+}
+
+export type TransaksiCreateManyOrganizationInputEnvelope = {
+  data: Prisma.TransaksiCreateManyOrganizationInput | Prisma.TransaksiCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type TransaksiUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.TransaksiWhereUniqueInput
+  update: Prisma.XOR<Prisma.TransaksiUpdateWithoutOrganizationInput, Prisma.TransaksiUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.TransaksiCreateWithoutOrganizationInput, Prisma.TransaksiUncheckedCreateWithoutOrganizationInput>
+}
+
+export type TransaksiUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.TransaksiWhereUniqueInput
+  data: Prisma.XOR<Prisma.TransaksiUpdateWithoutOrganizationInput, Prisma.TransaksiUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type TransaksiUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.TransaksiScalarWhereInput
+  data: Prisma.XOR<Prisma.TransaksiUpdateManyMutationInput, Prisma.TransaksiUncheckedUpdateManyWithoutOrganizationInput>
 }
 
 export type TransaksiCreateWithoutKamarInput = {
@@ -677,6 +798,7 @@ export type TransaksiCreateWithoutKamarInput = {
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutTransaksiInput
   penghuni?: Prisma.PenghuniCreateNestedOneWithoutTransaksiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutTransaksiInput
 }
 
 export type TransaksiUncheckedCreateWithoutKamarInput = {
@@ -689,6 +811,7 @@ export type TransaksiUncheckedCreateWithoutKamarInput = {
   penghuniId?: string | null
   createdAt?: Date | string
   ownerId: string
+  organizationId?: string | null
 }
 
 export type TransaksiCreateOrConnectWithoutKamarInput = {
@@ -727,6 +850,7 @@ export type TransaksiCreateWithoutPenghuniInput = {
   createdAt?: Date | string
   kamar?: Prisma.KamarCreateNestedOneWithoutTransaksiInput
   owner: Prisma.UserCreateNestedOneWithoutTransaksiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutTransaksiInput
 }
 
 export type TransaksiUncheckedCreateWithoutPenghuniInput = {
@@ -739,6 +863,7 @@ export type TransaksiUncheckedCreateWithoutPenghuniInput = {
   kamarId?: string | null
   createdAt?: Date | string
   ownerId: string
+  organizationId?: string | null
 }
 
 export type TransaksiCreateOrConnectWithoutPenghuniInput = {
@@ -777,6 +902,7 @@ export type TransaksiCreateManyOwnerInput = {
   kamarId?: string | null
   penghuniId?: string | null
   createdAt?: Date | string
+  organizationId?: string | null
 }
 
 export type TransaksiUpdateWithoutOwnerInput = {
@@ -789,6 +915,7 @@ export type TransaksiUpdateWithoutOwnerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kamar?: Prisma.KamarUpdateOneWithoutTransaksiNestedInput
   penghuni?: Prisma.PenghuniUpdateOneWithoutTransaksiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutTransaksiNestedInput
 }
 
 export type TransaksiUncheckedUpdateWithoutOwnerInput = {
@@ -801,6 +928,7 @@ export type TransaksiUncheckedUpdateWithoutOwnerInput = {
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   penghuniId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TransaksiUncheckedUpdateManyWithoutOwnerInput = {
@@ -813,6 +941,59 @@ export type TransaksiUncheckedUpdateManyWithoutOwnerInput = {
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   penghuniId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TransaksiCreateManyOrganizationInput = {
+  id?: string
+  jenis: string
+  kategori: string
+  jumlah: number
+  tanggal: Date | string
+  keterangan?: string | null
+  kamarId?: string | null
+  penghuniId?: string | null
+  createdAt?: Date | string
+  ownerId: string
+}
+
+export type TransaksiUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  jenis?: Prisma.StringFieldUpdateOperationsInput | string
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  jumlah?: Prisma.IntFieldUpdateOperationsInput | number
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  keterangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamar?: Prisma.KamarUpdateOneWithoutTransaksiNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutTransaksiNestedInput
+  penghuni?: Prisma.PenghuniUpdateOneWithoutTransaksiNestedInput
+}
+
+export type TransaksiUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  jenis?: Prisma.StringFieldUpdateOperationsInput | string
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  jumlah?: Prisma.IntFieldUpdateOperationsInput | number
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  keterangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  penghuniId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type TransaksiUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  jenis?: Prisma.StringFieldUpdateOperationsInput | string
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  jumlah?: Prisma.IntFieldUpdateOperationsInput | number
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  keterangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  penghuniId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TransaksiCreateManyKamarInput = {
@@ -825,6 +1006,7 @@ export type TransaksiCreateManyKamarInput = {
   penghuniId?: string | null
   createdAt?: Date | string
   ownerId: string
+  organizationId?: string | null
 }
 
 export type TransaksiUpdateWithoutKamarInput = {
@@ -837,6 +1019,7 @@ export type TransaksiUpdateWithoutKamarInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutTransaksiNestedInput
   penghuni?: Prisma.PenghuniUpdateOneWithoutTransaksiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutTransaksiNestedInput
 }
 
 export type TransaksiUncheckedUpdateWithoutKamarInput = {
@@ -849,6 +1032,7 @@ export type TransaksiUncheckedUpdateWithoutKamarInput = {
   penghuniId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TransaksiUncheckedUpdateManyWithoutKamarInput = {
@@ -861,6 +1045,7 @@ export type TransaksiUncheckedUpdateManyWithoutKamarInput = {
   penghuniId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TransaksiCreateManyPenghuniInput = {
@@ -873,6 +1058,7 @@ export type TransaksiCreateManyPenghuniInput = {
   kamarId?: string | null
   createdAt?: Date | string
   ownerId: string
+  organizationId?: string | null
 }
 
 export type TransaksiUpdateWithoutPenghuniInput = {
@@ -885,6 +1071,7 @@ export type TransaksiUpdateWithoutPenghuniInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kamar?: Prisma.KamarUpdateOneWithoutTransaksiNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutTransaksiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutTransaksiNestedInput
 }
 
 export type TransaksiUncheckedUpdateWithoutPenghuniInput = {
@@ -897,6 +1084,7 @@ export type TransaksiUncheckedUpdateWithoutPenghuniInput = {
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TransaksiUncheckedUpdateManyWithoutPenghuniInput = {
@@ -909,6 +1097,7 @@ export type TransaksiUncheckedUpdateManyWithoutPenghuniInput = {
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -924,9 +1113,11 @@ export type TransaksiSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   penghuniId?: boolean
   createdAt?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   kamar?: boolean | Prisma.Transaksi$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.Transaksi$penghuniArgs<ExtArgs>
+  organization?: boolean | Prisma.Transaksi$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["transaksi"]>
 
 export type TransaksiSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -940,9 +1131,11 @@ export type TransaksiSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   penghuniId?: boolean
   createdAt?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   kamar?: boolean | Prisma.Transaksi$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.Transaksi$penghuniArgs<ExtArgs>
+  organization?: boolean | Prisma.Transaksi$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["transaksi"]>
 
 export type TransaksiSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -956,9 +1149,11 @@ export type TransaksiSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   penghuniId?: boolean
   createdAt?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   kamar?: boolean | Prisma.Transaksi$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.Transaksi$penghuniArgs<ExtArgs>
+  organization?: boolean | Prisma.Transaksi$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["transaksi"]>
 
 export type TransaksiSelectScalar = {
@@ -972,23 +1167,27 @@ export type TransaksiSelectScalar = {
   penghuniId?: boolean
   createdAt?: boolean
   ownerId?: boolean
+  organizationId?: boolean
 }
 
-export type TransaksiOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "jenis" | "kategori" | "jumlah" | "tanggal" | "keterangan" | "kamarId" | "penghuniId" | "createdAt" | "ownerId", ExtArgs["result"]["transaksi"]>
+export type TransaksiOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "jenis" | "kategori" | "jumlah" | "tanggal" | "keterangan" | "kamarId" | "penghuniId" | "createdAt" | "ownerId" | "organizationId", ExtArgs["result"]["transaksi"]>
 export type TransaksiInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.Transaksi$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.Transaksi$penghuniArgs<ExtArgs>
+  organization?: boolean | Prisma.Transaksi$organizationArgs<ExtArgs>
 }
 export type TransaksiIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.Transaksi$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.Transaksi$penghuniArgs<ExtArgs>
+  organization?: boolean | Prisma.Transaksi$organizationArgs<ExtArgs>
 }
 export type TransaksiIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.Transaksi$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.Transaksi$penghuniArgs<ExtArgs>
+  organization?: boolean | Prisma.Transaksi$organizationArgs<ExtArgs>
 }
 
 export type $TransaksiPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -997,6 +1196,7 @@ export type $TransaksiPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     kamar: Prisma.$KamarPayload<ExtArgs> | null
     owner: Prisma.$UserPayload<ExtArgs>
     penghuni: Prisma.$PenghuniPayload<ExtArgs> | null
+    organization: Prisma.$OrganizationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1009,6 +1209,7 @@ export type $TransaksiPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     penghuniId: string | null
     createdAt: Date
     ownerId: string
+    organizationId: string | null
   }, ExtArgs["result"]["transaksi"]>
   composites: {}
 }
@@ -1406,6 +1607,7 @@ export interface Prisma__TransaksiClient<T, Null = never, ExtArgs extends runtim
   kamar<T extends Prisma.Transaksi$kamarArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaksi$kamarArgs<ExtArgs>>): Prisma.Prisma__KamarClient<runtime.Types.Result.GetResult<Prisma.$KamarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   penghuni<T extends Prisma.Transaksi$penghuniArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaksi$penghuniArgs<ExtArgs>>): Prisma.Prisma__PenghuniClient<runtime.Types.Result.GetResult<Prisma.$PenghuniPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  organization<T extends Prisma.Transaksi$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaksi$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1445,6 +1647,7 @@ export interface TransaksiFieldRefs {
   readonly penghuniId: Prisma.FieldRef<"Transaksi", 'String'>
   readonly createdAt: Prisma.FieldRef<"Transaksi", 'DateTime'>
   readonly ownerId: Prisma.FieldRef<"Transaksi", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Transaksi", 'String'>
 }
     
 
@@ -1881,6 +2084,25 @@ export type Transaksi$penghuniArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.PenghuniInclude<ExtArgs> | null
   where?: Prisma.PenghuniWhereInput
+}
+
+/**
+ * Transaksi.organization
+ */
+export type Transaksi$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Organization
+   */
+  select?: Prisma.OrganizationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Organization
+   */
+  omit?: Prisma.OrganizationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationInclude<ExtArgs> | null
+  where?: Prisma.OrganizationWhereInput
 }
 
 /**

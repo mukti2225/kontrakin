@@ -10,18 +10,31 @@ export const authClient = createAuthClient({
 
 export const { signIn, signOut, signUp, useSession, requestPasswordReset } = authClient;
 
-export type RegistrationRole = "tenant" | "owner";
+export type RegistrationRole = "owner";
 
-export async function signUpWithRegistrationRole(input: { email: string; password: string; name: string; registrationRole: RegistrationRole }) {
+/**
+ * Public registration helper strictly provisioning Owner accounts.
+ */
+export async function signUpOwner(input: { email: string; password: string; name: string }) {
   return signUp.email({
     email: input.email,
     password: input.password,
     name: input.name,
+  });
+}
 
-    fetchOptions: {
-      body: {
-        registrationRole: input.registrationRole,
-      },
-    },
+/**
+ * Backward compatibility wrapper - client-supplied role is ignored by server
+ */
+export async function signUpWithRegistrationRole(input: {
+  email: string;
+  password: string;
+  name: string;
+  registrationRole?: string;
+}) {
+  return signUpOwner({
+    email: input.email,
+    password: input.password,
+    name: input.name,
   });
 }

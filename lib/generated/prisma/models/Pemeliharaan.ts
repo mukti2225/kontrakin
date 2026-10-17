@@ -35,6 +35,8 @@ export type PemeliharaanMinAggregateOutputType = {
   penghuniId: string | null
   kamarId: string | null
   ownerId: string | null
+  organizationId: string | null
+  vendorId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +52,8 @@ export type PemeliharaanMaxAggregateOutputType = {
   penghuniId: string | null
   kamarId: string | null
   ownerId: string | null
+  organizationId: string | null
+  vendorId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -65,6 +69,8 @@ export type PemeliharaanCountAggregateOutputType = {
   penghuniId: number
   kamarId: number
   ownerId: number
+  organizationId: number
+  vendorId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -82,6 +88,8 @@ export type PemeliharaanMinAggregateInputType = {
   penghuniId?: true
   kamarId?: true
   ownerId?: true
+  organizationId?: true
+  vendorId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -97,6 +105,8 @@ export type PemeliharaanMaxAggregateInputType = {
   penghuniId?: true
   kamarId?: true
   ownerId?: true
+  organizationId?: true
+  vendorId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +122,8 @@ export type PemeliharaanCountAggregateInputType = {
   penghuniId?: true
   kamarId?: true
   ownerId?: true
+  organizationId?: true
+  vendorId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -200,6 +212,8 @@ export type PemeliharaanGroupByOutputType = {
   penghuniId: string
   kamarId: string
   ownerId: string
+  organizationId: string | null
+  vendorId: string | null
   createdAt: Date
   updatedAt: Date
   _count: PemeliharaanCountAggregateOutputType | null
@@ -236,11 +250,15 @@ export type PemeliharaanWhereInput = {
   penghuniId?: Prisma.StringFilter<"Pemeliharaan"> | string
   kamarId?: Prisma.StringFilter<"Pemeliharaan"> | string
   ownerId?: Prisma.StringFilter<"Pemeliharaan"> | string
+  organizationId?: Prisma.StringNullableFilter<"Pemeliharaan"> | string | null
+  vendorId?: Prisma.StringNullableFilter<"Pemeliharaan"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pemeliharaan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Pemeliharaan"> | Date | string
   kamar?: Prisma.XOR<Prisma.KamarScalarRelationFilter, Prisma.KamarWhereInput>
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   penghuni?: Prisma.XOR<Prisma.PenghuniScalarRelationFilter, Prisma.PenghuniWhereInput>
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  vendor?: Prisma.XOR<Prisma.VendorNullableScalarRelationFilter, Prisma.VendorWhereInput> | null
 }
 
 export type PemeliharaanOrderByWithRelationInput = {
@@ -254,11 +272,15 @@ export type PemeliharaanOrderByWithRelationInput = {
   penghuniId?: Prisma.SortOrder
   kamarId?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   kamar?: Prisma.KamarOrderByWithRelationInput
   owner?: Prisma.UserOrderByWithRelationInput
   penghuni?: Prisma.PenghuniOrderByWithRelationInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
+  vendor?: Prisma.VendorOrderByWithRelationInput
 }
 
 export type PemeliharaanWhereUniqueInput = Prisma.AtLeast<{
@@ -275,11 +297,15 @@ export type PemeliharaanWhereUniqueInput = Prisma.AtLeast<{
   penghuniId?: Prisma.StringFilter<"Pemeliharaan"> | string
   kamarId?: Prisma.StringFilter<"Pemeliharaan"> | string
   ownerId?: Prisma.StringFilter<"Pemeliharaan"> | string
+  organizationId?: Prisma.StringNullableFilter<"Pemeliharaan"> | string | null
+  vendorId?: Prisma.StringNullableFilter<"Pemeliharaan"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pemeliharaan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Pemeliharaan"> | Date | string
   kamar?: Prisma.XOR<Prisma.KamarScalarRelationFilter, Prisma.KamarWhereInput>
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   penghuni?: Prisma.XOR<Prisma.PenghuniScalarRelationFilter, Prisma.PenghuniWhereInput>
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  vendor?: Prisma.XOR<Prisma.VendorNullableScalarRelationFilter, Prisma.VendorWhereInput> | null
 }, "id">
 
 export type PemeliharaanOrderByWithAggregationInput = {
@@ -293,6 +319,8 @@ export type PemeliharaanOrderByWithAggregationInput = {
   penghuniId?: Prisma.SortOrder
   kamarId?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  vendorId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PemeliharaanCountOrderByAggregateInput
@@ -314,6 +342,8 @@ export type PemeliharaanScalarWhereWithAggregatesInput = {
   penghuniId?: Prisma.StringWithAggregatesFilter<"Pemeliharaan"> | string
   kamarId?: Prisma.StringWithAggregatesFilter<"Pemeliharaan"> | string
   ownerId?: Prisma.StringWithAggregatesFilter<"Pemeliharaan"> | string
+  organizationId?: Prisma.StringNullableWithAggregatesFilter<"Pemeliharaan"> | string | null
+  vendorId?: Prisma.StringNullableWithAggregatesFilter<"Pemeliharaan"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Pemeliharaan"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Pemeliharaan"> | Date | string
 }
@@ -331,6 +361,8 @@ export type PemeliharaanCreateInput = {
   kamar: Prisma.KamarCreateNestedOneWithoutPemeliharaanInput
   owner: Prisma.UserCreateNestedOneWithoutPemeliharaanInput
   penghuni: Prisma.PenghuniCreateNestedOneWithoutPemeliharaanInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPemeliharaanInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPemeliharaanInput
 }
 
 export type PemeliharaanUncheckedCreateInput = {
@@ -344,6 +376,8 @@ export type PemeliharaanUncheckedCreateInput = {
   penghuniId: string
   kamarId: string
   ownerId: string
+  organizationId?: string | null
+  vendorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -361,6 +395,8 @@ export type PemeliharaanUpdateInput = {
   kamar?: Prisma.KamarUpdateOneRequiredWithoutPemeliharaanNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutPemeliharaanNestedInput
   penghuni?: Prisma.PenghuniUpdateOneRequiredWithoutPemeliharaanNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPemeliharaanNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPemeliharaanNestedInput
 }
 
 export type PemeliharaanUncheckedUpdateInput = {
@@ -374,6 +410,8 @@ export type PemeliharaanUncheckedUpdateInput = {
   penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
   kamarId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -389,6 +427,8 @@ export type PemeliharaanCreateManyInput = {
   penghuniId: string
   kamarId: string
   ownerId: string
+  organizationId?: string | null
+  vendorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -416,6 +456,8 @@ export type PemeliharaanUncheckedUpdateManyInput = {
   penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
   kamarId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -441,6 +483,8 @@ export type PemeliharaanCountOrderByAggregateInput = {
   penghuniId?: Prisma.SortOrder
   kamarId?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
+  vendorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -456,6 +500,8 @@ export type PemeliharaanMaxOrderByAggregateInput = {
   penghuniId?: Prisma.SortOrder
   kamarId?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
+  vendorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -471,6 +517,8 @@ export type PemeliharaanMinOrderByAggregateInput = {
   penghuniId?: Prisma.SortOrder
   kamarId?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
+  vendorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -514,6 +562,48 @@ export type PemeliharaanUncheckedUpdateManyWithoutOwnerNestedInput = {
   connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
   update?: Prisma.PemeliharaanUpdateWithWhereUniqueWithoutOwnerInput | Prisma.PemeliharaanUpdateWithWhereUniqueWithoutOwnerInput[]
   updateMany?: Prisma.PemeliharaanUpdateManyWithWhereWithoutOwnerInput | Prisma.PemeliharaanUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.PemeliharaanScalarWhereInput | Prisma.PemeliharaanScalarWhereInput[]
+}
+
+export type PemeliharaanCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.PemeliharaanCreateWithoutOrganizationInput, Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput> | Prisma.PemeliharaanCreateWithoutOrganizationInput[] | Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PemeliharaanCreateOrConnectWithoutOrganizationInput | Prisma.PemeliharaanCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.PemeliharaanCreateManyOrganizationInputEnvelope
+  connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+}
+
+export type PemeliharaanUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.PemeliharaanCreateWithoutOrganizationInput, Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput> | Prisma.PemeliharaanCreateWithoutOrganizationInput[] | Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PemeliharaanCreateOrConnectWithoutOrganizationInput | Prisma.PemeliharaanCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.PemeliharaanCreateManyOrganizationInputEnvelope
+  connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+}
+
+export type PemeliharaanUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.PemeliharaanCreateWithoutOrganizationInput, Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput> | Prisma.PemeliharaanCreateWithoutOrganizationInput[] | Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PemeliharaanCreateOrConnectWithoutOrganizationInput | Prisma.PemeliharaanCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.PemeliharaanUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.PemeliharaanUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.PemeliharaanCreateManyOrganizationInputEnvelope
+  set?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  disconnect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  delete?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  update?: Prisma.PemeliharaanUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.PemeliharaanUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.PemeliharaanUpdateManyWithWhereWithoutOrganizationInput | Prisma.PemeliharaanUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.PemeliharaanScalarWhereInput | Prisma.PemeliharaanScalarWhereInput[]
+}
+
+export type PemeliharaanUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.PemeliharaanCreateWithoutOrganizationInput, Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput> | Prisma.PemeliharaanCreateWithoutOrganizationInput[] | Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PemeliharaanCreateOrConnectWithoutOrganizationInput | Prisma.PemeliharaanCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.PemeliharaanUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.PemeliharaanUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.PemeliharaanCreateManyOrganizationInputEnvelope
+  set?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  disconnect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  delete?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  update?: Prisma.PemeliharaanUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.PemeliharaanUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.PemeliharaanUpdateManyWithWhereWithoutOrganizationInput | Prisma.PemeliharaanUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.PemeliharaanScalarWhereInput | Prisma.PemeliharaanScalarWhereInput[]
 }
 
@@ -609,6 +699,48 @@ export type EnumPrioritasFieldUpdateOperationsInput = {
   set?: $Enums.Prioritas
 }
 
+export type PemeliharaanCreateNestedManyWithoutVendorInput = {
+  create?: Prisma.XOR<Prisma.PemeliharaanCreateWithoutVendorInput, Prisma.PemeliharaanUncheckedCreateWithoutVendorInput> | Prisma.PemeliharaanCreateWithoutVendorInput[] | Prisma.PemeliharaanUncheckedCreateWithoutVendorInput[]
+  connectOrCreate?: Prisma.PemeliharaanCreateOrConnectWithoutVendorInput | Prisma.PemeliharaanCreateOrConnectWithoutVendorInput[]
+  createMany?: Prisma.PemeliharaanCreateManyVendorInputEnvelope
+  connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+}
+
+export type PemeliharaanUncheckedCreateNestedManyWithoutVendorInput = {
+  create?: Prisma.XOR<Prisma.PemeliharaanCreateWithoutVendorInput, Prisma.PemeliharaanUncheckedCreateWithoutVendorInput> | Prisma.PemeliharaanCreateWithoutVendorInput[] | Prisma.PemeliharaanUncheckedCreateWithoutVendorInput[]
+  connectOrCreate?: Prisma.PemeliharaanCreateOrConnectWithoutVendorInput | Prisma.PemeliharaanCreateOrConnectWithoutVendorInput[]
+  createMany?: Prisma.PemeliharaanCreateManyVendorInputEnvelope
+  connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+}
+
+export type PemeliharaanUpdateManyWithoutVendorNestedInput = {
+  create?: Prisma.XOR<Prisma.PemeliharaanCreateWithoutVendorInput, Prisma.PemeliharaanUncheckedCreateWithoutVendorInput> | Prisma.PemeliharaanCreateWithoutVendorInput[] | Prisma.PemeliharaanUncheckedCreateWithoutVendorInput[]
+  connectOrCreate?: Prisma.PemeliharaanCreateOrConnectWithoutVendorInput | Prisma.PemeliharaanCreateOrConnectWithoutVendorInput[]
+  upsert?: Prisma.PemeliharaanUpsertWithWhereUniqueWithoutVendorInput | Prisma.PemeliharaanUpsertWithWhereUniqueWithoutVendorInput[]
+  createMany?: Prisma.PemeliharaanCreateManyVendorInputEnvelope
+  set?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  disconnect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  delete?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  update?: Prisma.PemeliharaanUpdateWithWhereUniqueWithoutVendorInput | Prisma.PemeliharaanUpdateWithWhereUniqueWithoutVendorInput[]
+  updateMany?: Prisma.PemeliharaanUpdateManyWithWhereWithoutVendorInput | Prisma.PemeliharaanUpdateManyWithWhereWithoutVendorInput[]
+  deleteMany?: Prisma.PemeliharaanScalarWhereInput | Prisma.PemeliharaanScalarWhereInput[]
+}
+
+export type PemeliharaanUncheckedUpdateManyWithoutVendorNestedInput = {
+  create?: Prisma.XOR<Prisma.PemeliharaanCreateWithoutVendorInput, Prisma.PemeliharaanUncheckedCreateWithoutVendorInput> | Prisma.PemeliharaanCreateWithoutVendorInput[] | Prisma.PemeliharaanUncheckedCreateWithoutVendorInput[]
+  connectOrCreate?: Prisma.PemeliharaanCreateOrConnectWithoutVendorInput | Prisma.PemeliharaanCreateOrConnectWithoutVendorInput[]
+  upsert?: Prisma.PemeliharaanUpsertWithWhereUniqueWithoutVendorInput | Prisma.PemeliharaanUpsertWithWhereUniqueWithoutVendorInput[]
+  createMany?: Prisma.PemeliharaanCreateManyVendorInputEnvelope
+  set?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  disconnect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  delete?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  connect?: Prisma.PemeliharaanWhereUniqueInput | Prisma.PemeliharaanWhereUniqueInput[]
+  update?: Prisma.PemeliharaanUpdateWithWhereUniqueWithoutVendorInput | Prisma.PemeliharaanUpdateWithWhereUniqueWithoutVendorInput[]
+  updateMany?: Prisma.PemeliharaanUpdateManyWithWhereWithoutVendorInput | Prisma.PemeliharaanUpdateManyWithWhereWithoutVendorInput[]
+  deleteMany?: Prisma.PemeliharaanScalarWhereInput | Prisma.PemeliharaanScalarWhereInput[]
+}
+
 export type PemeliharaanCreateWithoutOwnerInput = {
   id?: string
   judul: string
@@ -621,6 +753,8 @@ export type PemeliharaanCreateWithoutOwnerInput = {
   updatedAt?: Date | string
   kamar: Prisma.KamarCreateNestedOneWithoutPemeliharaanInput
   penghuni: Prisma.PenghuniCreateNestedOneWithoutPemeliharaanInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPemeliharaanInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPemeliharaanInput
 }
 
 export type PemeliharaanUncheckedCreateWithoutOwnerInput = {
@@ -633,6 +767,8 @@ export type PemeliharaanUncheckedCreateWithoutOwnerInput = {
   foto?: string | null
   penghuniId: string
   kamarId: string
+  organizationId?: string | null
+  vendorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -677,8 +813,68 @@ export type PemeliharaanScalarWhereInput = {
   penghuniId?: Prisma.StringFilter<"Pemeliharaan"> | string
   kamarId?: Prisma.StringFilter<"Pemeliharaan"> | string
   ownerId?: Prisma.StringFilter<"Pemeliharaan"> | string
+  organizationId?: Prisma.StringNullableFilter<"Pemeliharaan"> | string | null
+  vendorId?: Prisma.StringNullableFilter<"Pemeliharaan"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pemeliharaan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Pemeliharaan"> | Date | string
+}
+
+export type PemeliharaanCreateWithoutOrganizationInput = {
+  id?: string
+  judul: string
+  deskripsi: string
+  status?: $Enums.StatusPemeliharaan
+  prioritas?: $Enums.Prioritas
+  kategori: string
+  foto?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamar: Prisma.KamarCreateNestedOneWithoutPemeliharaanInput
+  owner: Prisma.UserCreateNestedOneWithoutPemeliharaanInput
+  penghuni: Prisma.PenghuniCreateNestedOneWithoutPemeliharaanInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPemeliharaanInput
+}
+
+export type PemeliharaanUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  judul: string
+  deskripsi: string
+  status?: $Enums.StatusPemeliharaan
+  prioritas?: $Enums.Prioritas
+  kategori: string
+  foto?: string | null
+  penghuniId: string
+  kamarId: string
+  ownerId: string
+  vendorId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PemeliharaanCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.PemeliharaanWhereUniqueInput
+  create: Prisma.XOR<Prisma.PemeliharaanCreateWithoutOrganizationInput, Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput>
+}
+
+export type PemeliharaanCreateManyOrganizationInputEnvelope = {
+  data: Prisma.PemeliharaanCreateManyOrganizationInput | Prisma.PemeliharaanCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type PemeliharaanUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.PemeliharaanWhereUniqueInput
+  update: Prisma.XOR<Prisma.PemeliharaanUpdateWithoutOrganizationInput, Prisma.PemeliharaanUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.PemeliharaanCreateWithoutOrganizationInput, Prisma.PemeliharaanUncheckedCreateWithoutOrganizationInput>
+}
+
+export type PemeliharaanUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.PemeliharaanWhereUniqueInput
+  data: Prisma.XOR<Prisma.PemeliharaanUpdateWithoutOrganizationInput, Prisma.PemeliharaanUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type PemeliharaanUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.PemeliharaanScalarWhereInput
+  data: Prisma.XOR<Prisma.PemeliharaanUpdateManyMutationInput, Prisma.PemeliharaanUncheckedUpdateManyWithoutOrganizationInput>
 }
 
 export type PemeliharaanCreateWithoutKamarInput = {
@@ -693,6 +889,8 @@ export type PemeliharaanCreateWithoutKamarInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutPemeliharaanInput
   penghuni: Prisma.PenghuniCreateNestedOneWithoutPemeliharaanInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPemeliharaanInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPemeliharaanInput
 }
 
 export type PemeliharaanUncheckedCreateWithoutKamarInput = {
@@ -705,6 +903,8 @@ export type PemeliharaanUncheckedCreateWithoutKamarInput = {
   foto?: string | null
   penghuniId: string
   ownerId: string
+  organizationId?: string | null
+  vendorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -747,6 +947,8 @@ export type PemeliharaanCreateWithoutPenghuniInput = {
   updatedAt?: Date | string
   kamar: Prisma.KamarCreateNestedOneWithoutPemeliharaanInput
   owner: Prisma.UserCreateNestedOneWithoutPemeliharaanInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPemeliharaanInput
+  vendor?: Prisma.VendorCreateNestedOneWithoutPemeliharaanInput
 }
 
 export type PemeliharaanUncheckedCreateWithoutPenghuniInput = {
@@ -759,6 +961,8 @@ export type PemeliharaanUncheckedCreateWithoutPenghuniInput = {
   foto?: string | null
   kamarId: string
   ownerId: string
+  organizationId?: string | null
+  vendorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -789,6 +993,64 @@ export type PemeliharaanUpdateManyWithWhereWithoutPenghuniInput = {
   data: Prisma.XOR<Prisma.PemeliharaanUpdateManyMutationInput, Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniInput>
 }
 
+export type PemeliharaanCreateWithoutVendorInput = {
+  id?: string
+  judul: string
+  deskripsi: string
+  status?: $Enums.StatusPemeliharaan
+  prioritas?: $Enums.Prioritas
+  kategori: string
+  foto?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamar: Prisma.KamarCreateNestedOneWithoutPemeliharaanInput
+  owner: Prisma.UserCreateNestedOneWithoutPemeliharaanInput
+  penghuni: Prisma.PenghuniCreateNestedOneWithoutPemeliharaanInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPemeliharaanInput
+}
+
+export type PemeliharaanUncheckedCreateWithoutVendorInput = {
+  id?: string
+  judul: string
+  deskripsi: string
+  status?: $Enums.StatusPemeliharaan
+  prioritas?: $Enums.Prioritas
+  kategori: string
+  foto?: string | null
+  penghuniId: string
+  kamarId: string
+  ownerId: string
+  organizationId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PemeliharaanCreateOrConnectWithoutVendorInput = {
+  where: Prisma.PemeliharaanWhereUniqueInput
+  create: Prisma.XOR<Prisma.PemeliharaanCreateWithoutVendorInput, Prisma.PemeliharaanUncheckedCreateWithoutVendorInput>
+}
+
+export type PemeliharaanCreateManyVendorInputEnvelope = {
+  data: Prisma.PemeliharaanCreateManyVendorInput | Prisma.PemeliharaanCreateManyVendorInput[]
+  skipDuplicates?: boolean
+}
+
+export type PemeliharaanUpsertWithWhereUniqueWithoutVendorInput = {
+  where: Prisma.PemeliharaanWhereUniqueInput
+  update: Prisma.XOR<Prisma.PemeliharaanUpdateWithoutVendorInput, Prisma.PemeliharaanUncheckedUpdateWithoutVendorInput>
+  create: Prisma.XOR<Prisma.PemeliharaanCreateWithoutVendorInput, Prisma.PemeliharaanUncheckedCreateWithoutVendorInput>
+}
+
+export type PemeliharaanUpdateWithWhereUniqueWithoutVendorInput = {
+  where: Prisma.PemeliharaanWhereUniqueInput
+  data: Prisma.XOR<Prisma.PemeliharaanUpdateWithoutVendorInput, Prisma.PemeliharaanUncheckedUpdateWithoutVendorInput>
+}
+
+export type PemeliharaanUpdateManyWithWhereWithoutVendorInput = {
+  where: Prisma.PemeliharaanScalarWhereInput
+  data: Prisma.XOR<Prisma.PemeliharaanUpdateManyMutationInput, Prisma.PemeliharaanUncheckedUpdateManyWithoutVendorInput>
+}
+
 export type PemeliharaanCreateManyOwnerInput = {
   id?: string
   judul: string
@@ -799,6 +1061,8 @@ export type PemeliharaanCreateManyOwnerInput = {
   foto?: string | null
   penghuniId: string
   kamarId: string
+  organizationId?: string | null
+  vendorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -815,6 +1079,8 @@ export type PemeliharaanUpdateWithoutOwnerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kamar?: Prisma.KamarUpdateOneRequiredWithoutPemeliharaanNestedInput
   penghuni?: Prisma.PenghuniUpdateOneRequiredWithoutPemeliharaanNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPemeliharaanNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPemeliharaanNestedInput
 }
 
 export type PemeliharaanUncheckedUpdateWithoutOwnerInput = {
@@ -827,6 +1093,8 @@ export type PemeliharaanUncheckedUpdateWithoutOwnerInput = {
   foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
   kamarId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -841,6 +1109,72 @@ export type PemeliharaanUncheckedUpdateManyWithoutOwnerInput = {
   foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
   kamarId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PemeliharaanCreateManyOrganizationInput = {
+  id?: string
+  judul: string
+  deskripsi: string
+  status?: $Enums.StatusPemeliharaan
+  prioritas?: $Enums.Prioritas
+  kategori: string
+  foto?: string | null
+  penghuniId: string
+  kamarId: string
+  ownerId: string
+  vendorId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PemeliharaanUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  judul?: Prisma.StringFieldUpdateOperationsInput | string
+  deskripsi?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusPemeliharaanFieldUpdateOperationsInput | $Enums.StatusPemeliharaan
+  prioritas?: Prisma.EnumPrioritasFieldUpdateOperationsInput | $Enums.Prioritas
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamar?: Prisma.KamarUpdateOneRequiredWithoutPemeliharaanNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPemeliharaanNestedInput
+  penghuni?: Prisma.PenghuniUpdateOneRequiredWithoutPemeliharaanNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPemeliharaanNestedInput
+}
+
+export type PemeliharaanUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  judul?: Prisma.StringFieldUpdateOperationsInput | string
+  deskripsi?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusPemeliharaanFieldUpdateOperationsInput | $Enums.StatusPemeliharaan
+  prioritas?: Prisma.EnumPrioritasFieldUpdateOperationsInput | $Enums.Prioritas
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
+  kamarId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PemeliharaanUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  judul?: Prisma.StringFieldUpdateOperationsInput | string
+  deskripsi?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusPemeliharaanFieldUpdateOperationsInput | $Enums.StatusPemeliharaan
+  prioritas?: Prisma.EnumPrioritasFieldUpdateOperationsInput | $Enums.Prioritas
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
+  kamarId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -855,6 +1189,8 @@ export type PemeliharaanCreateManyKamarInput = {
   foto?: string | null
   penghuniId: string
   ownerId: string
+  organizationId?: string | null
+  vendorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -871,6 +1207,8 @@ export type PemeliharaanUpdateWithoutKamarInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutPemeliharaanNestedInput
   penghuni?: Prisma.PenghuniUpdateOneRequiredWithoutPemeliharaanNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPemeliharaanNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPemeliharaanNestedInput
 }
 
 export type PemeliharaanUncheckedUpdateWithoutKamarInput = {
@@ -883,6 +1221,8 @@ export type PemeliharaanUncheckedUpdateWithoutKamarInput = {
   foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -897,6 +1237,8 @@ export type PemeliharaanUncheckedUpdateManyWithoutKamarInput = {
   foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -911,6 +1253,8 @@ export type PemeliharaanCreateManyPenghuniInput = {
   foto?: string | null
   kamarId: string
   ownerId: string
+  organizationId?: string | null
+  vendorId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -927,6 +1271,8 @@ export type PemeliharaanUpdateWithoutPenghuniInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kamar?: Prisma.KamarUpdateOneRequiredWithoutPemeliharaanNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutPemeliharaanNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPemeliharaanNestedInput
+  vendor?: Prisma.VendorUpdateOneWithoutPemeliharaanNestedInput
 }
 
 export type PemeliharaanUncheckedUpdateWithoutPenghuniInput = {
@@ -939,6 +1285,8 @@ export type PemeliharaanUncheckedUpdateWithoutPenghuniInput = {
   foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -953,6 +1301,72 @@ export type PemeliharaanUncheckedUpdateManyWithoutPenghuniInput = {
   foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vendorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PemeliharaanCreateManyVendorInput = {
+  id?: string
+  judul: string
+  deskripsi: string
+  status?: $Enums.StatusPemeliharaan
+  prioritas?: $Enums.Prioritas
+  kategori: string
+  foto?: string | null
+  penghuniId: string
+  kamarId: string
+  ownerId: string
+  organizationId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PemeliharaanUpdateWithoutVendorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  judul?: Prisma.StringFieldUpdateOperationsInput | string
+  deskripsi?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusPemeliharaanFieldUpdateOperationsInput | $Enums.StatusPemeliharaan
+  prioritas?: Prisma.EnumPrioritasFieldUpdateOperationsInput | $Enums.Prioritas
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamar?: Prisma.KamarUpdateOneRequiredWithoutPemeliharaanNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPemeliharaanNestedInput
+  penghuni?: Prisma.PenghuniUpdateOneRequiredWithoutPemeliharaanNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPemeliharaanNestedInput
+}
+
+export type PemeliharaanUncheckedUpdateWithoutVendorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  judul?: Prisma.StringFieldUpdateOperationsInput | string
+  deskripsi?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusPemeliharaanFieldUpdateOperationsInput | $Enums.StatusPemeliharaan
+  prioritas?: Prisma.EnumPrioritasFieldUpdateOperationsInput | $Enums.Prioritas
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
+  kamarId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PemeliharaanUncheckedUpdateManyWithoutVendorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  judul?: Prisma.StringFieldUpdateOperationsInput | string
+  deskripsi?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusPemeliharaanFieldUpdateOperationsInput | $Enums.StatusPemeliharaan
+  prioritas?: Prisma.EnumPrioritasFieldUpdateOperationsInput | $Enums.Prioritas
+  kategori?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  penghuniId?: Prisma.StringFieldUpdateOperationsInput | string
+  kamarId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -970,11 +1384,15 @@ export type PemeliharaanSelect<ExtArgs extends runtime.Types.Extensions.Internal
   penghuniId?: boolean
   kamarId?: boolean
   ownerId?: boolean
+  organizationId?: boolean
+  vendorId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   kamar?: boolean | Prisma.KamarDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.PenghuniDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Pemeliharaan$organizationArgs<ExtArgs>
+  vendor?: boolean | Prisma.Pemeliharaan$vendorArgs<ExtArgs>
 }, ExtArgs["result"]["pemeliharaan"]>
 
 export type PemeliharaanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -988,11 +1406,15 @@ export type PemeliharaanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   penghuniId?: boolean
   kamarId?: boolean
   ownerId?: boolean
+  organizationId?: boolean
+  vendorId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   kamar?: boolean | Prisma.KamarDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.PenghuniDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Pemeliharaan$organizationArgs<ExtArgs>
+  vendor?: boolean | Prisma.Pemeliharaan$vendorArgs<ExtArgs>
 }, ExtArgs["result"]["pemeliharaan"]>
 
 export type PemeliharaanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1006,11 +1428,15 @@ export type PemeliharaanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   penghuniId?: boolean
   kamarId?: boolean
   ownerId?: boolean
+  organizationId?: boolean
+  vendorId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   kamar?: boolean | Prisma.KamarDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.PenghuniDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Pemeliharaan$organizationArgs<ExtArgs>
+  vendor?: boolean | Prisma.Pemeliharaan$vendorArgs<ExtArgs>
 }, ExtArgs["result"]["pemeliharaan"]>
 
 export type PemeliharaanSelectScalar = {
@@ -1024,25 +1450,33 @@ export type PemeliharaanSelectScalar = {
   penghuniId?: boolean
   kamarId?: boolean
   ownerId?: boolean
+  organizationId?: boolean
+  vendorId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PemeliharaanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "judul" | "deskripsi" | "status" | "prioritas" | "kategori" | "foto" | "penghuniId" | "kamarId" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["pemeliharaan"]>
+export type PemeliharaanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "judul" | "deskripsi" | "status" | "prioritas" | "kategori" | "foto" | "penghuniId" | "kamarId" | "ownerId" | "organizationId" | "vendorId" | "createdAt" | "updatedAt", ExtArgs["result"]["pemeliharaan"]>
 export type PemeliharaanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.KamarDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.PenghuniDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Pemeliharaan$organizationArgs<ExtArgs>
+  vendor?: boolean | Prisma.Pemeliharaan$vendorArgs<ExtArgs>
 }
 export type PemeliharaanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.KamarDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.PenghuniDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Pemeliharaan$organizationArgs<ExtArgs>
+  vendor?: boolean | Prisma.Pemeliharaan$vendorArgs<ExtArgs>
 }
 export type PemeliharaanIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.KamarDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   penghuni?: boolean | Prisma.PenghuniDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Pemeliharaan$organizationArgs<ExtArgs>
+  vendor?: boolean | Prisma.Pemeliharaan$vendorArgs<ExtArgs>
 }
 
 export type $PemeliharaanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1051,6 +1485,8 @@ export type $PemeliharaanPayload<ExtArgs extends runtime.Types.Extensions.Intern
     kamar: Prisma.$KamarPayload<ExtArgs>
     owner: Prisma.$UserPayload<ExtArgs>
     penghuni: Prisma.$PenghuniPayload<ExtArgs>
+    organization: Prisma.$OrganizationPayload<ExtArgs> | null
+    vendor: Prisma.$VendorPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1063,6 +1499,8 @@ export type $PemeliharaanPayload<ExtArgs extends runtime.Types.Extensions.Intern
     penghuniId: string
     kamarId: string
     ownerId: string
+    organizationId: string | null
+    vendorId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["pemeliharaan"]>
@@ -1462,6 +1900,8 @@ export interface Prisma__PemeliharaanClient<T, Null = never, ExtArgs extends run
   kamar<T extends Prisma.KamarDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KamarDefaultArgs<ExtArgs>>): Prisma.Prisma__KamarClient<runtime.Types.Result.GetResult<Prisma.$KamarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   penghuni<T extends Prisma.PenghuniDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PenghuniDefaultArgs<ExtArgs>>): Prisma.Prisma__PenghuniClient<runtime.Types.Result.GetResult<Prisma.$PenghuniPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  organization<T extends Prisma.Pemeliharaan$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pemeliharaan$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  vendor<T extends Prisma.Pemeliharaan$vendorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pemeliharaan$vendorArgs<ExtArgs>>): Prisma.Prisma__VendorClient<runtime.Types.Result.GetResult<Prisma.$VendorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1501,6 +1941,8 @@ export interface PemeliharaanFieldRefs {
   readonly penghuniId: Prisma.FieldRef<"Pemeliharaan", 'String'>
   readonly kamarId: Prisma.FieldRef<"Pemeliharaan", 'String'>
   readonly ownerId: Prisma.FieldRef<"Pemeliharaan", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Pemeliharaan", 'String'>
+  readonly vendorId: Prisma.FieldRef<"Pemeliharaan", 'String'>
   readonly createdAt: Prisma.FieldRef<"Pemeliharaan", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Pemeliharaan", 'DateTime'>
 }
@@ -1901,6 +2343,44 @@ export type PemeliharaanDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Pemeliharaans to delete.
    */
   limit?: number
+}
+
+/**
+ * Pemeliharaan.organization
+ */
+export type Pemeliharaan$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Organization
+   */
+  select?: Prisma.OrganizationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Organization
+   */
+  omit?: Prisma.OrganizationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationInclude<ExtArgs> | null
+  where?: Prisma.OrganizationWhereInput
+}
+
+/**
+ * Pemeliharaan.vendor
+ */
+export type Pemeliharaan$vendorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Vendor
+   */
+  select?: Prisma.VendorSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Vendor
+   */
+  omit?: Prisma.VendorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
+  where?: Prisma.VendorWhereInput
 }
 
 /**

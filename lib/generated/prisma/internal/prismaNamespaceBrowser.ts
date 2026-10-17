@@ -55,11 +55,25 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  Organization: 'Organization',
+  OrganizationUser: 'OrganizationUser',
+  AuditLog: 'AuditLog',
   Kamar: 'Kamar',
   Penghuni: 'Penghuni',
   Transaksi: 'Transaksi',
   Properti: 'Properti',
-  Pemeliharaan: 'Pemeliharaan'
+  Pemeliharaan: 'Pemeliharaan',
+  Lease: 'Lease',
+  LeaseCharge: 'LeaseCharge',
+  Invoice: 'Invoice',
+  InvoiceLine: 'InvoiceLine',
+  Payment: 'Payment',
+  PaymentAllocation: 'PaymentAllocation',
+  Vendor: 'Vendor',
+  Communication: 'Communication',
+  TenantUser: 'TenantUser',
+  TenantActivationToken: 'TenantActivationToken',
+  TenantOtp: 'TenantOtp'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -143,6 +157,48 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+export const OrganizationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  timezone: 'timezone',
+  currency: 'currency',
+  logo: 'logo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const OrganizationUserScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationUserScalarFieldEnum = (typeof OrganizationUserScalarFieldEnum)[keyof typeof OrganizationUserScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  actorUserId: 'actorUserId',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  beforeData: 'beforeData',
+  afterData: 'afterData',
+  ipAddress: 'ipAddress',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
 export const KamarScalarFieldEnum = {
   id: 'id',
   nomor: 'nomor',
@@ -152,6 +208,7 @@ export const KamarScalarFieldEnum = {
   status: 'status',
   catatan: 'catatan',
   ownerId: 'ownerId',
+  organizationId: 'organizationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   propertiId: 'propertiId'
@@ -171,10 +228,14 @@ export const PenghuniScalarFieldEnum = {
   status: 'status',
   catatan: 'catatan',
   ownerId: 'ownerId',
+  organizationId: 'organizationId',
   userId: 'userId',
   kamarId: 'kamarId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  portalAccessStatus: 'portalAccessStatus',
+  portalActivatedAt: 'portalActivatedAt',
+  lastPortalAccessAt: 'lastPortalAccessAt'
 } as const
 
 export type PenghuniScalarFieldEnum = (typeof PenghuniScalarFieldEnum)[keyof typeof PenghuniScalarFieldEnum]
@@ -190,7 +251,8 @@ export const TransaksiScalarFieldEnum = {
   kamarId: 'kamarId',
   penghuniId: 'penghuniId',
   createdAt: 'createdAt',
-  ownerId: 'ownerId'
+  ownerId: 'ownerId',
+  organizationId: 'organizationId'
 } as const
 
 export type TransaksiScalarFieldEnum = (typeof TransaksiScalarFieldEnum)[keyof typeof TransaksiScalarFieldEnum]
@@ -206,6 +268,7 @@ export const PropertiScalarFieldEnum = {
   fasilitas: 'fasilitas',
   deskripsi: 'deskripsi',
   ownerId: 'ownerId',
+  organizationId: 'organizationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -224,11 +287,200 @@ export const PemeliharaanScalarFieldEnum = {
   penghuniId: 'penghuniId',
   kamarId: 'kamarId',
   ownerId: 'ownerId',
+  organizationId: 'organizationId',
+  vendorId: 'vendorId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PemeliharaanScalarFieldEnum = (typeof PemeliharaanScalarFieldEnum)[keyof typeof PemeliharaanScalarFieldEnum]
+
+
+export const LeaseScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  penghuniId: 'penghuniId',
+  kamarId: 'kamarId',
+  nomorKontrak: 'nomorKontrak',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  billingFrequency: 'billingFrequency',
+  rentAmount: 'rentAmount',
+  depositAmount: 'depositAmount',
+  billingDay: 'billingDay',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeaseScalarFieldEnum = (typeof LeaseScalarFieldEnum)[keyof typeof LeaseScalarFieldEnum]
+
+
+export const LeaseChargeScalarFieldEnum = {
+  id: 'id',
+  leaseId: 'leaseId',
+  type: 'type',
+  name: 'name',
+  amount: 'amount',
+  isRecurring: 'isRecurring',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeaseChargeScalarFieldEnum = (typeof LeaseChargeScalarFieldEnum)[keyof typeof LeaseChargeScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  penghuniId: 'penghuniId',
+  leaseId: 'leaseId',
+  invoiceNumber: 'invoiceNumber',
+  issueDate: 'issueDate',
+  dueDate: 'dueDate',
+  subtotal: 'subtotal',
+  discountTotal: 'discountTotal',
+  taxTotal: 'taxTotal',
+  penaltyTotal: 'penaltyTotal',
+  total: 'total',
+  balanceDue: 'balanceDue',
+  status: 'status',
+  currency: 'currency',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceLineScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  type: 'type',
+  description: 'description',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  amount: 'amount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceLineScalarFieldEnum = (typeof InvoiceLineScalarFieldEnum)[keyof typeof InvoiceLineScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  penghuniId: 'penghuniId',
+  amount: 'amount',
+  paymentMethod: 'paymentMethod',
+  paymentReference: 'paymentReference',
+  provider: 'provider',
+  providerTransactionId: 'providerTransactionId',
+  paidAt: 'paidAt',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentAllocationScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  invoiceId: 'invoiceId',
+  amount: 'amount',
+  allocatedAt: 'allocatedAt'
+} as const
+
+export type PaymentAllocationScalarFieldEnum = (typeof PaymentAllocationScalarFieldEnum)[keyof typeof PaymentAllocationScalarFieldEnum]
+
+
+export const VendorScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  category: 'category',
+  phone: 'phone',
+  email: 'email',
+  address: 'address',
+  rating: 'rating',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorScalarFieldEnum = (typeof VendorScalarFieldEnum)[keyof typeof VendorScalarFieldEnum]
+
+
+export const CommunicationScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  penghuniId: 'penghuniId',
+  channel: 'channel',
+  templateId: 'templateId',
+  recipientPhone: 'recipientPhone',
+  recipientName: 'recipientName',
+  subject: 'subject',
+  message: 'message',
+  status: 'status',
+  provider: 'provider',
+  providerMessageId: 'providerMessageId',
+  sentAt: 'sentAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type CommunicationScalarFieldEnum = (typeof CommunicationScalarFieldEnum)[keyof typeof CommunicationScalarFieldEnum]
+
+
+export const TenantUserScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  status: 'status',
+  linkedAt: 'linkedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantUserScalarFieldEnum = (typeof TenantUserScalarFieldEnum)[keyof typeof TenantUserScalarFieldEnum]
+
+
+export const TenantActivationTokenScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  tokenHash: 'tokenHash',
+  phone: 'phone',
+  email: 'email',
+  channel: 'channel',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantActivationTokenScalarFieldEnum = (typeof TenantActivationTokenScalarFieldEnum)[keyof typeof TenantActivationTokenScalarFieldEnum]
+
+
+export const TenantOtpScalarFieldEnum = {
+  id: 'id',
+  tokenId: 'tokenId',
+  identifier: 'identifier',
+  otpHash: 'otpHash',
+  attempts: 'attempts',
+  expiresAt: 'expiresAt',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TenantOtpScalarFieldEnum = (typeof TenantOtpScalarFieldEnum)[keyof typeof TenantOtpScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -237,6 +489,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -253,4 +513,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

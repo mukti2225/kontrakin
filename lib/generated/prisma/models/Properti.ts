@@ -34,6 +34,7 @@ export type PropertiMinAggregateOutputType = {
   fasilitas: string | null
   deskripsi: string | null
   ownerId: string | null
+  organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +49,7 @@ export type PropertiMaxAggregateOutputType = {
   fasilitas: string | null
   deskripsi: string | null
   ownerId: string | null
+  organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +64,7 @@ export type PropertiCountAggregateOutputType = {
   fasilitas: number
   deskripsi: number
   ownerId: number
+  organizationId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -78,6 +81,7 @@ export type PropertiMinAggregateInputType = {
   fasilitas?: true
   deskripsi?: true
   ownerId?: true
+  organizationId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +96,7 @@ export type PropertiMaxAggregateInputType = {
   fasilitas?: true
   deskripsi?: true
   ownerId?: true
+  organizationId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +111,7 @@ export type PropertiCountAggregateInputType = {
   fasilitas?: true
   deskripsi?: true
   ownerId?: true
+  organizationId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -193,6 +199,7 @@ export type PropertiGroupByOutputType = {
   fasilitas: string | null
   deskripsi: string | null
   ownerId: string
+  organizationId: string | null
   createdAt: Date
   updatedAt: Date
   _count: PropertiCountAggregateOutputType | null
@@ -228,10 +235,12 @@ export type PropertiWhereInput = {
   fasilitas?: Prisma.StringNullableFilter<"Properti"> | string | null
   deskripsi?: Prisma.StringNullableFilter<"Properti"> | string | null
   ownerId?: Prisma.StringFilter<"Properti"> | string
+  organizationId?: Prisma.StringNullableFilter<"Properti"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Properti"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Properti"> | Date | string
   kamar?: Prisma.KamarListRelationFilter
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
 }
 
 export type PropertiOrderByWithRelationInput = {
@@ -244,10 +253,12 @@ export type PropertiOrderByWithRelationInput = {
   fasilitas?: Prisma.SortOrderInput | Prisma.SortOrder
   deskripsi?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   kamar?: Prisma.KamarOrderByRelationAggregateInput
   owner?: Prisma.UserOrderByWithRelationInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
 }
 
 export type PropertiWhereUniqueInput = Prisma.AtLeast<{
@@ -263,10 +274,12 @@ export type PropertiWhereUniqueInput = Prisma.AtLeast<{
   fasilitas?: Prisma.StringNullableFilter<"Properti"> | string | null
   deskripsi?: Prisma.StringNullableFilter<"Properti"> | string | null
   ownerId?: Prisma.StringFilter<"Properti"> | string
+  organizationId?: Prisma.StringNullableFilter<"Properti"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Properti"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Properti"> | Date | string
   kamar?: Prisma.KamarListRelationFilter
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
 }, "id">
 
 export type PropertiOrderByWithAggregationInput = {
@@ -279,6 +292,7 @@ export type PropertiOrderByWithAggregationInput = {
   fasilitas?: Prisma.SortOrderInput | Prisma.SortOrder
   deskripsi?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PropertiCountOrderByAggregateInput
@@ -299,6 +313,7 @@ export type PropertiScalarWhereWithAggregatesInput = {
   fasilitas?: Prisma.StringNullableWithAggregatesFilter<"Properti"> | string | null
   deskripsi?: Prisma.StringNullableWithAggregatesFilter<"Properti"> | string | null
   ownerId?: Prisma.StringWithAggregatesFilter<"Properti"> | string
+  organizationId?: Prisma.StringNullableWithAggregatesFilter<"Properti"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Properti"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Properti"> | Date | string
 }
@@ -316,6 +331,7 @@ export type PropertiCreateInput = {
   updatedAt?: Date | string
   kamar?: Prisma.KamarCreateNestedManyWithoutPropertiInput
   owner: Prisma.UserCreateNestedOneWithoutPropertiDimilikiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPropertiInput
 }
 
 export type PropertiUncheckedCreateInput = {
@@ -328,6 +344,7 @@ export type PropertiUncheckedCreateInput = {
   fasilitas?: string | null
   deskripsi?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   kamar?: Prisma.KamarUncheckedCreateNestedManyWithoutPropertiInput
@@ -346,6 +363,7 @@ export type PropertiUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kamar?: Prisma.KamarUpdateManyWithoutPropertiNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutPropertiDimilikiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPropertiNestedInput
 }
 
 export type PropertiUncheckedUpdateInput = {
@@ -358,6 +376,7 @@ export type PropertiUncheckedUpdateInput = {
   fasilitas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deskripsi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kamar?: Prisma.KamarUncheckedUpdateManyWithoutPropertiNestedInput
@@ -373,6 +392,7 @@ export type PropertiCreateManyInput = {
   fasilitas?: string | null
   deskripsi?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -400,6 +420,7 @@ export type PropertiUncheckedUpdateManyInput = {
   fasilitas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deskripsi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -429,6 +450,7 @@ export type PropertiCountOrderByAggregateInput = {
   fasilitas?: Prisma.SortOrder
   deskripsi?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -443,6 +465,7 @@ export type PropertiMaxOrderByAggregateInput = {
   fasilitas?: Prisma.SortOrder
   deskripsi?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -457,6 +480,7 @@ export type PropertiMinOrderByAggregateInput = {
   fasilitas?: Prisma.SortOrder
   deskripsi?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -503,6 +527,48 @@ export type PropertiUncheckedUpdateManyWithoutOwnerNestedInput = {
   deleteMany?: Prisma.PropertiScalarWhereInput | Prisma.PropertiScalarWhereInput[]
 }
 
+export type PropertiCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.PropertiCreateWithoutOrganizationInput, Prisma.PropertiUncheckedCreateWithoutOrganizationInput> | Prisma.PropertiCreateWithoutOrganizationInput[] | Prisma.PropertiUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PropertiCreateOrConnectWithoutOrganizationInput | Prisma.PropertiCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.PropertiCreateManyOrganizationInputEnvelope
+  connect?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+}
+
+export type PropertiUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.PropertiCreateWithoutOrganizationInput, Prisma.PropertiUncheckedCreateWithoutOrganizationInput> | Prisma.PropertiCreateWithoutOrganizationInput[] | Prisma.PropertiUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PropertiCreateOrConnectWithoutOrganizationInput | Prisma.PropertiCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.PropertiCreateManyOrganizationInputEnvelope
+  connect?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+}
+
+export type PropertiUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertiCreateWithoutOrganizationInput, Prisma.PropertiUncheckedCreateWithoutOrganizationInput> | Prisma.PropertiCreateWithoutOrganizationInput[] | Prisma.PropertiUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PropertiCreateOrConnectWithoutOrganizationInput | Prisma.PropertiCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.PropertiUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.PropertiUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.PropertiCreateManyOrganizationInputEnvelope
+  set?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+  disconnect?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+  delete?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+  connect?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+  update?: Prisma.PropertiUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.PropertiUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.PropertiUpdateManyWithWhereWithoutOrganizationInput | Prisma.PropertiUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.PropertiScalarWhereInput | Prisma.PropertiScalarWhereInput[]
+}
+
+export type PropertiUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertiCreateWithoutOrganizationInput, Prisma.PropertiUncheckedCreateWithoutOrganizationInput> | Prisma.PropertiCreateWithoutOrganizationInput[] | Prisma.PropertiUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PropertiCreateOrConnectWithoutOrganizationInput | Prisma.PropertiCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.PropertiUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.PropertiUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.PropertiCreateManyOrganizationInputEnvelope
+  set?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+  disconnect?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+  delete?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+  connect?: Prisma.PropertiWhereUniqueInput | Prisma.PropertiWhereUniqueInput[]
+  update?: Prisma.PropertiUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.PropertiUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.PropertiUpdateManyWithWhereWithoutOrganizationInput | Prisma.PropertiUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.PropertiScalarWhereInput | Prisma.PropertiScalarWhereInput[]
+}
+
 export type PropertiCreateNestedOneWithoutKamarInput = {
   create?: Prisma.XOR<Prisma.PropertiCreateWithoutKamarInput, Prisma.PropertiUncheckedCreateWithoutKamarInput>
   connectOrCreate?: Prisma.PropertiCreateOrConnectWithoutKamarInput
@@ -535,6 +601,7 @@ export type PropertiCreateWithoutOwnerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   kamar?: Prisma.KamarCreateNestedManyWithoutPropertiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPropertiInput
 }
 
 export type PropertiUncheckedCreateWithoutOwnerInput = {
@@ -546,6 +613,7 @@ export type PropertiUncheckedCreateWithoutOwnerInput = {
   lokasiMaps?: string | null
   fasilitas?: string | null
   deskripsi?: string | null
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   kamar?: Prisma.KamarUncheckedCreateNestedManyWithoutPropertiInput
@@ -590,8 +658,65 @@ export type PropertiScalarWhereInput = {
   fasilitas?: Prisma.StringNullableFilter<"Properti"> | string | null
   deskripsi?: Prisma.StringNullableFilter<"Properti"> | string | null
   ownerId?: Prisma.StringFilter<"Properti"> | string
+  organizationId?: Prisma.StringNullableFilter<"Properti"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Properti"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Properti"> | Date | string
+}
+
+export type PropertiCreateWithoutOrganizationInput = {
+  id?: string
+  nama: string
+  tipe: $Enums.TipeProperti
+  alamat: string
+  foto?: string | null
+  lokasiMaps?: string | null
+  fasilitas?: string | null
+  deskripsi?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamar?: Prisma.KamarCreateNestedManyWithoutPropertiInput
+  owner: Prisma.UserCreateNestedOneWithoutPropertiDimilikiInput
+}
+
+export type PropertiUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  nama: string
+  tipe: $Enums.TipeProperti
+  alamat: string
+  foto?: string | null
+  lokasiMaps?: string | null
+  fasilitas?: string | null
+  deskripsi?: string | null
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kamar?: Prisma.KamarUncheckedCreateNestedManyWithoutPropertiInput
+}
+
+export type PropertiCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.PropertiWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertiCreateWithoutOrganizationInput, Prisma.PropertiUncheckedCreateWithoutOrganizationInput>
+}
+
+export type PropertiCreateManyOrganizationInputEnvelope = {
+  data: Prisma.PropertiCreateManyOrganizationInput | Prisma.PropertiCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type PropertiUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.PropertiWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertiUpdateWithoutOrganizationInput, Prisma.PropertiUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.PropertiCreateWithoutOrganizationInput, Prisma.PropertiUncheckedCreateWithoutOrganizationInput>
+}
+
+export type PropertiUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.PropertiWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertiUpdateWithoutOrganizationInput, Prisma.PropertiUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type PropertiUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.PropertiScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertiUpdateManyMutationInput, Prisma.PropertiUncheckedUpdateManyWithoutOrganizationInput>
 }
 
 export type PropertiCreateWithoutKamarInput = {
@@ -606,6 +731,7 @@ export type PropertiCreateWithoutKamarInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutPropertiDimilikiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPropertiInput
 }
 
 export type PropertiUncheckedCreateWithoutKamarInput = {
@@ -618,6 +744,7 @@ export type PropertiUncheckedCreateWithoutKamarInput = {
   fasilitas?: string | null
   deskripsi?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -650,6 +777,7 @@ export type PropertiUpdateWithoutKamarInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutPropertiDimilikiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPropertiNestedInput
 }
 
 export type PropertiUncheckedUpdateWithoutKamarInput = {
@@ -662,6 +790,7 @@ export type PropertiUncheckedUpdateWithoutKamarInput = {
   fasilitas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deskripsi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -675,6 +804,7 @@ export type PropertiCreateManyOwnerInput = {
   lokasiMaps?: string | null
   fasilitas?: string | null
   deskripsi?: string | null
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -691,6 +821,7 @@ export type PropertiUpdateWithoutOwnerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kamar?: Prisma.KamarUpdateManyWithoutPropertiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPropertiNestedInput
 }
 
 export type PropertiUncheckedUpdateWithoutOwnerInput = {
@@ -702,6 +833,7 @@ export type PropertiUncheckedUpdateWithoutOwnerInput = {
   lokasiMaps?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fasilitas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deskripsi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kamar?: Prisma.KamarUncheckedUpdateManyWithoutPropertiNestedInput
@@ -716,6 +848,65 @@ export type PropertiUncheckedUpdateManyWithoutOwnerInput = {
   lokasiMaps?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fasilitas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deskripsi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PropertiCreateManyOrganizationInput = {
+  id?: string
+  nama: string
+  tipe: $Enums.TipeProperti
+  alamat: string
+  foto?: string | null
+  lokasiMaps?: string | null
+  fasilitas?: string | null
+  deskripsi?: string | null
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PropertiUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  tipe?: Prisma.EnumTipePropertiFieldUpdateOperationsInput | $Enums.TipeProperti
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokasiMaps?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fasilitas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deskripsi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamar?: Prisma.KamarUpdateManyWithoutPropertiNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPropertiDimilikiNestedInput
+}
+
+export type PropertiUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  tipe?: Prisma.EnumTipePropertiFieldUpdateOperationsInput | $Enums.TipeProperti
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokasiMaps?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fasilitas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deskripsi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kamar?: Prisma.KamarUncheckedUpdateManyWithoutPropertiNestedInput
+}
+
+export type PropertiUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  tipe?: Prisma.EnumTipePropertiFieldUpdateOperationsInput | $Enums.TipeProperti
+  alamat?: Prisma.StringFieldUpdateOperationsInput | string
+  foto?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokasiMaps?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fasilitas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deskripsi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -761,10 +952,12 @@ export type PropertiSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   fasilitas?: boolean
   deskripsi?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   kamar?: boolean | Prisma.Properti$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Properti$organizationArgs<ExtArgs>
   _count?: boolean | Prisma.PropertiCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["properti"]>
 
@@ -778,9 +971,11 @@ export type PropertiSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   fasilitas?: boolean
   deskripsi?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Properti$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["properti"]>
 
 export type PropertiSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -793,9 +988,11 @@ export type PropertiSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   fasilitas?: boolean
   deskripsi?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Properti$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["properti"]>
 
 export type PropertiSelectScalar = {
@@ -808,21 +1005,25 @@ export type PropertiSelectScalar = {
   fasilitas?: boolean
   deskripsi?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PropertiOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nama" | "tipe" | "alamat" | "foto" | "lokasiMaps" | "fasilitas" | "deskripsi" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["properti"]>
+export type PropertiOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nama" | "tipe" | "alamat" | "foto" | "lokasiMaps" | "fasilitas" | "deskripsi" | "ownerId" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["properti"]>
 export type PropertiInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.Properti$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Properti$organizationArgs<ExtArgs>
   _count?: boolean | Prisma.PropertiCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PropertiIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Properti$organizationArgs<ExtArgs>
 }
 export type PropertiIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.Properti$organizationArgs<ExtArgs>
 }
 
 export type $PropertiPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -830,6 +1031,7 @@ export type $PropertiPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     kamar: Prisma.$KamarPayload<ExtArgs>[]
     owner: Prisma.$UserPayload<ExtArgs>
+    organization: Prisma.$OrganizationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -841,6 +1043,7 @@ export type $PropertiPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     fasilitas: string | null
     deskripsi: string | null
     ownerId: string
+    organizationId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["properti"]>
@@ -1239,6 +1442,7 @@ export interface Prisma__PropertiClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   kamar<T extends Prisma.Properti$kamarArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Properti$kamarArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KamarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  organization<T extends Prisma.Properti$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Properti$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1277,6 +1481,7 @@ export interface PropertiFieldRefs {
   readonly fasilitas: Prisma.FieldRef<"Properti", 'String'>
   readonly deskripsi: Prisma.FieldRef<"Properti", 'String'>
   readonly ownerId: Prisma.FieldRef<"Properti", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Properti", 'String'>
   readonly createdAt: Prisma.FieldRef<"Properti", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Properti", 'DateTime'>
 }
@@ -1701,6 +1906,25 @@ export type Properti$kamarArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.KamarScalarFieldEnum | Prisma.KamarScalarFieldEnum[]
+}
+
+/**
+ * Properti.organization
+ */
+export type Properti$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Organization
+   */
+  select?: Prisma.OrganizationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Organization
+   */
+  omit?: Prisma.OrganizationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationInclude<ExtArgs> | null
+  where?: Prisma.OrganizationWhereInput
 }
 
 /**

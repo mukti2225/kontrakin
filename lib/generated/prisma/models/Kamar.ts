@@ -45,6 +45,7 @@ export type KamarMinAggregateOutputType = {
   status: $Enums.StatusKamar | null
   catatan: string | null
   ownerId: string | null
+  organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
   propertiId: string | null
@@ -59,6 +60,7 @@ export type KamarMaxAggregateOutputType = {
   status: $Enums.StatusKamar | null
   catatan: string | null
   ownerId: string | null
+  organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
   propertiId: string | null
@@ -73,6 +75,7 @@ export type KamarCountAggregateOutputType = {
   status: number
   catatan: number
   ownerId: number
+  organizationId: number
   createdAt: number
   updatedAt: number
   propertiId: number
@@ -99,6 +102,7 @@ export type KamarMinAggregateInputType = {
   status?: true
   catatan?: true
   ownerId?: true
+  organizationId?: true
   createdAt?: true
   updatedAt?: true
   propertiId?: true
@@ -113,6 +117,7 @@ export type KamarMaxAggregateInputType = {
   status?: true
   catatan?: true
   ownerId?: true
+  organizationId?: true
   createdAt?: true
   updatedAt?: true
   propertiId?: true
@@ -127,6 +132,7 @@ export type KamarCountAggregateInputType = {
   status?: true
   catatan?: true
   ownerId?: true
+  organizationId?: true
   createdAt?: true
   updatedAt?: true
   propertiId?: true
@@ -228,6 +234,7 @@ export type KamarGroupByOutputType = {
   status: $Enums.StatusKamar
   catatan: string | null
   ownerId: string
+  organizationId: string | null
   createdAt: Date
   updatedAt: Date
   propertiId: string | null
@@ -265,14 +272,17 @@ export type KamarWhereInput = {
   status?: Prisma.EnumStatusKamarFilter<"Kamar"> | $Enums.StatusKamar
   catatan?: Prisma.StringNullableFilter<"Kamar"> | string | null
   ownerId?: Prisma.StringFilter<"Kamar"> | string
+  organizationId?: Prisma.StringNullableFilter<"Kamar"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Kamar"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Kamar"> | Date | string
   propertiId?: Prisma.StringNullableFilter<"Kamar"> | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   properti?: Prisma.XOR<Prisma.PropertiNullableScalarRelationFilter, Prisma.PropertiWhereInput> | null
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
   transaksi?: Prisma.TransaksiListRelationFilter
   pemeliharaan?: Prisma.PemeliharaanListRelationFilter
   penghuni?: Prisma.PenghuniListRelationFilter
+  leases?: Prisma.LeaseListRelationFilter
 }
 
 export type KamarOrderByWithRelationInput = {
@@ -284,14 +294,17 @@ export type KamarOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   propertiId?: Prisma.SortOrderInput | Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   properti?: Prisma.PropertiOrderByWithRelationInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
   transaksi?: Prisma.TransaksiOrderByRelationAggregateInput
   pemeliharaan?: Prisma.PemeliharaanOrderByRelationAggregateInput
   penghuni?: Prisma.PenghuniOrderByRelationAggregateInput
+  leases?: Prisma.LeaseOrderByRelationAggregateInput
 }
 
 export type KamarWhereUniqueInput = Prisma.AtLeast<{
@@ -307,14 +320,17 @@ export type KamarWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumStatusKamarFilter<"Kamar"> | $Enums.StatusKamar
   catatan?: Prisma.StringNullableFilter<"Kamar"> | string | null
   ownerId?: Prisma.StringFilter<"Kamar"> | string
+  organizationId?: Prisma.StringNullableFilter<"Kamar"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Kamar"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Kamar"> | Date | string
   propertiId?: Prisma.StringNullableFilter<"Kamar"> | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   properti?: Prisma.XOR<Prisma.PropertiNullableScalarRelationFilter, Prisma.PropertiWhereInput> | null
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
   transaksi?: Prisma.TransaksiListRelationFilter
   pemeliharaan?: Prisma.PemeliharaanListRelationFilter
   penghuni?: Prisma.PenghuniListRelationFilter
+  leases?: Prisma.LeaseListRelationFilter
 }, "id" | "ownerId_nomor">
 
 export type KamarOrderByWithAggregationInput = {
@@ -326,6 +342,7 @@ export type KamarOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   propertiId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -348,6 +365,7 @@ export type KamarScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumStatusKamarWithAggregatesFilter<"Kamar"> | $Enums.StatusKamar
   catatan?: Prisma.StringNullableWithAggregatesFilter<"Kamar"> | string | null
   ownerId?: Prisma.StringWithAggregatesFilter<"Kamar"> | string
+  organizationId?: Prisma.StringNullableWithAggregatesFilter<"Kamar"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Kamar"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Kamar"> | Date | string
   propertiId?: Prisma.StringNullableWithAggregatesFilter<"Kamar"> | string | null
@@ -365,9 +383,11 @@ export type KamarCreateInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutKamarDimilikiInput
   properti?: Prisma.PropertiCreateNestedOneWithoutKamarInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutKamarInput
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutKamarInput
 }
 
 export type KamarUncheckedCreateInput = {
@@ -379,12 +399,14 @@ export type KamarUncheckedCreateInput = {
   status?: $Enums.StatusKamar
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   propertiId?: string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniUncheckedCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutKamarInput
 }
 
 export type KamarUpdateInput = {
@@ -399,9 +421,11 @@ export type KamarUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutKamarDimilikiNestedInput
   properti?: Prisma.PropertiUpdateOneWithoutKamarNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutKamarNestedInput
   transaksi?: Prisma.TransaksiUpdateManyWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarUncheckedUpdateInput = {
@@ -413,12 +437,14 @@ export type KamarUncheckedUpdateInput = {
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUncheckedUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarCreateManyInput = {
@@ -430,6 +456,7 @@ export type KamarCreateManyInput = {
   status?: $Enums.StatusKamar
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   propertiId?: string | null
@@ -456,6 +483,7 @@ export type KamarUncheckedUpdateManyInput = {
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -485,6 +513,7 @@ export type KamarCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   propertiId?: Prisma.SortOrder
@@ -504,6 +533,7 @@ export type KamarMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   propertiId?: Prisma.SortOrder
@@ -518,6 +548,7 @@ export type KamarMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   propertiId?: Prisma.SortOrder
@@ -577,6 +608,48 @@ export type KamarUncheckedUpdateManyWithoutOwnerNestedInput = {
   connect?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
   update?: Prisma.KamarUpdateWithWhereUniqueWithoutOwnerInput | Prisma.KamarUpdateWithWhereUniqueWithoutOwnerInput[]
   updateMany?: Prisma.KamarUpdateManyWithWhereWithoutOwnerInput | Prisma.KamarUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.KamarScalarWhereInput | Prisma.KamarScalarWhereInput[]
+}
+
+export type KamarCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.KamarCreateWithoutOrganizationInput, Prisma.KamarUncheckedCreateWithoutOrganizationInput> | Prisma.KamarCreateWithoutOrganizationInput[] | Prisma.KamarUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.KamarCreateOrConnectWithoutOrganizationInput | Prisma.KamarCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.KamarCreateManyOrganizationInputEnvelope
+  connect?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+}
+
+export type KamarUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.KamarCreateWithoutOrganizationInput, Prisma.KamarUncheckedCreateWithoutOrganizationInput> | Prisma.KamarCreateWithoutOrganizationInput[] | Prisma.KamarUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.KamarCreateOrConnectWithoutOrganizationInput | Prisma.KamarCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.KamarCreateManyOrganizationInputEnvelope
+  connect?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+}
+
+export type KamarUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.KamarCreateWithoutOrganizationInput, Prisma.KamarUncheckedCreateWithoutOrganizationInput> | Prisma.KamarCreateWithoutOrganizationInput[] | Prisma.KamarUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.KamarCreateOrConnectWithoutOrganizationInput | Prisma.KamarCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.KamarUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.KamarUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.KamarCreateManyOrganizationInputEnvelope
+  set?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+  disconnect?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+  delete?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+  connect?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+  update?: Prisma.KamarUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.KamarUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.KamarUpdateManyWithWhereWithoutOrganizationInput | Prisma.KamarUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.KamarScalarWhereInput | Prisma.KamarScalarWhereInput[]
+}
+
+export type KamarUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.KamarCreateWithoutOrganizationInput, Prisma.KamarUncheckedCreateWithoutOrganizationInput> | Prisma.KamarCreateWithoutOrganizationInput[] | Prisma.KamarUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.KamarCreateOrConnectWithoutOrganizationInput | Prisma.KamarCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.KamarUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.KamarUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.KamarCreateManyOrganizationInputEnvelope
+  set?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+  disconnect?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+  delete?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+  connect?: Prisma.KamarWhereUniqueInput | Prisma.KamarWhereUniqueInput[]
+  update?: Prisma.KamarUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.KamarUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.KamarUpdateManyWithWhereWithoutOrganizationInput | Prisma.KamarUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.KamarScalarWhereInput | Prisma.KamarScalarWhereInput[]
 }
 
@@ -684,6 +757,20 @@ export type KamarUpdateOneRequiredWithoutPemeliharaanNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KamarUpdateToOneWithWhereWithoutPemeliharaanInput, Prisma.KamarUpdateWithoutPemeliharaanInput>, Prisma.KamarUncheckedUpdateWithoutPemeliharaanInput>
 }
 
+export type KamarCreateNestedOneWithoutLeasesInput = {
+  create?: Prisma.XOR<Prisma.KamarCreateWithoutLeasesInput, Prisma.KamarUncheckedCreateWithoutLeasesInput>
+  connectOrCreate?: Prisma.KamarCreateOrConnectWithoutLeasesInput
+  connect?: Prisma.KamarWhereUniqueInput
+}
+
+export type KamarUpdateOneRequiredWithoutLeasesNestedInput = {
+  create?: Prisma.XOR<Prisma.KamarCreateWithoutLeasesInput, Prisma.KamarUncheckedCreateWithoutLeasesInput>
+  connectOrCreate?: Prisma.KamarCreateOrConnectWithoutLeasesInput
+  upsert?: Prisma.KamarUpsertWithoutLeasesInput
+  connect?: Prisma.KamarWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KamarUpdateToOneWithWhereWithoutLeasesInput, Prisma.KamarUpdateWithoutLeasesInput>, Prisma.KamarUncheckedUpdateWithoutLeasesInput>
+}
+
 export type KamarCreateWithoutOwnerInput = {
   id?: string
   nomor: string
@@ -695,9 +782,11 @@ export type KamarCreateWithoutOwnerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   properti?: Prisma.PropertiCreateNestedOneWithoutKamarInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutKamarInput
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutKamarInput
 }
 
 export type KamarUncheckedCreateWithoutOwnerInput = {
@@ -708,12 +797,14 @@ export type KamarUncheckedCreateWithoutOwnerInput = {
   hargaBulanan: number
   status?: $Enums.StatusKamar
   catatan?: string | null
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   propertiId?: string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniUncheckedCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutKamarInput
 }
 
 export type KamarCreateOrConnectWithoutOwnerInput = {
@@ -754,9 +845,72 @@ export type KamarScalarWhereInput = {
   status?: Prisma.EnumStatusKamarFilter<"Kamar"> | $Enums.StatusKamar
   catatan?: Prisma.StringNullableFilter<"Kamar"> | string | null
   ownerId?: Prisma.StringFilter<"Kamar"> | string
+  organizationId?: Prisma.StringNullableFilter<"Kamar"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Kamar"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Kamar"> | Date | string
   propertiId?: Prisma.StringNullableFilter<"Kamar"> | string | null
+}
+
+export type KamarCreateWithoutOrganizationInput = {
+  id?: string
+  nomor: string
+  lantai: number
+  tipe: $Enums.TipeKamar
+  hargaBulanan: number
+  status?: $Enums.StatusKamar
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutKamarDimilikiInput
+  properti?: Prisma.PropertiCreateNestedOneWithoutKamarInput
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutKamarInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutKamarInput
+  penghuni?: Prisma.PenghuniCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutKamarInput
+}
+
+export type KamarUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  nomor: string
+  lantai: number
+  tipe: $Enums.TipeKamar
+  hargaBulanan: number
+  status?: $Enums.StatusKamar
+  catatan?: string | null
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  propertiId?: string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutKamarInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutKamarInput
+  penghuni?: Prisma.PenghuniUncheckedCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutKamarInput
+}
+
+export type KamarCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.KamarWhereUniqueInput
+  create: Prisma.XOR<Prisma.KamarCreateWithoutOrganizationInput, Prisma.KamarUncheckedCreateWithoutOrganizationInput>
+}
+
+export type KamarCreateManyOrganizationInputEnvelope = {
+  data: Prisma.KamarCreateManyOrganizationInput | Prisma.KamarCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type KamarUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.KamarWhereUniqueInput
+  update: Prisma.XOR<Prisma.KamarUpdateWithoutOrganizationInput, Prisma.KamarUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.KamarCreateWithoutOrganizationInput, Prisma.KamarUncheckedCreateWithoutOrganizationInput>
+}
+
+export type KamarUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.KamarWhereUniqueInput
+  data: Prisma.XOR<Prisma.KamarUpdateWithoutOrganizationInput, Prisma.KamarUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type KamarUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.KamarScalarWhereInput
+  data: Prisma.XOR<Prisma.KamarUpdateManyMutationInput, Prisma.KamarUncheckedUpdateManyWithoutOrganizationInput>
 }
 
 export type KamarCreateWithoutPenghuniInput = {
@@ -771,8 +925,10 @@ export type KamarCreateWithoutPenghuniInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutKamarDimilikiInput
   properti?: Prisma.PropertiCreateNestedOneWithoutKamarInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutKamarInput
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutKamarInput
 }
 
 export type KamarUncheckedCreateWithoutPenghuniInput = {
@@ -784,11 +940,13 @@ export type KamarUncheckedCreateWithoutPenghuniInput = {
   status?: $Enums.StatusKamar
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   propertiId?: string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutKamarInput
 }
 
 export type KamarCreateOrConnectWithoutPenghuniInput = {
@@ -819,8 +977,10 @@ export type KamarUpdateWithoutPenghuniInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutKamarDimilikiNestedInput
   properti?: Prisma.PropertiUpdateOneWithoutKamarNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutKamarNestedInput
   transaksi?: Prisma.TransaksiUpdateManyWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarUncheckedUpdateWithoutPenghuniInput = {
@@ -832,11 +992,13 @@ export type KamarUncheckedUpdateWithoutPenghuniInput = {
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarCreateWithoutTransaksiInput = {
@@ -851,8 +1013,10 @@ export type KamarCreateWithoutTransaksiInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutKamarDimilikiInput
   properti?: Prisma.PropertiCreateNestedOneWithoutKamarInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutKamarInput
 }
 
 export type KamarUncheckedCreateWithoutTransaksiInput = {
@@ -864,11 +1028,13 @@ export type KamarUncheckedCreateWithoutTransaksiInput = {
   status?: $Enums.StatusKamar
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   propertiId?: string | null
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniUncheckedCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutKamarInput
 }
 
 export type KamarCreateOrConnectWithoutTransaksiInput = {
@@ -899,8 +1065,10 @@ export type KamarUpdateWithoutTransaksiInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutKamarDimilikiNestedInput
   properti?: Prisma.PropertiUpdateOneWithoutKamarNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarUncheckedUpdateWithoutTransaksiInput = {
@@ -912,11 +1080,13 @@ export type KamarUncheckedUpdateWithoutTransaksiInput = {
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUncheckedUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarCreateWithoutPropertiInput = {
@@ -930,9 +1100,11 @@ export type KamarCreateWithoutPropertiInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutKamarDimilikiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutKamarInput
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutKamarInput
 }
 
 export type KamarUncheckedCreateWithoutPropertiInput = {
@@ -944,11 +1116,13 @@ export type KamarUncheckedCreateWithoutPropertiInput = {
   status?: $Enums.StatusKamar
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutKamarInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniUncheckedCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutKamarInput
 }
 
 export type KamarCreateOrConnectWithoutPropertiInput = {
@@ -989,8 +1163,10 @@ export type KamarCreateWithoutPemeliharaanInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutKamarDimilikiInput
   properti?: Prisma.PropertiCreateNestedOneWithoutKamarInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutKamarInput
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutKamarInput
 }
 
 export type KamarUncheckedCreateWithoutPemeliharaanInput = {
@@ -1002,11 +1178,13 @@ export type KamarUncheckedCreateWithoutPemeliharaanInput = {
   status?: $Enums.StatusKamar
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   propertiId?: string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutKamarInput
   penghuni?: Prisma.PenghuniUncheckedCreateNestedManyWithoutKamarInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutKamarInput
 }
 
 export type KamarCreateOrConnectWithoutPemeliharaanInput = {
@@ -1037,8 +1215,10 @@ export type KamarUpdateWithoutPemeliharaanInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutKamarDimilikiNestedInput
   properti?: Prisma.PropertiUpdateOneWithoutKamarNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutKamarNestedInput
   transaksi?: Prisma.TransaksiUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarUncheckedUpdateWithoutPemeliharaanInput = {
@@ -1050,10 +1230,100 @@ export type KamarUncheckedUpdateWithoutPemeliharaanInput = {
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutKamarNestedInput
+  penghuni?: Prisma.PenghuniUncheckedUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutKamarNestedInput
+}
+
+export type KamarCreateWithoutLeasesInput = {
+  id?: string
+  nomor: string
+  lantai: number
+  tipe: $Enums.TipeKamar
+  hargaBulanan: number
+  status?: $Enums.StatusKamar
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutKamarDimilikiInput
+  properti?: Prisma.PropertiCreateNestedOneWithoutKamarInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutKamarInput
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutKamarInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutKamarInput
+  penghuni?: Prisma.PenghuniCreateNestedManyWithoutKamarInput
+}
+
+export type KamarUncheckedCreateWithoutLeasesInput = {
+  id?: string
+  nomor: string
+  lantai: number
+  tipe: $Enums.TipeKamar
+  hargaBulanan: number
+  status?: $Enums.StatusKamar
+  catatan?: string | null
+  ownerId: string
+  organizationId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  propertiId?: string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutKamarInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutKamarInput
+  penghuni?: Prisma.PenghuniUncheckedCreateNestedManyWithoutKamarInput
+}
+
+export type KamarCreateOrConnectWithoutLeasesInput = {
+  where: Prisma.KamarWhereUniqueInput
+  create: Prisma.XOR<Prisma.KamarCreateWithoutLeasesInput, Prisma.KamarUncheckedCreateWithoutLeasesInput>
+}
+
+export type KamarUpsertWithoutLeasesInput = {
+  update: Prisma.XOR<Prisma.KamarUpdateWithoutLeasesInput, Prisma.KamarUncheckedUpdateWithoutLeasesInput>
+  create: Prisma.XOR<Prisma.KamarCreateWithoutLeasesInput, Prisma.KamarUncheckedCreateWithoutLeasesInput>
+  where?: Prisma.KamarWhereInput
+}
+
+export type KamarUpdateToOneWithWhereWithoutLeasesInput = {
+  where?: Prisma.KamarWhereInput
+  data: Prisma.XOR<Prisma.KamarUpdateWithoutLeasesInput, Prisma.KamarUncheckedUpdateWithoutLeasesInput>
+}
+
+export type KamarUpdateWithoutLeasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.StringFieldUpdateOperationsInput | string
+  lantai?: Prisma.IntFieldUpdateOperationsInput | number
+  tipe?: Prisma.EnumTipeKamarFieldUpdateOperationsInput | $Enums.TipeKamar
+  hargaBulanan?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutKamarDimilikiNestedInput
+  properti?: Prisma.PropertiUpdateOneWithoutKamarNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutKamarNestedInput
+  transaksi?: Prisma.TransaksiUpdateManyWithoutKamarNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutKamarNestedInput
+  penghuni?: Prisma.PenghuniUpdateManyWithoutKamarNestedInput
+}
+
+export type KamarUncheckedUpdateWithoutLeasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.StringFieldUpdateOperationsInput | string
+  lantai?: Prisma.IntFieldUpdateOperationsInput | number
+  tipe?: Prisma.EnumTipeKamarFieldUpdateOperationsInput | $Enums.TipeKamar
+  hargaBulanan?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutKamarNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUncheckedUpdateManyWithoutKamarNestedInput
 }
 
@@ -1065,6 +1335,7 @@ export type KamarCreateManyOwnerInput = {
   hargaBulanan: number
   status?: $Enums.StatusKamar
   catatan?: string | null
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   propertiId?: string | null
@@ -1081,9 +1352,11 @@ export type KamarUpdateWithoutOwnerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   properti?: Prisma.PropertiUpdateOneWithoutKamarNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutKamarNestedInput
   transaksi?: Prisma.TransaksiUpdateManyWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarUncheckedUpdateWithoutOwnerInput = {
@@ -1094,12 +1367,14 @@ export type KamarUncheckedUpdateWithoutOwnerInput = {
   hargaBulanan?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUncheckedUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarUncheckedUpdateManyWithoutOwnerInput = {
@@ -1110,6 +1385,71 @@ export type KamarUncheckedUpdateManyWithoutOwnerInput = {
   hargaBulanan?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type KamarCreateManyOrganizationInput = {
+  id?: string
+  nomor: string
+  lantai: number
+  tipe: $Enums.TipeKamar
+  hargaBulanan: number
+  status?: $Enums.StatusKamar
+  catatan?: string | null
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  propertiId?: string | null
+}
+
+export type KamarUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.StringFieldUpdateOperationsInput | string
+  lantai?: Prisma.IntFieldUpdateOperationsInput | number
+  tipe?: Prisma.EnumTipeKamarFieldUpdateOperationsInput | $Enums.TipeKamar
+  hargaBulanan?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutKamarDimilikiNestedInput
+  properti?: Prisma.PropertiUpdateOneWithoutKamarNestedInput
+  transaksi?: Prisma.TransaksiUpdateManyWithoutKamarNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutKamarNestedInput
+  penghuni?: Prisma.PenghuniUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutKamarNestedInput
+}
+
+export type KamarUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.StringFieldUpdateOperationsInput | string
+  lantai?: Prisma.IntFieldUpdateOperationsInput | number
+  tipe?: Prisma.EnumTipeKamarFieldUpdateOperationsInput | $Enums.TipeKamar
+  hargaBulanan?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutKamarNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutKamarNestedInput
+  penghuni?: Prisma.PenghuniUncheckedUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutKamarNestedInput
+}
+
+export type KamarUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.StringFieldUpdateOperationsInput | string
+  lantai?: Prisma.IntFieldUpdateOperationsInput | number
+  tipe?: Prisma.EnumTipeKamarFieldUpdateOperationsInput | $Enums.TipeKamar
+  hargaBulanan?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   propertiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1124,6 +1464,7 @@ export type KamarCreateManyPropertiInput = {
   status?: $Enums.StatusKamar
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1139,9 +1480,11 @@ export type KamarUpdateWithoutPropertiInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutKamarDimilikiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutKamarNestedInput
   transaksi?: Prisma.TransaksiUpdateManyWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarUncheckedUpdateWithoutPropertiInput = {
@@ -1153,11 +1496,13 @@ export type KamarUncheckedUpdateWithoutPropertiInput = {
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutKamarNestedInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutKamarNestedInput
   penghuni?: Prisma.PenghuniUncheckedUpdateManyWithoutKamarNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutKamarNestedInput
 }
 
 export type KamarUncheckedUpdateManyWithoutPropertiInput = {
@@ -1169,6 +1514,7 @@ export type KamarUncheckedUpdateManyWithoutPropertiInput = {
   status?: Prisma.EnumStatusKamarFieldUpdateOperationsInput | $Enums.StatusKamar
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1182,12 +1528,14 @@ export type KamarCountOutputType = {
   transaksi: number
   pemeliharaan: number
   penghuni: number
+  leases: number
 }
 
 export type KamarCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transaksi?: boolean | KamarCountOutputTypeCountTransaksiArgs
   pemeliharaan?: boolean | KamarCountOutputTypeCountPemeliharaanArgs
   penghuni?: boolean | KamarCountOutputTypeCountPenghuniArgs
+  leases?: boolean | KamarCountOutputTypeCountLeasesArgs
 }
 
 /**
@@ -1221,6 +1569,13 @@ export type KamarCountOutputTypeCountPenghuniArgs<ExtArgs extends runtime.Types.
   where?: Prisma.PenghuniWhereInput
 }
 
+/**
+ * KamarCountOutputType without action
+ */
+export type KamarCountOutputTypeCountLeasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeaseWhereInput
+}
+
 
 export type KamarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1231,14 +1586,17 @@ export type KamarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   status?: boolean
   catatan?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   propertiId?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   properti?: boolean | Prisma.Kamar$propertiArgs<ExtArgs>
+  organization?: boolean | Prisma.Kamar$organizationArgs<ExtArgs>
   transaksi?: boolean | Prisma.Kamar$transaksiArgs<ExtArgs>
   pemeliharaan?: boolean | Prisma.Kamar$pemeliharaanArgs<ExtArgs>
   penghuni?: boolean | Prisma.Kamar$penghuniArgs<ExtArgs>
+  leases?: boolean | Prisma.Kamar$leasesArgs<ExtArgs>
   _count?: boolean | Prisma.KamarCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["kamar"]>
 
@@ -1251,11 +1609,13 @@ export type KamarSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   catatan?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   propertiId?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   properti?: boolean | Prisma.Kamar$propertiArgs<ExtArgs>
+  organization?: boolean | Prisma.Kamar$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["kamar"]>
 
 export type KamarSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1267,11 +1627,13 @@ export type KamarSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   catatan?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   propertiId?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   properti?: boolean | Prisma.Kamar$propertiArgs<ExtArgs>
+  organization?: boolean | Prisma.Kamar$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["kamar"]>
 
 export type KamarSelectScalar = {
@@ -1283,27 +1645,32 @@ export type KamarSelectScalar = {
   status?: boolean
   catatan?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   propertiId?: boolean
 }
 
-export type KamarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nomor" | "lantai" | "tipe" | "hargaBulanan" | "status" | "catatan" | "ownerId" | "createdAt" | "updatedAt" | "propertiId", ExtArgs["result"]["kamar"]>
+export type KamarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nomor" | "lantai" | "tipe" | "hargaBulanan" | "status" | "catatan" | "ownerId" | "organizationId" | "createdAt" | "updatedAt" | "propertiId", ExtArgs["result"]["kamar"]>
 export type KamarInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   properti?: boolean | Prisma.Kamar$propertiArgs<ExtArgs>
+  organization?: boolean | Prisma.Kamar$organizationArgs<ExtArgs>
   transaksi?: boolean | Prisma.Kamar$transaksiArgs<ExtArgs>
   pemeliharaan?: boolean | Prisma.Kamar$pemeliharaanArgs<ExtArgs>
   penghuni?: boolean | Prisma.Kamar$penghuniArgs<ExtArgs>
+  leases?: boolean | Prisma.Kamar$leasesArgs<ExtArgs>
   _count?: boolean | Prisma.KamarCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type KamarIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   properti?: boolean | Prisma.Kamar$propertiArgs<ExtArgs>
+  organization?: boolean | Prisma.Kamar$organizationArgs<ExtArgs>
 }
 export type KamarIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   properti?: boolean | Prisma.Kamar$propertiArgs<ExtArgs>
+  organization?: boolean | Prisma.Kamar$organizationArgs<ExtArgs>
 }
 
 export type $KamarPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1311,9 +1678,11 @@ export type $KamarPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     owner: Prisma.$UserPayload<ExtArgs>
     properti: Prisma.$PropertiPayload<ExtArgs> | null
+    organization: Prisma.$OrganizationPayload<ExtArgs> | null
     transaksi: Prisma.$TransaksiPayload<ExtArgs>[]
     pemeliharaan: Prisma.$PemeliharaanPayload<ExtArgs>[]
     penghuni: Prisma.$PenghuniPayload<ExtArgs>[]
+    leases: Prisma.$LeasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1324,6 +1693,7 @@ export type $KamarPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     status: $Enums.StatusKamar
     catatan: string | null
     ownerId: string
+    organizationId: string | null
     createdAt: Date
     updatedAt: Date
     propertiId: string | null
@@ -1723,9 +2093,11 @@ export interface Prisma__KamarClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   properti<T extends Prisma.Kamar$propertiArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Kamar$propertiArgs<ExtArgs>>): Prisma.Prisma__PropertiClient<runtime.Types.Result.GetResult<Prisma.$PropertiPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  organization<T extends Prisma.Kamar$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Kamar$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   transaksi<T extends Prisma.Kamar$transaksiArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Kamar$transaksiArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransaksiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pemeliharaan<T extends Prisma.Kamar$pemeliharaanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Kamar$pemeliharaanArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PemeliharaanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   penghuni<T extends Prisma.Kamar$penghuniArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Kamar$penghuniArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PenghuniPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  leases<T extends Prisma.Kamar$leasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Kamar$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1763,6 +2135,7 @@ export interface KamarFieldRefs {
   readonly status: Prisma.FieldRef<"Kamar", 'StatusKamar'>
   readonly catatan: Prisma.FieldRef<"Kamar", 'String'>
   readonly ownerId: Prisma.FieldRef<"Kamar", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Kamar", 'String'>
   readonly createdAt: Prisma.FieldRef<"Kamar", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Kamar", 'DateTime'>
   readonly propertiId: Prisma.FieldRef<"Kamar", 'String'>
@@ -2186,6 +2559,25 @@ export type Kamar$propertiArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * Kamar.organization
+ */
+export type Kamar$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Organization
+   */
+  select?: Prisma.OrganizationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Organization
+   */
+  omit?: Prisma.OrganizationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationInclude<ExtArgs> | null
+  where?: Prisma.OrganizationWhereInput
+}
+
+/**
  * Kamar.transaksi
  */
 export type Kamar$transaksiArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2255,6 +2647,30 @@ export type Kamar$penghuniArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.PenghuniScalarFieldEnum | Prisma.PenghuniScalarFieldEnum[]
+}
+
+/**
+ * Kamar.leases
+ */
+export type Kamar$leasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Lease
+   */
+  select?: Prisma.LeaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Lease
+   */
+  omit?: Prisma.LeaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeaseInclude<ExtArgs> | null
+  where?: Prisma.LeaseWhereInput
+  orderBy?: Prisma.LeaseOrderByWithRelationInput | Prisma.LeaseOrderByWithRelationInput[]
+  cursor?: Prisma.LeaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeaseScalarFieldEnum | Prisma.LeaseScalarFieldEnum[]
 }
 
 /**

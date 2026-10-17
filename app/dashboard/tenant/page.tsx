@@ -1,8 +1,7 @@
-export default function TenantPage() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Dashboard Tenant</h1>
-      <p>Halaman ini sedang dalam tahap pengembangan.</p>
-    </div>
-  );
+import { getTenantDashboardData } from "./action";
+import { TenantClient } from "./tenant-client";
+
+export default async function TenantDashboardPage() {
+  const data = await getTenantDashboardData();
+  return <TenantClient data={data} />;
 }

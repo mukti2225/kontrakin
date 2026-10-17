@@ -28,7 +28,7 @@ export default function Header() {
         <div className="flex flex-row gap-2">
           <Image src="/icon-aja.png" alt="Kontrakin" width={30} height={30} />
         <Link href="/" className="shrink-0 text-[21px] font-semibold tracking-[-0.05em] text-[#12141B]" style={{ fontFamily: "var(--font-display)" }}>
-          Huni<span className="text-[#0FA37F]">Link</span>
+          Kontrak<span className="text-[#0FA37F]">in</span>
         </Link>
         </div>
 

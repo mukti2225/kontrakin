@@ -17,6 +17,8 @@ import {
   Activity,
   Download,
   Smartphone,
+  Wrench,
+  UserCheck,
 } from "lucide-react";
 import {
   Sidebar,
@@ -38,9 +40,13 @@ import { signOut } from "@/lib/auth/client";
 const ownerMenuItems = [
   { title: "Beranda", url: "/dashboard/owner", icon: Home },
   { title: "Properti & Kamar", url: "/dashboard/owner/properti", icon: DoorOpen },
-  { title: "Tagihan", url: "/dashboard/owner/keuangan", icon: Receipt },
+  { title: "Penyewa", url: "/dashboard/owner/penghuni", icon: Users },
+  { title: "Kontrak Sewa", url: "/dashboard/owner/kontrak", icon: FileText },
+  { title: "Keuangan", url: "/dashboard/owner/keuangan", icon: Receipt },
+  { title: "Pemeliharaan", url: "/dashboard/owner/pemeliharaan", icon: Wrench },
   { title: "Pesan", url: "/dashboard/owner/pesan", icon: MessageSquare },
   { title: "Laporan", url: "/dashboard/owner/laporan", icon: FileText },
+  { title: "Tim & Staf", url: "/dashboard/owner/tim", icon: UserCheck },
 ];
 
 const ownerGeneralItems = [
@@ -140,10 +146,10 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="border-none">
-      <div className="flex h-full w-full flex-col bg-gradient-to-b from-teal-500 via-teal-600 to-teal-800 text-white shadow-xl md:rounded-r-[10px]">
+      <div className="flex h-full w-full flex-col bg-gradient-to-b from-teal-500 via-teal-600 to-teal-800 text-white">
 
         {/* ── Logo ────────────────────────────────────────────────── */}
-        <SidebarHeader className="px-4 py-5">
+        <SidebarHeader className="px-2 py-5">
           <Link href={basePath} className="flex items-center gap-2.5">
             <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-white">
               <Image
@@ -156,7 +162,7 @@ export function AppSidebar() {
             </div>
             <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
               <span className="text-base font-bold tracking-tight text-white">
-                Huni<span className="text-yellow-300">Link</span>
+                Kontrak<span className="text-emerald-300">in</span>
               </span>
               <span className="text-[11px] text-white/60">Portal {roleTitle}</span>
             </div>
@@ -164,7 +170,7 @@ export function AppSidebar() {
         </SidebarHeader>
 
         {/* ── Nav ─────────────────────────────────────────────────── */}
-        <SidebarContent className="px-2">
+        <SidebarContent className="px-0">
           {/* MENU section */}
           <SidebarGroup>
             <SidebarGroupLabel className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-widest text-white/40 group-data-[collapsible=icon]:hidden">

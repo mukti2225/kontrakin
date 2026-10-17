@@ -16,12 +16,21 @@ async function requireOwnerId() {
 export async function getPropertiDetail(propertiId: string) {
   const ownerId = await requireOwnerId();
 
-  const properti = await prisma.properti.findUnique({
+  const properti = await prisma.properti.findFirst({
     where: { id: propertiId, ownerId },
     include: {
       kamar: {
         include: {
           penghuni: { where: { status: "aktif" } },
+          pemeliharaan: {
+            include: { penghuni: { select: { nama: true } } },
+            orderBy: { createdAt: "desc" },
+            take: 10,
+          },
+          transaksi: {
+            orderBy: { tanggal: "desc" },
+            take: 5,
+          },
         },
         orderBy: { nomor: "asc" },
       },

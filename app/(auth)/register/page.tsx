@@ -12,7 +12,7 @@ import {
   Apple,
 } from "lucide-react";
 import { useState } from "react";
-import { signUpWithRegistrationRole, type RegistrationRole } from "@/lib/auth/client";
+import { signUpOwner } from "@/lib/auth/client";
 import { useRouter } from "next/navigation";
 
 // ─── Reusable styled input with leading icon ──────────────────────────────────
@@ -74,7 +74,6 @@ function AvatarStack() {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [registrationRole, setRegistrationRole] = useState<RegistrationRole>("tenant");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -106,11 +105,10 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const { error: signUpError } = await signUpWithRegistrationRole({
+      const { error: signUpError } = await signUpOwner({
         email,
         password,
         name,
-        registrationRole,
       });
 
       if (signUpError) {
@@ -201,33 +199,21 @@ export default function RegisterPage() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-2xl font-bold text-gray-900">Daftar Akun Baru</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Daftar Akun Pemilik (Owner)</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Lengkapi data diri Anda untuk memulai perjalanan mengelola properti dengan cerdas.
+            Mulai kelola rental property, unit kamar, dan keuangan Anda secara profesional.
           </p>
 
-          {/* Role switcher */}
-          <div className="mt-6 grid grid-cols-2 gap-2 rounded-xl bg-gray-100 p-1">
-            {(["tenant", "owner"] as RegistrationRole[]).map((role) => (
-              <button
-                key={role}
-                type="button"
-                onClick={() => setRegistrationRole(role)}
-                className={`rounded-lg py-2 text-sm font-medium transition-all ${
-                  registrationRole === role
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                {role === "tenant" ? "Penghuni" : "Pemilik Kost"}
-              </button>
-            ))}
+          {/* Tenant Notice Banner */}
+          <div className="mt-5 rounded-xl border border-teal-100 bg-teal-50/70 p-3.5 text-xs text-teal-800">
+            <p className="font-semibold text-teal-900">Penyewa (Tenant)?</p>
+            <p className="mt-0.5 text-teal-700">
+              Akses Tenant Portal diberikan langsung oleh pemilik properti melalui tautan aktivasi WhatsApp atau email. Jika sudah memiliki akses, silakan{" "}
+              <Link href="/login" className="font-semibold text-teal-900 underline hover:text-teal-950">
+                Masuk di sini
+              </Link>.
+            </p>
           </div>
-          <p className="mt-1.5 text-xs text-gray-400">
-            {registrationRole === "tenant"
-              ? "Akun akan dibuat sebagai penghuni kontrakan."
-              : "Akun akan dibuat sebagai pemilik kost dan diberi akses sesuai peran."}
-          </p>
 
           {/* Error */}
           {error && (

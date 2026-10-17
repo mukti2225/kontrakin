@@ -4,10 +4,7 @@ import { requireOwnerId } from "@/lib/auth/get-current-user";
 import { prisma } from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 import { TipeProperti } from "@/lib/generated/prisma/client";
-
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
-import { existsSync } from "fs";
+import { saveUploadedImage } from "@/lib/storage/upload";
 
 export async function getProperti() {
   const ownerId = await requireOwnerId();
@@ -33,19 +30,7 @@ export async function createProperti(formData: FormData) {
   let foto: string | null = null;
 
   if (fotoFile && fotoFile.size > 0) {
-    const bytes = await fotoFile.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    const fileName = `${Date.now()}-${fotoFile.name.replace(/\s+/g, "-")}`;
-    const filePath = join(uploadDir, fileName);
-
-    await writeFile(filePath, buffer);
-    foto = `/uploads/${fileName}`;
+    foto = await saveUploadedImage(fotoFile);
   }
 
   const lokasiMaps = formData.get("lokasiMaps") as string | null;
@@ -93,22 +78,8 @@ export async function updateProperti(id: string, formData: FormData) {
   let foto = existing.foto; // Keep existing photo by default
 
   if (fotoFile && fotoFile.size > 0) {
-    const bytes = await fotoFile.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    const fileName = `${Date.now()}-${fotoFile.name.replace(/\s+/g, "-")}`;
-    const filePath = join(uploadDir, fileName);
-
-    await writeFile(filePath, buffer);
-    foto = `/uploads/${fileName}`;
+    foto = await saveUploadedImage(fotoFile);
   } else {
-    // If we want to allow removing photo, we would need a way to detect it.
-    // e.g. a hidden field "removeFoto" = "true"
     const removeFoto = formData.get("removeFoto") === "true";
     if (removeFoto) {
       foto = null;

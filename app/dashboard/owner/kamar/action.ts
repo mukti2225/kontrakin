@@ -66,7 +66,13 @@ export async function createKamar(data: KamarInput) {
 }
 
 export async function updateKamar(id: string, data: KamarInput) {
+  const ownerId = await requireOwnerId();
   const { penghuniId, propertiId, ...kamarData } = data;
+
+  const existing = await prisma.kamar.findUnique({ where: { id } });
+  if (!existing || existing.ownerId !== ownerId) {
+    throw new Error("Kamar tidak ditemukan atau bukan milik Anda");
+  }
 
   const kamar = await prisma.$transaction(async (tx) => {
     const penghuniLama = await tx.penghuni.findFirst({
@@ -109,6 +115,13 @@ export async function updateKamar(id: string, data: KamarInput) {
 }
 
 export async function deleteKamar(id: string) {
+  const ownerId = await requireOwnerId();
+
+  const existing = await prisma.kamar.findUnique({ where: { id } });
+  if (!existing || existing.ownerId !== ownerId) {
+    throw new Error("Kamar tidak ditemukan atau bukan milik Anda");
+  }
+
   await prisma.kamar.delete({ where: { id } });
   revalidatePath(PROPERTI_PATH);
 }

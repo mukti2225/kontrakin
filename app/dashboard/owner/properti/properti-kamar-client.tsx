@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   ChevronDown,
   Plus,
@@ -12,6 +13,7 @@ import {
   Wrench,
   Edit,
   Trash,
+  ArrowUpRight,
 } from "lucide-react";
 import type { Properti, Kamar, Penghuni } from "@/lib/generated/prisma/client";
 
@@ -135,26 +137,37 @@ export default function PropertiKamarClient({ propertiData, kamarData, penghuniO
     }
   };
 
-  // Empty state — no properties yet
+  // Empty state — no properties yet (Connected to Onboarding Step 1)
   if (propertiData.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 py-24 text-center px-4">
-        <div className="flex size-16 items-center justify-center rounded-2xl bg-slate-100">
-          <Home className="size-8 text-slate-400" />
+      <div className="flex flex-col items-center justify-center gap-4 py-20 text-center px-4 max-w-xl mx-auto">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-200">
+          <span>Langkah 1 dari 5 Setup Portofolio</span>
+        </div>
+        <div className="flex size-16 items-center justify-center rounded-2xl bg-slate-100 shadow-xs">
+          <Home className="size-8 text-teal-600" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-slate-800">Belum ada properti</h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Tambahkan properti pertama Anda untuk mulai mengelola unit/kamar.
+          <h2 className="text-xl font-bold text-slate-800">Daftarkan Properti Pertama Anda</h2>
+          <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+            Mulai langkah awal setup operasional Kontrakin dengan mendaftarkan gedung kost, kontrakan, atau aset sewa Anda. Setiap unit kamar dan penetapan penyewa akan berinduk pada properti ini.
           </p>
         </div>
-        <button
-          onClick={() => setFormAddOpen(true)}
-          className="flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-700"
-        >
-          <Plus className="size-4" />
-          Tambah Properti
-        </button>
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
+          <button
+            onClick={() => setFormAddOpen(true)}
+            className="flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-700 active:scale-[0.98]"
+          >
+            <Plus className="size-4" />
+            Tambah Properti Pertama
+          </button>
+          <Link
+            href="/dashboard/owner"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition"
+          >
+            Kembali ke Panduan Setup
+          </Link>
+        </div>
         <FormProperti open={formAddOpen} setOpen={setFormAddOpen} />
       </div>
     );
@@ -223,6 +236,13 @@ export default function PropertiKamarClient({ propertiData, kamarData, penghuniO
           {/* Right: properti actions */}
           {activeProperti && (
             <div className="flex items-center gap-2">
+              <Link
+                href={`/dashboard/owner/properti/${activeProperti.id}`}
+                className="flex items-center gap-1.5 rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-semibold text-teal-700 shadow-sm transition hover:bg-teal-100"
+              >
+                <span>Detail Operasional</span>
+                <ArrowUpRight className="size-3.5" />
+              </Link>
               <button
                 onClick={() => setEditingProperti(activeProperti)}
                 className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm transition hover:bg-slate-50"

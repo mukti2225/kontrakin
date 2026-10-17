@@ -15,10 +15,41 @@ export async function getStatusGabungTenant() {
 
   const penghuni = await prisma.penghuni.findUnique({
     where: { userId: user.id },
-    include: { owner: { select: { name: true } }, kamar: true },
+    include: {
+      owner: { select: { name: true } },
+      kamar: {
+        include: { properti: true },
+      },
+      leases: {
+        where: { status: "active" },
+        include: {
+          charges: true,
+          kamar: { include: { properti: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 1,
+      },
+    },
   });
 
-  return penghuni;
+  if (!penghuni) return null;
+
+  const activeLease = penghuni.leases[0] || null;
+
+  return {
+    ...penghuni,
+    activeLease: activeLease
+      ? {
+          ...activeLease,
+          rentAmount: Number(activeLease.rentAmount),
+          depositAmount: Number(activeLease.depositAmount),
+          charges: activeLease.charges.map((c) => ({
+            ...c,
+            amount: Number(c.amount),
+          })),
+        }
+      : null,
+  };
 }
 
 export async function gabungDenganKode(data: GabungInput) {

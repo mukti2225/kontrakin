@@ -8,27 +8,30 @@ datasource db {
 }
 
 model User {
-  id               String         @id
+  id               String             @id
   name             String
-  email            String         @unique
-  role             String         @default("tenant")
-  registrationRole String         @default("tenant")
-  banned           Boolean        @default(false)
+  email            String             @unique
+  role             String             @default("tenant")
+  registrationRole String             @default("tenant")
+  banned           Boolean            @default(false)
   banReason        String?
   banExpires       DateTime?
-  emailVerified    Boolean        @default(false)
+  emailVerified    Boolean            @default(false)
   image            String?
-  kodeUndangan     String?        @unique
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  kamarDimiliki    Kamar[]        @relation("KamarOwner")
-  transaksi        Transaksi[]    @relation("TransaksiOwner")
+  kodeUndangan     String?            @unique
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  kamarDimiliki    Kamar[]            @relation("KamarOwner")
+  transaksi        Transaksi[]        @relation("TransaksiOwner")
   accounts         Account[]
-  pemeliharaan     Pemeliharaan[] @relation("PemeliharaanOwner")
-  penghuniDimiliki Penghuni[]     @relation("PenghuniOwner")
-  penghuniProfil   Penghuni?      @relation("PenghuniUser")
-  propertiDimiliki Properti[]     @relation("PropertiOwner")
+  pemeliharaan     Pemeliharaan[]     @relation("PemeliharaanOwner")
+  penghuniDimiliki Penghuni[]         @relation("PenghuniOwner")
+  penghuniProfil   Penghuni?          @relation("PenghuniUser")
+  propertiDimiliki Properti[]         @relation("PropertiOwner")
   sessions         Session[]
+  organizations    OrganizationUser[]
+  auditLogs        AuditLog[]         @relation("AuditActor")
+  tenantUsers      TenantUser[]
 
   @@index([role])
   @@index([banned])
@@ -80,104 +83,419 @@ model Verification {
   @@map("verification")
 }
 
-model Kamar {
-  id           String         @id @default(cuid())
-  nomor        String
-  lantai       Int
-  tipe         TipeKamar
-  hargaBulanan Int
-  status       StatusKamar    @default(kosong)
-  catatan      String?
-  ownerId      String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  propertiId   String?
-  owner        User           @relation("KamarOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  properti     Properti?      @relation("KamarProperti", fields: [propertiId], references: [id])
+model Organization {
+  id           String             @id @default(cuid())
+  name         String
+  slug         String?            @unique
+  timezone     String             @default("Asia/Jakarta")
+  currency     String             @default("IDR")
+  logo         String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  users        OrganizationUser[]
+  properti     Properti[]
+  kamar        Kamar[]
+  penghuni     Penghuni[]
   transaksi    Transaksi[]
   pemeliharaan Pemeliharaan[]
-  penghuni     Penghuni[]
+  auditLogs    AuditLog[]
+  leases       Lease[]
+  invoices     Invoice[]
+  payments     Payment[]
+  vendors      Vendor[]
+  communications Communication[]
+  tenantActivationTokens TenantActivationToken[]
+
+  @@map("organization")
+}
+
+model OrganizationUser {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String       @default("owner") // owner, admin, manager, finance, staff, viewer
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([userId])
+  @@map("organization_user")
+}
+
+model AuditLog {
+  id             String        @id @default(cuid())
+  organizationId String?
+  actorUserId    String?
+  action         String
+  entityType     String
+  entityId       String
+  beforeData     Json?
+  afterData      Json?
+  ipAddress      String?
+  createdAt      DateTime      @default(now())
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  actorUser      User?         @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([entityType, entityId])
+  @@map("audit_log")
+}
+
+model Kamar {
+  id             String         @id @default(cuid())
+  nomor          String
+  lantai         Int
+  tipe           TipeKamar
+  hargaBulanan   Int
+  status         StatusKamar    @default(kosong)
+  catatan        String?
+  ownerId        String
+  organizationId String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  propertiId     String?
+  owner          User           @relation("KamarOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  properti       Properti?      @relation("KamarProperti", fields: [propertiId], references: [id])
+  organization   Organization?  @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  transaksi      Transaksi[]
+  pemeliharaan   Pemeliharaan[]
+  penghuni       Penghuni[]
+  leases         Lease[]
 
   @@unique([ownerId, nomor])
   @@index([propertiId])
+  @@index([organizationId])
 }
 
 model Penghuni {
-  id            String         @id @default(cuid())
-  nama          String
-  noHp          String
-  email         String?
-  noKtp         String?        @unique
-  tanggalMasuk  DateTime
-  tanggalKeluar DateTime?
-  status        StatusPenghuni @default(aktif)
-  catatan       String?
-  ownerId       String
-  userId        String?        @unique
-  kamarId       String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  transaksi     Transaksi[]
-  pemeliharaan  Pemeliharaan[]
-  kamar         Kamar?         @relation(fields: [kamarId], references: [id])
-  owner         User           @relation("PenghuniOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  user          User?          @relation("PenghuniUser", fields: [userId], references: [id])
+  id             String         @id @default(cuid())
+  nama           String
+  noHp           String
+  email          String?
+  noKtp          String?        @unique
+  tanggalMasuk   DateTime
+  tanggalKeluar  DateTime?
+  status         StatusPenghuni @default(aktif)
+  catatan        String?
+  ownerId        String
+  organizationId String?
+  userId         String?        @unique
+  kamarId        String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  transaksi      Transaksi[]
+  pemeliharaan   Pemeliharaan[]
+  kamar          Kamar?         @relation(fields: [kamarId], references: [id])
+  owner          User           @relation("PenghuniOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  user           User?          @relation("PenghuniUser", fields: [userId], references: [id])
+  organization   Organization?  @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  leases         Lease[]
+  invoices       Invoice[]
+  payments       Payment[]
+  communications Communication[]
+  portalAccessStatus String                  @default("NOT_SENT") // NOT_SENT, INVITE_SENT, ACTIVATION_PENDING, ACTIVE, DISABLED
+  portalActivatedAt  DateTime?
+  lastPortalAccessAt DateTime?
+  tenantUsers        TenantUser[]
+  activationTokens   TenantActivationToken[]
 
+  @@index([organizationId])
+  @@index([portalAccessStatus])
   @@map("penghuni")
 }
 
 model Transaksi {
-  id         String    @id @default(cuid())
-  jenis      String
-  kategori   String
-  jumlah     Int
-  tanggal    DateTime
-  keterangan String?
-  kamarId    String?
-  penghuniId String?
-  createdAt  DateTime  @default(now())
-  ownerId    String
-  kamar      Kamar?    @relation(fields: [kamarId], references: [id])
-  owner      User      @relation("TransaksiOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  penghuni   Penghuni? @relation(fields: [penghuniId], references: [id])
+  id             String        @id @default(cuid())
+  jenis          String
+  kategori       String
+  jumlah         Int
+  tanggal        DateTime
+  keterangan     String?
+  kamarId        String?
+  penghuniId     String?
+  createdAt      DateTime      @default(now())
+  ownerId        String
+  organizationId String?
+  kamar          Kamar?        @relation(fields: [kamarId], references: [id])
+  owner          User          @relation("TransaksiOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  penghuni       Penghuni?     @relation(fields: [penghuniId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
 }
 
 model Properti {
-  id         String       @id @default(cuid())
-  nama       String
-  tipe       TipeProperti
-  alamat     String
-  foto       String?
-  lokasiMaps String?
-  fasilitas  String?
-  deskripsi  String?
-  ownerId    String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  kamar      Kamar[]      @relation("KamarProperti")
-  owner      User         @relation("PropertiOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  id             String        @id @default(cuid())
+  nama           String
+  tipe           TipeProperti
+  alamat         String
+  foto           String?
+  lokasiMaps     String?
+  fasilitas      String?
+  deskripsi      String?
+  ownerId        String
+  organizationId String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  kamar          Kamar[]       @relation("KamarProperti")
+  owner          User          @relation("PropertiOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
 
+  @@index([organizationId])
   @@map("properti")
 }
 
 model Pemeliharaan {
-  id         String             @id @default(cuid())
-  judul      String
-  deskripsi  String
-  status     StatusPemeliharaan @default(menunggu)
-  prioritas  Prioritas          @default(sedang)
-  kategori   String
-  foto       String?
-  penghuniId String
-  kamarId    String
-  ownerId    String
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
-  kamar      Kamar              @relation(fields: [kamarId], references: [id], onDelete: Cascade)
-  owner      User               @relation("PemeliharaanOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  penghuni   Penghuni           @relation(fields: [penghuniId], references: [id], onDelete: Cascade)
+  id             String             @id @default(cuid())
+  judul          String
+  deskripsi      String
+  status         StatusPemeliharaan @default(menunggu)
+  prioritas      Prioritas          @default(sedang)
+  kategori       String
+  foto           String?
+  penghuniId     String
+  kamarId        String
+  ownerId        String
+  organizationId String?
+  vendorId       String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  kamar          Kamar              @relation(fields: [kamarId], references: [id], onDelete: Cascade)
+  owner          User               @relation("PemeliharaanOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  penghuni       Penghuni           @relation(fields: [penghuniId], references: [id], onDelete: Cascade)
+  organization   Organization?      @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  vendor         Vendor?            @relation(fields: [vendorId], references: [id], onDelete: SetNull)
 
+  @@index([organizationId])
   @@map("pemeliharaan")
+}
+
+model Lease {
+  id               String        @id @default(cuid())
+  organizationId   String
+  penghuniId       String
+  kamarId          String
+  nomorKontrak     String?
+  startDate        DateTime
+  endDate          DateTime
+  billingFrequency String        @default("monthly")
+  rentAmount       Decimal       @default(0) @db.Decimal(15, 2)
+  depositAmount    Decimal       @default(0) @db.Decimal(15, 2)
+  billingDay       Int           @default(1)
+  status           String        @default("active") // draft, active, expiring, renewed, terminated, completed
+  notes            String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  organization     Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  penghuni         Penghuni      @relation(fields: [penghuniId], references: [id], onDelete: Cascade)
+  kamar            Kamar         @relation(fields: [kamarId], references: [id], onDelete: Cascade)
+  charges          LeaseCharge[]
+  invoices         Invoice[]
+
+  @@index([organizationId])
+  @@index([penghuniId])
+  @@index([kamarId])
+  @@map("lease")
+}
+
+model LeaseCharge {
+  id          String   @id @default(cuid())
+  leaseId     String
+  type        String   // rent, electricity, water, parking, internet, service_charge, other
+  name        String
+  amount      Decimal  @db.Decimal(15, 2)
+  isRecurring Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lease       Lease    @relation(fields: [leaseId], references: [id], onDelete: Cascade)
+
+  @@index([leaseId])
+  @@map("lease_charge")
+}
+
+model Invoice {
+  id             String              @id @default(cuid())
+  organizationId String
+  penghuniId     String
+  leaseId        String?
+  invoiceNumber  String              @unique
+  issueDate      DateTime            @default(now())
+  dueDate        DateTime
+  subtotal       Decimal             @default(0) @db.Decimal(15, 2)
+  discountTotal  Decimal             @default(0) @db.Decimal(15, 2)
+  taxTotal       Decimal             @default(0) @db.Decimal(15, 2)
+  penaltyTotal   Decimal             @default(0) @db.Decimal(15, 2)
+  total          Decimal             @default(0) @db.Decimal(15, 2)
+  balanceDue     Decimal             @default(0) @db.Decimal(15, 2)
+  status         String              @default("issued") // draft, issued, partial, paid, overdue, cancelled, refunded
+  currency       String              @default("IDR")
+  notes          String?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  penghuni       Penghuni            @relation(fields: [penghuniId], references: [id], onDelete: Cascade)
+  lease          Lease?              @relation(fields: [leaseId], references: [id], onDelete: SetNull)
+  lines          InvoiceLine[]
+  allocations    PaymentAllocation[]
+
+  @@index([organizationId])
+  @@index([penghuniId])
+  @@index([status])
+  @@map("invoice")
+}
+
+model InvoiceLine {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  type        String   @default("rent") // rent, electricity, water, penalty, discount, other
+  description String
+  quantity    Int      @default(1)
+  unitPrice   Decimal  @db.Decimal(15, 2)
+  amount      Decimal  @db.Decimal(15, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@map("invoice_line")
+}
+
+model Payment {
+  id                    String              @id @default(cuid())
+  organizationId        String
+  penghuniId            String
+  amount                Decimal             @db.Decimal(15, 2)
+  paymentMethod         String              @default("transfer") // transfer, qris, cash, va, other
+  paymentReference      String?
+  provider              String?             // manual, midtrans, xendit
+  providerTransactionId String?
+  paidAt                DateTime            @default(now())
+  status                String              @default("completed") // pending, completed, failed, refunded
+  notes                 String?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  organization          Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  penghuni              Penghuni            @relation(fields: [penghuniId], references: [id], onDelete: Cascade)
+  allocations           PaymentAllocation[]
+
+  @@index([organizationId])
+  @@index([penghuniId])
+  @@map("payment")
+}
+
+model PaymentAllocation {
+  id          String   @id @default(cuid())
+  paymentId   String
+  invoiceId   String
+  amount      Decimal  @db.Decimal(15, 2)
+  allocatedAt DateTime @default(now())
+  payment     Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([invoiceId])
+  @@map("payment_allocation")
+}
+
+model Vendor {
+  id             String         @id @default(cuid())
+  organizationId String
+  name           String
+  category       String         // AC, Plumbing, Electrical, Cleaning, Civil, General
+  phone          String
+  email          String?
+  address        String?
+  rating         Int?
+  notes          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  pemeliharaan   Pemeliharaan[]
+
+  @@index([organizationId])
+  @@map("vendor")
+}
+
+model Communication {
+  id                String        @id @default(cuid())
+  organizationId    String
+  penghuniId        String?
+  channel           String        @default("whatsapp") // whatsapp, email, sms, in_app
+  templateId        String?
+  recipientPhone    String
+  recipientName     String?
+  subject           String?
+  message           String
+  status            String        @default("sent") // pending, sent, failed, delivered
+  provider          String        @default("direct") // direct, fonnte, waba, twilio, mock
+  providerMessageId String?
+  sentAt            DateTime      @default(now())
+  metadata          Json?
+  createdAt         DateTime      @default(now())
+  organization      Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  penghuni          Penghuni?     @relation(fields: [penghuniId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([penghuniId])
+  @@map("communication")
+}
+
+model TenantUser {
+  id        String    @id @default(cuid())
+  tenantId  String    @map("tenant_id")
+  userId    String    @map("user_id")
+  status    String    @default("active") // active, disabled
+  linkedAt  DateTime  @default(now()) @map("linked_at")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  penghuni  Penghuni  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, userId])
+  @@index([userId])
+  @@index([tenantId])
+  @@map("tenant_user")
+}
+
+model TenantActivationToken {
+  id             String       @id @default(cuid())
+  tenantId       String       @map("tenant_id")
+  organizationId String       @map("organization_id")
+  tokenHash      String       @unique @map("token_hash")
+  phone          String?
+  email          String?
+  channel        String       @default("whatsapp") // whatsapp, email
+  expiresAt      DateTime     @map("expires_at")
+  usedAt         DateTime?    @map("used_at")
+  revokedAt      DateTime?    @map("revoked_at")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  penghuni       Penghuni     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  otps           TenantOtp[]
+
+  @@index([tenantId])
+  @@index([organizationId])
+  @@index([tokenHash])
+  @@map("tenant_activation_token")
+}
+
+model TenantOtp {
+  id         String                @id @default(cuid())
+  tokenId    String                @map("token_id")
+  identifier String
+  otpHash    String                @map("otp_hash")
+  attempts   Int                   @default(0)
+  expiresAt  DateTime              @map("expires_at")
+  verifiedAt DateTime?             @map("verified_at")
+  createdAt  DateTime              @default(now())
+  token      TenantActivationToken @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+
+  @@index([tokenId])
+  @@index([identifier])
+  @@map("tenant_otp")
 }
 
 enum StatusKamar {

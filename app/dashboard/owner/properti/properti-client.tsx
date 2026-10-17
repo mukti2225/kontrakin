@@ -8,6 +8,7 @@ import { deleteProperti } from "./actions";
 import { toast } from "sonner";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DestructiveDialog } from "@/components/ui/destructive-dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { MapPin, Home, Info, Edit, Trash, Plus, DoorOpen, Users, Bed, Wrench, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -167,30 +168,17 @@ export function PropertiClient({ data }: { data: PropertiDenganKamar[] }) {
         </div>
       )}
 
-      {/* ALERT DIALOG KONFIRMASI HAPUS */}
-      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Hapus properti "{deleteTarget?.nama}"?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Properti ini akan dihapus secara permanen. Semua unit/kamar yang terhubung ke properti ini akan kehilangan relasinya (tidak terhapus). Pastikan tidak ada penghuni aktif sebelum melanjutkan.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={(e) => {
-                e.preventDefault();
-                konfirmasiHapus();
-              }}
-              disabled={isPending}
-            >
-              {isPending ? "Menghapus..." : "Hapus"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* ── Dialog Konfirmasi Hapus (Batch 21: Destructive Confirmation) ── */}
+      <DestructiveDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        onConfirm={konfirmasiHapus}
+        title="Hapus Properti Secara Permanen?"
+        entityName={deleteTarget?.nama}
+        description="Properti ini akan dihapus secara permanen. Semua unit/kamar yang terhubung akan kehilangan relasinya. Pastikan tidak ada penghuni aktif sebelum melanjutkan."
+        confirmLabel="Hapus Properti"
+        isPending={isPending}
+      />
     </div>
   );
 }

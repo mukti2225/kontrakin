@@ -35,10 +35,14 @@ export type PenghuniMinAggregateOutputType = {
   status: $Enums.StatusPenghuni | null
   catatan: string | null
   ownerId: string | null
+  organizationId: string | null
   userId: string | null
   kamarId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  portalAccessStatus: string | null
+  portalActivatedAt: Date | null
+  lastPortalAccessAt: Date | null
 }
 
 export type PenghuniMaxAggregateOutputType = {
@@ -52,10 +56,14 @@ export type PenghuniMaxAggregateOutputType = {
   status: $Enums.StatusPenghuni | null
   catatan: string | null
   ownerId: string | null
+  organizationId: string | null
   userId: string | null
   kamarId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  portalAccessStatus: string | null
+  portalActivatedAt: Date | null
+  lastPortalAccessAt: Date | null
 }
 
 export type PenghuniCountAggregateOutputType = {
@@ -69,10 +77,14 @@ export type PenghuniCountAggregateOutputType = {
   status: number
   catatan: number
   ownerId: number
+  organizationId: number
   userId: number
   kamarId: number
   createdAt: number
   updatedAt: number
+  portalAccessStatus: number
+  portalActivatedAt: number
+  lastPortalAccessAt: number
   _all: number
 }
 
@@ -88,10 +100,14 @@ export type PenghuniMinAggregateInputType = {
   status?: true
   catatan?: true
   ownerId?: true
+  organizationId?: true
   userId?: true
   kamarId?: true
   createdAt?: true
   updatedAt?: true
+  portalAccessStatus?: true
+  portalActivatedAt?: true
+  lastPortalAccessAt?: true
 }
 
 export type PenghuniMaxAggregateInputType = {
@@ -105,10 +121,14 @@ export type PenghuniMaxAggregateInputType = {
   status?: true
   catatan?: true
   ownerId?: true
+  organizationId?: true
   userId?: true
   kamarId?: true
   createdAt?: true
   updatedAt?: true
+  portalAccessStatus?: true
+  portalActivatedAt?: true
+  lastPortalAccessAt?: true
 }
 
 export type PenghuniCountAggregateInputType = {
@@ -122,10 +142,14 @@ export type PenghuniCountAggregateInputType = {
   status?: true
   catatan?: true
   ownerId?: true
+  organizationId?: true
   userId?: true
   kamarId?: true
   createdAt?: true
   updatedAt?: true
+  portalAccessStatus?: true
+  portalActivatedAt?: true
+  lastPortalAccessAt?: true
   _all?: true
 }
 
@@ -212,10 +236,14 @@ export type PenghuniGroupByOutputType = {
   status: $Enums.StatusPenghuni
   catatan: string | null
   ownerId: string
+  organizationId: string | null
   userId: string | null
   kamarId: string | null
   createdAt: Date
   updatedAt: Date
+  portalAccessStatus: string
+  portalActivatedAt: Date | null
+  lastPortalAccessAt: Date | null
   _count: PenghuniCountAggregateOutputType | null
   _min: PenghuniMinAggregateOutputType | null
   _max: PenghuniMaxAggregateOutputType | null
@@ -250,15 +278,26 @@ export type PenghuniWhereInput = {
   status?: Prisma.EnumStatusPenghuniFilter<"Penghuni"> | $Enums.StatusPenghuni
   catatan?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   ownerId?: Prisma.StringFilter<"Penghuni"> | string
+  organizationId?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   userId?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   kamarId?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Penghuni"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Penghuni"> | Date | string
+  portalAccessStatus?: Prisma.StringFilter<"Penghuni"> | string
+  portalActivatedAt?: Prisma.DateTimeNullableFilter<"Penghuni"> | Date | string | null
+  lastPortalAccessAt?: Prisma.DateTimeNullableFilter<"Penghuni"> | Date | string | null
   transaksi?: Prisma.TransaksiListRelationFilter
   pemeliharaan?: Prisma.PemeliharaanListRelationFilter
   kamar?: Prisma.XOR<Prisma.KamarNullableScalarRelationFilter, Prisma.KamarWhereInput> | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  leases?: Prisma.LeaseListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
+  communications?: Prisma.CommunicationListRelationFilter
+  tenantUsers?: Prisma.TenantUserListRelationFilter
+  activationTokens?: Prisma.TenantActivationTokenListRelationFilter
 }
 
 export type PenghuniOrderByWithRelationInput = {
@@ -272,15 +311,26 @@ export type PenghuniOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   kamarId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  portalAccessStatus?: Prisma.SortOrder
+  portalActivatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastPortalAccessAt?: Prisma.SortOrderInput | Prisma.SortOrder
   transaksi?: Prisma.TransaksiOrderByRelationAggregateInput
   pemeliharaan?: Prisma.PemeliharaanOrderByRelationAggregateInput
   kamar?: Prisma.KamarOrderByWithRelationInput
   owner?: Prisma.UserOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
+  leases?: Prisma.LeaseOrderByRelationAggregateInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
+  communications?: Prisma.CommunicationOrderByRelationAggregateInput
+  tenantUsers?: Prisma.TenantUserOrderByRelationAggregateInput
+  activationTokens?: Prisma.TenantActivationTokenOrderByRelationAggregateInput
 }
 
 export type PenghuniWhereUniqueInput = Prisma.AtLeast<{
@@ -298,14 +348,25 @@ export type PenghuniWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumStatusPenghuniFilter<"Penghuni"> | $Enums.StatusPenghuni
   catatan?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   ownerId?: Prisma.StringFilter<"Penghuni"> | string
+  organizationId?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   kamarId?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Penghuni"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Penghuni"> | Date | string
+  portalAccessStatus?: Prisma.StringFilter<"Penghuni"> | string
+  portalActivatedAt?: Prisma.DateTimeNullableFilter<"Penghuni"> | Date | string | null
+  lastPortalAccessAt?: Prisma.DateTimeNullableFilter<"Penghuni"> | Date | string | null
   transaksi?: Prisma.TransaksiListRelationFilter
   pemeliharaan?: Prisma.PemeliharaanListRelationFilter
   kamar?: Prisma.XOR<Prisma.KamarNullableScalarRelationFilter, Prisma.KamarWhereInput> | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  leases?: Prisma.LeaseListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
+  communications?: Prisma.CommunicationListRelationFilter
+  tenantUsers?: Prisma.TenantUserListRelationFilter
+  activationTokens?: Prisma.TenantActivationTokenListRelationFilter
 }, "id" | "noKtp" | "userId">
 
 export type PenghuniOrderByWithAggregationInput = {
@@ -319,10 +380,14 @@ export type PenghuniOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   kamarId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  portalAccessStatus?: Prisma.SortOrder
+  portalActivatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastPortalAccessAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PenghuniCountOrderByAggregateInput
   _max?: Prisma.PenghuniMaxOrderByAggregateInput
   _min?: Prisma.PenghuniMinOrderByAggregateInput
@@ -342,10 +407,14 @@ export type PenghuniScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumStatusPenghuniWithAggregatesFilter<"Penghuni"> | $Enums.StatusPenghuni
   catatan?: Prisma.StringNullableWithAggregatesFilter<"Penghuni"> | string | null
   ownerId?: Prisma.StringWithAggregatesFilter<"Penghuni"> | string
+  organizationId?: Prisma.StringNullableWithAggregatesFilter<"Penghuni"> | string | null
   userId?: Prisma.StringNullableWithAggregatesFilter<"Penghuni"> | string | null
   kamarId?: Prisma.StringNullableWithAggregatesFilter<"Penghuni"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Penghuni"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Penghuni"> | Date | string
+  portalAccessStatus?: Prisma.StringWithAggregatesFilter<"Penghuni"> | string
+  portalActivatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Penghuni"> | Date | string | null
+  lastPortalAccessAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Penghuni"> | Date | string | null
 }
 
 export type PenghuniCreateInput = {
@@ -360,11 +429,21 @@ export type PenghuniCreateInput = {
   catatan?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
   kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
   owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
   user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniUncheckedCreateInput = {
@@ -378,12 +457,22 @@ export type PenghuniUncheckedCreateInput = {
   status?: $Enums.StatusPenghuni
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   userId?: string | null
   kamarId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniUpdateInput = {
@@ -398,11 +487,21 @@ export type PenghuniUpdateInput = {
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
   kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
   user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniUncheckedUpdateInput = {
@@ -416,12 +515,22 @@ export type PenghuniUncheckedUpdateInput = {
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniCreateManyInput = {
@@ -435,10 +544,14 @@ export type PenghuniCreateManyInput = {
   status?: $Enums.StatusPenghuni
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   userId?: string | null
   kamarId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
 }
 
 export type PenghuniUpdateManyMutationInput = {
@@ -453,6 +566,9 @@ export type PenghuniUpdateManyMutationInput = {
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type PenghuniUncheckedUpdateManyInput = {
@@ -466,10 +582,14 @@ export type PenghuniUncheckedUpdateManyInput = {
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type PenghuniListRelationFilter = {
@@ -498,10 +618,14 @@ export type PenghuniCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   kamarId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  portalAccessStatus?: Prisma.SortOrder
+  portalActivatedAt?: Prisma.SortOrder
+  lastPortalAccessAt?: Prisma.SortOrder
 }
 
 export type PenghuniMaxOrderByAggregateInput = {
@@ -515,10 +639,14 @@ export type PenghuniMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   kamarId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  portalAccessStatus?: Prisma.SortOrder
+  portalActivatedAt?: Prisma.SortOrder
+  lastPortalAccessAt?: Prisma.SortOrder
 }
 
 export type PenghuniMinOrderByAggregateInput = {
@@ -532,10 +660,14 @@ export type PenghuniMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   catatan?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   kamarId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  portalAccessStatus?: Prisma.SortOrder
+  portalActivatedAt?: Prisma.SortOrder
+  lastPortalAccessAt?: Prisma.SortOrder
 }
 
 export type PenghuniScalarRelationFilter = {
@@ -617,6 +749,48 @@ export type PenghuniUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PenghuniUpdateToOneWithWhereWithoutUserInput, Prisma.PenghuniUpdateWithoutUserInput>, Prisma.PenghuniUncheckedUpdateWithoutUserInput>
 }
 
+export type PenghuniCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutOrganizationInput, Prisma.PenghuniUncheckedCreateWithoutOrganizationInput> | Prisma.PenghuniCreateWithoutOrganizationInput[] | Prisma.PenghuniUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutOrganizationInput | Prisma.PenghuniCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.PenghuniCreateManyOrganizationInputEnvelope
+  connect?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+}
+
+export type PenghuniUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutOrganizationInput, Prisma.PenghuniUncheckedCreateWithoutOrganizationInput> | Prisma.PenghuniCreateWithoutOrganizationInput[] | Prisma.PenghuniUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutOrganizationInput | Prisma.PenghuniCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.PenghuniCreateManyOrganizationInputEnvelope
+  connect?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+}
+
+export type PenghuniUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutOrganizationInput, Prisma.PenghuniUncheckedCreateWithoutOrganizationInput> | Prisma.PenghuniCreateWithoutOrganizationInput[] | Prisma.PenghuniUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutOrganizationInput | Prisma.PenghuniCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.PenghuniUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.PenghuniUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.PenghuniCreateManyOrganizationInputEnvelope
+  set?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+  disconnect?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+  delete?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+  connect?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+  update?: Prisma.PenghuniUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.PenghuniUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.PenghuniUpdateManyWithWhereWithoutOrganizationInput | Prisma.PenghuniUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.PenghuniScalarWhereInput | Prisma.PenghuniScalarWhereInput[]
+}
+
+export type PenghuniUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutOrganizationInput, Prisma.PenghuniUncheckedCreateWithoutOrganizationInput> | Prisma.PenghuniCreateWithoutOrganizationInput[] | Prisma.PenghuniUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutOrganizationInput | Prisma.PenghuniCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.PenghuniUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.PenghuniUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.PenghuniCreateManyOrganizationInputEnvelope
+  set?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+  disconnect?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+  delete?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+  connect?: Prisma.PenghuniWhereUniqueInput | Prisma.PenghuniWhereUniqueInput[]
+  update?: Prisma.PenghuniUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.PenghuniUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.PenghuniUpdateManyWithWhereWithoutOrganizationInput | Prisma.PenghuniUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.PenghuniScalarWhereInput | Prisma.PenghuniScalarWhereInput[]
+}
+
 export type PenghuniCreateNestedManyWithoutKamarInput = {
   create?: Prisma.XOR<Prisma.PenghuniCreateWithoutKamarInput, Prisma.PenghuniUncheckedCreateWithoutKamarInput> | Prisma.PenghuniCreateWithoutKamarInput[] | Prisma.PenghuniUncheckedCreateWithoutKamarInput[]
   connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutKamarInput | Prisma.PenghuniCreateOrConnectWithoutKamarInput[]
@@ -693,6 +867,92 @@ export type PenghuniUpdateOneRequiredWithoutPemeliharaanNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PenghuniUpdateToOneWithWhereWithoutPemeliharaanInput, Prisma.PenghuniUpdateWithoutPemeliharaanInput>, Prisma.PenghuniUncheckedUpdateWithoutPemeliharaanInput>
 }
 
+export type PenghuniCreateNestedOneWithoutLeasesInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutLeasesInput, Prisma.PenghuniUncheckedCreateWithoutLeasesInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutLeasesInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+}
+
+export type PenghuniUpdateOneRequiredWithoutLeasesNestedInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutLeasesInput, Prisma.PenghuniUncheckedCreateWithoutLeasesInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutLeasesInput
+  upsert?: Prisma.PenghuniUpsertWithoutLeasesInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PenghuniUpdateToOneWithWhereWithoutLeasesInput, Prisma.PenghuniUpdateWithoutLeasesInput>, Prisma.PenghuniUncheckedUpdateWithoutLeasesInput>
+}
+
+export type PenghuniCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutInvoicesInput, Prisma.PenghuniUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutInvoicesInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+}
+
+export type PenghuniUpdateOneRequiredWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutInvoicesInput, Prisma.PenghuniUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.PenghuniUpsertWithoutInvoicesInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PenghuniUpdateToOneWithWhereWithoutInvoicesInput, Prisma.PenghuniUpdateWithoutInvoicesInput>, Prisma.PenghuniUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type PenghuniCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutPaymentsInput, Prisma.PenghuniUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+}
+
+export type PenghuniUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutPaymentsInput, Prisma.PenghuniUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.PenghuniUpsertWithoutPaymentsInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PenghuniUpdateToOneWithWhereWithoutPaymentsInput, Prisma.PenghuniUpdateWithoutPaymentsInput>, Prisma.PenghuniUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type PenghuniCreateNestedOneWithoutCommunicationsInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutCommunicationsInput, Prisma.PenghuniUncheckedCreateWithoutCommunicationsInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutCommunicationsInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+}
+
+export type PenghuniUpdateOneWithoutCommunicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutCommunicationsInput, Prisma.PenghuniUncheckedCreateWithoutCommunicationsInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutCommunicationsInput
+  upsert?: Prisma.PenghuniUpsertWithoutCommunicationsInput
+  disconnect?: Prisma.PenghuniWhereInput | boolean
+  delete?: Prisma.PenghuniWhereInput | boolean
+  connect?: Prisma.PenghuniWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PenghuniUpdateToOneWithWhereWithoutCommunicationsInput, Prisma.PenghuniUpdateWithoutCommunicationsInput>, Prisma.PenghuniUncheckedUpdateWithoutCommunicationsInput>
+}
+
+export type PenghuniCreateNestedOneWithoutTenantUsersInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutTenantUsersInput, Prisma.PenghuniUncheckedCreateWithoutTenantUsersInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutTenantUsersInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+}
+
+export type PenghuniUpdateOneRequiredWithoutTenantUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutTenantUsersInput, Prisma.PenghuniUncheckedCreateWithoutTenantUsersInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutTenantUsersInput
+  upsert?: Prisma.PenghuniUpsertWithoutTenantUsersInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PenghuniUpdateToOneWithWhereWithoutTenantUsersInput, Prisma.PenghuniUpdateWithoutTenantUsersInput>, Prisma.PenghuniUncheckedUpdateWithoutTenantUsersInput>
+}
+
+export type PenghuniCreateNestedOneWithoutActivationTokensInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutActivationTokensInput, Prisma.PenghuniUncheckedCreateWithoutActivationTokensInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutActivationTokensInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+}
+
+export type PenghuniUpdateOneRequiredWithoutActivationTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.PenghuniCreateWithoutActivationTokensInput, Prisma.PenghuniUncheckedCreateWithoutActivationTokensInput>
+  connectOrCreate?: Prisma.PenghuniCreateOrConnectWithoutActivationTokensInput
+  upsert?: Prisma.PenghuniUpsertWithoutActivationTokensInput
+  connect?: Prisma.PenghuniWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PenghuniUpdateToOneWithWhereWithoutActivationTokensInput, Prisma.PenghuniUpdateWithoutActivationTokensInput>, Prisma.PenghuniUncheckedUpdateWithoutActivationTokensInput>
+}
+
 export type PenghuniCreateWithoutOwnerInput = {
   id?: string
   nama: string
@@ -705,10 +965,20 @@ export type PenghuniCreateWithoutOwnerInput = {
   catatan?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
   kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
   user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniUncheckedCreateWithoutOwnerInput = {
@@ -721,12 +991,22 @@ export type PenghuniUncheckedCreateWithoutOwnerInput = {
   tanggalKeluar?: Date | string | null
   status?: $Enums.StatusPenghuni
   catatan?: string | null
+  organizationId?: string | null
   userId?: string | null
   kamarId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniCreateOrConnectWithoutOwnerInput = {
@@ -751,10 +1031,20 @@ export type PenghuniCreateWithoutUserInput = {
   catatan?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
   kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
   owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniUncheckedCreateWithoutUserInput = {
@@ -768,11 +1058,21 @@ export type PenghuniUncheckedCreateWithoutUserInput = {
   status?: $Enums.StatusPenghuni
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   kamarId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniCreateOrConnectWithoutUserInput = {
@@ -810,10 +1110,14 @@ export type PenghuniScalarWhereInput = {
   status?: Prisma.EnumStatusPenghuniFilter<"Penghuni"> | $Enums.StatusPenghuni
   catatan?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   ownerId?: Prisma.StringFilter<"Penghuni"> | string
+  organizationId?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   userId?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   kamarId?: Prisma.StringNullableFilter<"Penghuni"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Penghuni"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Penghuni"> | Date | string
+  portalAccessStatus?: Prisma.StringFilter<"Penghuni"> | string
+  portalActivatedAt?: Prisma.DateTimeNullableFilter<"Penghuni"> | Date | string | null
+  lastPortalAccessAt?: Prisma.DateTimeNullableFilter<"Penghuni"> | Date | string | null
 }
 
 export type PenghuniUpsertWithoutUserInput = {
@@ -839,10 +1143,20 @@ export type PenghuniUpdateWithoutUserInput = {
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
   kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniUncheckedUpdateWithoutUserInput = {
@@ -856,11 +1170,103 @@ export type PenghuniUncheckedUpdateWithoutUserInput = {
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniCreateWithoutOrganizationInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
+  kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
+  owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
+  user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  ownerId: string
+  userId?: string | null
+  kamarId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutOrganizationInput, Prisma.PenghuniUncheckedCreateWithoutOrganizationInput>
+}
+
+export type PenghuniCreateManyOrganizationInputEnvelope = {
+  data: Prisma.PenghuniCreateManyOrganizationInput | Prisma.PenghuniCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type PenghuniUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  update: Prisma.XOR<Prisma.PenghuniUpdateWithoutOrganizationInput, Prisma.PenghuniUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutOrganizationInput, Prisma.PenghuniUncheckedCreateWithoutOrganizationInput>
+}
+
+export type PenghuniUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  data: Prisma.XOR<Prisma.PenghuniUpdateWithoutOrganizationInput, Prisma.PenghuniUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type PenghuniUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.PenghuniScalarWhereInput
+  data: Prisma.XOR<Prisma.PenghuniUpdateManyMutationInput, Prisma.PenghuniUncheckedUpdateManyWithoutOrganizationInput>
 }
 
 export type PenghuniCreateWithoutKamarInput = {
@@ -875,10 +1281,20 @@ export type PenghuniCreateWithoutKamarInput = {
   catatan?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
   owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
   user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniUncheckedCreateWithoutKamarInput = {
@@ -892,11 +1308,21 @@ export type PenghuniUncheckedCreateWithoutKamarInput = {
   status?: $Enums.StatusPenghuni
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniCreateOrConnectWithoutKamarInput = {
@@ -937,10 +1363,20 @@ export type PenghuniCreateWithoutTransaksiInput = {
   catatan?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
   kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
   owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
   user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniUncheckedCreateWithoutTransaksiInput = {
@@ -954,11 +1390,21 @@ export type PenghuniUncheckedCreateWithoutTransaksiInput = {
   status?: $Enums.StatusPenghuni
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   userId?: string | null
   kamarId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniCreateOrConnectWithoutTransaksiInput = {
@@ -989,10 +1435,20 @@ export type PenghuniUpdateWithoutTransaksiInput = {
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
   kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
   user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniUncheckedUpdateWithoutTransaksiInput = {
@@ -1006,11 +1462,21 @@ export type PenghuniUncheckedUpdateWithoutTransaksiInput = {
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniCreateWithoutPemeliharaanInput = {
@@ -1025,10 +1491,20 @@ export type PenghuniCreateWithoutPemeliharaanInput = {
   catatan?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
   kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
   owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
   user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniUncheckedCreateWithoutPemeliharaanInput = {
@@ -1042,11 +1518,21 @@ export type PenghuniUncheckedCreateWithoutPemeliharaanInput = {
   status?: $Enums.StatusPenghuni
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   userId?: string | null
   kamarId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
 }
 
 export type PenghuniCreateOrConnectWithoutPemeliharaanInput = {
@@ -1077,10 +1563,20 @@ export type PenghuniUpdateWithoutPemeliharaanInput = {
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
   kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
   user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniUncheckedUpdateWithoutPemeliharaanInput = {
@@ -1094,11 +1590,789 @@ export type PenghuniUncheckedUpdateWithoutPemeliharaanInput = {
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniCreateWithoutLeasesInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
+  kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
+  owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
+  user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniUncheckedCreateWithoutLeasesInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  ownerId: string
+  organizationId?: string | null
+  userId?: string | null
+  kamarId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniCreateOrConnectWithoutLeasesInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutLeasesInput, Prisma.PenghuniUncheckedCreateWithoutLeasesInput>
+}
+
+export type PenghuniUpsertWithoutLeasesInput = {
+  update: Prisma.XOR<Prisma.PenghuniUpdateWithoutLeasesInput, Prisma.PenghuniUncheckedUpdateWithoutLeasesInput>
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutLeasesInput, Prisma.PenghuniUncheckedCreateWithoutLeasesInput>
+  where?: Prisma.PenghuniWhereInput
+}
+
+export type PenghuniUpdateToOneWithWhereWithoutLeasesInput = {
+  where?: Prisma.PenghuniWhereInput
+  data: Prisma.XOR<Prisma.PenghuniUpdateWithoutLeasesInput, Prisma.PenghuniUncheckedUpdateWithoutLeasesInput>
+}
+
+export type PenghuniUpdateWithoutLeasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
+  kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
+  user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniUncheckedUpdateWithoutLeasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniCreateWithoutInvoicesInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
+  kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
+  owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
+  user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  ownerId: string
+  organizationId?: string | null
+  userId?: string | null
+  kamarId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniCreateOrConnectWithoutInvoicesInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutInvoicesInput, Prisma.PenghuniUncheckedCreateWithoutInvoicesInput>
+}
+
+export type PenghuniUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.PenghuniUpdateWithoutInvoicesInput, Prisma.PenghuniUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutInvoicesInput, Prisma.PenghuniUncheckedCreateWithoutInvoicesInput>
+  where?: Prisma.PenghuniWhereInput
+}
+
+export type PenghuniUpdateToOneWithWhereWithoutInvoicesInput = {
+  where?: Prisma.PenghuniWhereInput
+  data: Prisma.XOR<Prisma.PenghuniUpdateWithoutInvoicesInput, Prisma.PenghuniUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type PenghuniUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
+  kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
+  user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniUncheckedUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniCreateWithoutPaymentsInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
+  kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
+  owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
+  user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  ownerId: string
+  organizationId?: string | null
+  userId?: string | null
+  kamarId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutPaymentsInput, Prisma.PenghuniUncheckedCreateWithoutPaymentsInput>
+}
+
+export type PenghuniUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.PenghuniUpdateWithoutPaymentsInput, Prisma.PenghuniUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutPaymentsInput, Prisma.PenghuniUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.PenghuniWhereInput
+}
+
+export type PenghuniUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.PenghuniWhereInput
+  data: Prisma.XOR<Prisma.PenghuniUpdateWithoutPaymentsInput, Prisma.PenghuniUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type PenghuniUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
+  kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
+  user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniCreateWithoutCommunicationsInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
+  kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
+  owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
+  user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniUncheckedCreateWithoutCommunicationsInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  ownerId: string
+  organizationId?: string | null
+  userId?: string | null
+  kamarId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniCreateOrConnectWithoutCommunicationsInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutCommunicationsInput, Prisma.PenghuniUncheckedCreateWithoutCommunicationsInput>
+}
+
+export type PenghuniUpsertWithoutCommunicationsInput = {
+  update: Prisma.XOR<Prisma.PenghuniUpdateWithoutCommunicationsInput, Prisma.PenghuniUncheckedUpdateWithoutCommunicationsInput>
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutCommunicationsInput, Prisma.PenghuniUncheckedCreateWithoutCommunicationsInput>
+  where?: Prisma.PenghuniWhereInput
+}
+
+export type PenghuniUpdateToOneWithWhereWithoutCommunicationsInput = {
+  where?: Prisma.PenghuniWhereInput
+  data: Prisma.XOR<Prisma.PenghuniUpdateWithoutCommunicationsInput, Prisma.PenghuniUncheckedUpdateWithoutCommunicationsInput>
+}
+
+export type PenghuniUpdateWithoutCommunicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
+  kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
+  user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniUncheckedUpdateWithoutCommunicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniCreateWithoutTenantUsersInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
+  kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
+  owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
+  user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniUncheckedCreateWithoutTenantUsersInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  ownerId: string
+  organizationId?: string | null
+  userId?: string | null
+  kamarId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniCreateOrConnectWithoutTenantUsersInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutTenantUsersInput, Prisma.PenghuniUncheckedCreateWithoutTenantUsersInput>
+}
+
+export type PenghuniUpsertWithoutTenantUsersInput = {
+  update: Prisma.XOR<Prisma.PenghuniUpdateWithoutTenantUsersInput, Prisma.PenghuniUncheckedUpdateWithoutTenantUsersInput>
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutTenantUsersInput, Prisma.PenghuniUncheckedCreateWithoutTenantUsersInput>
+  where?: Prisma.PenghuniWhereInput
+}
+
+export type PenghuniUpdateToOneWithWhereWithoutTenantUsersInput = {
+  where?: Prisma.PenghuniWhereInput
+  data: Prisma.XOR<Prisma.PenghuniUpdateWithoutTenantUsersInput, Prisma.PenghuniUncheckedUpdateWithoutTenantUsersInput>
+}
+
+export type PenghuniUpdateWithoutTenantUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
+  kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
+  user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniUncheckedUpdateWithoutTenantUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniCreateWithoutActivationTokensInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanCreateNestedManyWithoutPenghuniInput
+  kamar?: Prisma.KamarCreateNestedOneWithoutPenghuniInput
+  owner: Prisma.UserCreateNestedOneWithoutPenghuniDimilikiInput
+  user?: Prisma.UserCreateNestedOneWithoutPenghuniProfilInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutPenghuniInput
+  leases?: Prisma.LeaseCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniUncheckedCreateWithoutActivationTokensInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  ownerId: string
+  organizationId?: string | null
+  userId?: string | null
+  kamarId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutPenghuniInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedCreateNestedManyWithoutPenghuniInput
+  leases?: Prisma.LeaseUncheckedCreateNestedManyWithoutPenghuniInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutPenghuniInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutPenghuniInput
+  communications?: Prisma.CommunicationUncheckedCreateNestedManyWithoutPenghuniInput
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutPenghuniInput
+}
+
+export type PenghuniCreateOrConnectWithoutActivationTokensInput = {
+  where: Prisma.PenghuniWhereUniqueInput
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutActivationTokensInput, Prisma.PenghuniUncheckedCreateWithoutActivationTokensInput>
+}
+
+export type PenghuniUpsertWithoutActivationTokensInput = {
+  update: Prisma.XOR<Prisma.PenghuniUpdateWithoutActivationTokensInput, Prisma.PenghuniUncheckedUpdateWithoutActivationTokensInput>
+  create: Prisma.XOR<Prisma.PenghuniCreateWithoutActivationTokensInput, Prisma.PenghuniUncheckedCreateWithoutActivationTokensInput>
+  where?: Prisma.PenghuniWhereInput
+}
+
+export type PenghuniUpdateToOneWithWhereWithoutActivationTokensInput = {
+  where?: Prisma.PenghuniWhereInput
+  data: Prisma.XOR<Prisma.PenghuniUpdateWithoutActivationTokensInput, Prisma.PenghuniUncheckedUpdateWithoutActivationTokensInput>
+}
+
+export type PenghuniUpdateWithoutActivationTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
+  kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
+  user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniUncheckedUpdateWithoutActivationTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniCreateManyOwnerInput = {
@@ -1111,10 +2385,14 @@ export type PenghuniCreateManyOwnerInput = {
   tanggalKeluar?: Date | string | null
   status?: $Enums.StatusPenghuni
   catatan?: string | null
+  organizationId?: string | null
   userId?: string | null
   kamarId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
 }
 
 export type PenghuniUpdateWithoutOwnerInput = {
@@ -1129,10 +2407,20 @@ export type PenghuniUpdateWithoutOwnerInput = {
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
   kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
   user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniUncheckedUpdateWithoutOwnerInput = {
@@ -1145,12 +2433,22 @@ export type PenghuniUncheckedUpdateWithoutOwnerInput = {
   tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniUncheckedUpdateManyWithoutOwnerInput = {
@@ -1163,10 +2461,110 @@ export type PenghuniUncheckedUpdateManyWithoutOwnerInput = {
   tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type PenghuniCreateManyOrganizationInput = {
+  id?: string
+  nama: string
+  noHp: string
+  email?: string | null
+  noKtp?: string | null
+  tanggalMasuk: Date | string
+  tanggalKeluar?: Date | string | null
+  status?: $Enums.StatusPenghuni
+  catatan?: string | null
+  ownerId: string
+  userId?: string | null
+  kamarId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
+}
+
+export type PenghuniUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
+  kamar?: Prisma.KamarUpdateOneWithoutPenghuniNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
+  user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
+  pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
+}
+
+export type PenghuniUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  noHp?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noKtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggalMasuk?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tanggalKeluar?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kamarId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type PenghuniCreateManyKamarInput = {
@@ -1180,9 +2578,13 @@ export type PenghuniCreateManyKamarInput = {
   status?: $Enums.StatusPenghuni
   catatan?: string | null
   ownerId: string
+  organizationId?: string | null
   userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  portalAccessStatus?: string
+  portalActivatedAt?: Date | string | null
+  lastPortalAccessAt?: Date | string | null
 }
 
 export type PenghuniUpdateWithoutKamarInput = {
@@ -1197,10 +2599,20 @@ export type PenghuniUpdateWithoutKamarInput = {
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUpdateManyWithoutPenghuniNestedInput
   pemeliharaan?: Prisma.PemeliharaanUpdateManyWithoutPenghuniNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutPenghuniDimilikiNestedInput
   user?: Prisma.UserUpdateOneWithoutPenghuniProfilNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniUncheckedUpdateWithoutKamarInput = {
@@ -1214,11 +2626,21 @@ export type PenghuniUncheckedUpdateWithoutKamarInput = {
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutPenghuniNestedInput
   pemeliharaan?: Prisma.PemeliharaanUncheckedUpdateManyWithoutPenghuniNestedInput
+  leases?: Prisma.LeaseUncheckedUpdateManyWithoutPenghuniNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutPenghuniNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutPenghuniNestedInput
+  communications?: Prisma.CommunicationUncheckedUpdateManyWithoutPenghuniNestedInput
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutPenghuniNestedInput
+  activationTokens?: Prisma.TenantActivationTokenUncheckedUpdateManyWithoutPenghuniNestedInput
 }
 
 export type PenghuniUncheckedUpdateManyWithoutKamarInput = {
@@ -1232,9 +2654,13 @@ export type PenghuniUncheckedUpdateManyWithoutKamarInput = {
   status?: Prisma.EnumStatusPenghuniFieldUpdateOperationsInput | $Enums.StatusPenghuni
   catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portalAccessStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  portalActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPortalAccessAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1245,11 +2671,23 @@ export type PenghuniUncheckedUpdateManyWithoutKamarInput = {
 export type PenghuniCountOutputType = {
   transaksi: number
   pemeliharaan: number
+  leases: number
+  invoices: number
+  payments: number
+  communications: number
+  tenantUsers: number
+  activationTokens: number
 }
 
 export type PenghuniCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transaksi?: boolean | PenghuniCountOutputTypeCountTransaksiArgs
   pemeliharaan?: boolean | PenghuniCountOutputTypeCountPemeliharaanArgs
+  leases?: boolean | PenghuniCountOutputTypeCountLeasesArgs
+  invoices?: boolean | PenghuniCountOutputTypeCountInvoicesArgs
+  payments?: boolean | PenghuniCountOutputTypeCountPaymentsArgs
+  communications?: boolean | PenghuniCountOutputTypeCountCommunicationsArgs
+  tenantUsers?: boolean | PenghuniCountOutputTypeCountTenantUsersArgs
+  activationTokens?: boolean | PenghuniCountOutputTypeCountActivationTokensArgs
 }
 
 /**
@@ -1276,6 +2714,48 @@ export type PenghuniCountOutputTypeCountPemeliharaanArgs<ExtArgs extends runtime
   where?: Prisma.PemeliharaanWhereInput
 }
 
+/**
+ * PenghuniCountOutputType without action
+ */
+export type PenghuniCountOutputTypeCountLeasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeaseWhereInput
+}
+
+/**
+ * PenghuniCountOutputType without action
+ */
+export type PenghuniCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
+}
+
+/**
+ * PenghuniCountOutputType without action
+ */
+export type PenghuniCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
+/**
+ * PenghuniCountOutputType without action
+ */
+export type PenghuniCountOutputTypeCountCommunicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommunicationWhereInput
+}
+
+/**
+ * PenghuniCountOutputType without action
+ */
+export type PenghuniCountOutputTypeCountTenantUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantUserWhereInput
+}
+
+/**
+ * PenghuniCountOutputType without action
+ */
+export type PenghuniCountOutputTypeCountActivationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantActivationTokenWhereInput
+}
+
 
 export type PenghuniSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1288,15 +2768,26 @@ export type PenghuniSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   status?: boolean
   catatan?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   userId?: boolean
   kamarId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  portalAccessStatus?: boolean
+  portalActivatedAt?: boolean
+  lastPortalAccessAt?: boolean
   transaksi?: boolean | Prisma.Penghuni$transaksiArgs<ExtArgs>
   pemeliharaan?: boolean | Prisma.Penghuni$pemeliharaanArgs<ExtArgs>
   kamar?: boolean | Prisma.Penghuni$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   user?: boolean | Prisma.Penghuni$userArgs<ExtArgs>
+  organization?: boolean | Prisma.Penghuni$organizationArgs<ExtArgs>
+  leases?: boolean | Prisma.Penghuni$leasesArgs<ExtArgs>
+  invoices?: boolean | Prisma.Penghuni$invoicesArgs<ExtArgs>
+  payments?: boolean | Prisma.Penghuni$paymentsArgs<ExtArgs>
+  communications?: boolean | Prisma.Penghuni$communicationsArgs<ExtArgs>
+  tenantUsers?: boolean | Prisma.Penghuni$tenantUsersArgs<ExtArgs>
+  activationTokens?: boolean | Prisma.Penghuni$activationTokensArgs<ExtArgs>
   _count?: boolean | Prisma.PenghuniCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["penghuni"]>
 
@@ -1311,13 +2802,18 @@ export type PenghuniSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   status?: boolean
   catatan?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   userId?: boolean
   kamarId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  portalAccessStatus?: boolean
+  portalActivatedAt?: boolean
+  lastPortalAccessAt?: boolean
   kamar?: boolean | Prisma.Penghuni$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   user?: boolean | Prisma.Penghuni$userArgs<ExtArgs>
+  organization?: boolean | Prisma.Penghuni$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["penghuni"]>
 
 export type PenghuniSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1331,13 +2827,18 @@ export type PenghuniSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   status?: boolean
   catatan?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   userId?: boolean
   kamarId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  portalAccessStatus?: boolean
+  portalActivatedAt?: boolean
+  lastPortalAccessAt?: boolean
   kamar?: boolean | Prisma.Penghuni$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   user?: boolean | Prisma.Penghuni$userArgs<ExtArgs>
+  organization?: boolean | Prisma.Penghuni$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["penghuni"]>
 
 export type PenghuniSelectScalar = {
@@ -1351,30 +2852,43 @@ export type PenghuniSelectScalar = {
   status?: boolean
   catatan?: boolean
   ownerId?: boolean
+  organizationId?: boolean
   userId?: boolean
   kamarId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  portalAccessStatus?: boolean
+  portalActivatedAt?: boolean
+  lastPortalAccessAt?: boolean
 }
 
-export type PenghuniOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nama" | "noHp" | "email" | "noKtp" | "tanggalMasuk" | "tanggalKeluar" | "status" | "catatan" | "ownerId" | "userId" | "kamarId" | "createdAt" | "updatedAt", ExtArgs["result"]["penghuni"]>
+export type PenghuniOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nama" | "noHp" | "email" | "noKtp" | "tanggalMasuk" | "tanggalKeluar" | "status" | "catatan" | "ownerId" | "organizationId" | "userId" | "kamarId" | "createdAt" | "updatedAt" | "portalAccessStatus" | "portalActivatedAt" | "lastPortalAccessAt", ExtArgs["result"]["penghuni"]>
 export type PenghuniInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transaksi?: boolean | Prisma.Penghuni$transaksiArgs<ExtArgs>
   pemeliharaan?: boolean | Prisma.Penghuni$pemeliharaanArgs<ExtArgs>
   kamar?: boolean | Prisma.Penghuni$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   user?: boolean | Prisma.Penghuni$userArgs<ExtArgs>
+  organization?: boolean | Prisma.Penghuni$organizationArgs<ExtArgs>
+  leases?: boolean | Prisma.Penghuni$leasesArgs<ExtArgs>
+  invoices?: boolean | Prisma.Penghuni$invoicesArgs<ExtArgs>
+  payments?: boolean | Prisma.Penghuni$paymentsArgs<ExtArgs>
+  communications?: boolean | Prisma.Penghuni$communicationsArgs<ExtArgs>
+  tenantUsers?: boolean | Prisma.Penghuni$tenantUsersArgs<ExtArgs>
+  activationTokens?: boolean | Prisma.Penghuni$activationTokensArgs<ExtArgs>
   _count?: boolean | Prisma.PenghuniCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PenghuniIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.Penghuni$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   user?: boolean | Prisma.Penghuni$userArgs<ExtArgs>
+  organization?: boolean | Prisma.Penghuni$organizationArgs<ExtArgs>
 }
 export type PenghuniIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kamar?: boolean | Prisma.Penghuni$kamarArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   user?: boolean | Prisma.Penghuni$userArgs<ExtArgs>
+  organization?: boolean | Prisma.Penghuni$organizationArgs<ExtArgs>
 }
 
 export type $PenghuniPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1385,6 +2899,13 @@ export type $PenghuniPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     kamar: Prisma.$KamarPayload<ExtArgs> | null
     owner: Prisma.$UserPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs> | null
+    organization: Prisma.$OrganizationPayload<ExtArgs> | null
+    leases: Prisma.$LeasePayload<ExtArgs>[]
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
+    communications: Prisma.$CommunicationPayload<ExtArgs>[]
+    tenantUsers: Prisma.$TenantUserPayload<ExtArgs>[]
+    activationTokens: Prisma.$TenantActivationTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1397,10 +2918,14 @@ export type $PenghuniPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     status: $Enums.StatusPenghuni
     catatan: string | null
     ownerId: string
+    organizationId: string | null
     userId: string | null
     kamarId: string | null
     createdAt: Date
     updatedAt: Date
+    portalAccessStatus: string
+    portalActivatedAt: Date | null
+    lastPortalAccessAt: Date | null
   }, ExtArgs["result"]["penghuni"]>
   composites: {}
 }
@@ -1800,6 +3325,13 @@ export interface Prisma__PenghuniClient<T, Null = never, ExtArgs extends runtime
   kamar<T extends Prisma.Penghuni$kamarArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$kamarArgs<ExtArgs>>): Prisma.Prisma__KamarClient<runtime.Types.Result.GetResult<Prisma.$KamarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.Penghuni$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  organization<T extends Prisma.Penghuni$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  leases<T extends Prisma.Penghuni$leasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$leasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.Penghuni$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.Penghuni$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  communications<T extends Prisma.Penghuni$communicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$communicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommunicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tenantUsers<T extends Prisma.Penghuni$tenantUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$tenantUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  activationTokens<T extends Prisma.Penghuni$activationTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Penghuni$activationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantActivationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1839,10 +3371,14 @@ export interface PenghuniFieldRefs {
   readonly status: Prisma.FieldRef<"Penghuni", 'StatusPenghuni'>
   readonly catatan: Prisma.FieldRef<"Penghuni", 'String'>
   readonly ownerId: Prisma.FieldRef<"Penghuni", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Penghuni", 'String'>
   readonly userId: Prisma.FieldRef<"Penghuni", 'String'>
   readonly kamarId: Prisma.FieldRef<"Penghuni", 'String'>
   readonly createdAt: Prisma.FieldRef<"Penghuni", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Penghuni", 'DateTime'>
+  readonly portalAccessStatus: Prisma.FieldRef<"Penghuni", 'String'>
+  readonly portalActivatedAt: Prisma.FieldRef<"Penghuni", 'DateTime'>
+  readonly lastPortalAccessAt: Prisma.FieldRef<"Penghuni", 'DateTime'>
 }
     
 
@@ -2327,6 +3863,169 @@ export type Penghuni$userArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Penghuni.organization
+ */
+export type Penghuni$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Organization
+   */
+  select?: Prisma.OrganizationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Organization
+   */
+  omit?: Prisma.OrganizationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationInclude<ExtArgs> | null
+  where?: Prisma.OrganizationWhereInput
+}
+
+/**
+ * Penghuni.leases
+ */
+export type Penghuni$leasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Lease
+   */
+  select?: Prisma.LeaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Lease
+   */
+  omit?: Prisma.LeaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeaseInclude<ExtArgs> | null
+  where?: Prisma.LeaseWhereInput
+  orderBy?: Prisma.LeaseOrderByWithRelationInput | Prisma.LeaseOrderByWithRelationInput[]
+  cursor?: Prisma.LeaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeaseScalarFieldEnum | Prisma.LeaseScalarFieldEnum[]
+}
+
+/**
+ * Penghuni.invoices
+ */
+export type Penghuni$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * Penghuni.payments
+ */
+export type Penghuni$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
+}
+
+/**
+ * Penghuni.communications
+ */
+export type Penghuni$communicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Communication
+   */
+  select?: Prisma.CommunicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Communication
+   */
+  omit?: Prisma.CommunicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommunicationInclude<ExtArgs> | null
+  where?: Prisma.CommunicationWhereInput
+  orderBy?: Prisma.CommunicationOrderByWithRelationInput | Prisma.CommunicationOrderByWithRelationInput[]
+  cursor?: Prisma.CommunicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommunicationScalarFieldEnum | Prisma.CommunicationScalarFieldEnum[]
+}
+
+/**
+ * Penghuni.tenantUsers
+ */
+export type Penghuni$tenantUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantUser
+   */
+  select?: Prisma.TenantUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantUser
+   */
+  omit?: Prisma.TenantUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantUserInclude<ExtArgs> | null
+  where?: Prisma.TenantUserWhereInput
+  orderBy?: Prisma.TenantUserOrderByWithRelationInput | Prisma.TenantUserOrderByWithRelationInput[]
+  cursor?: Prisma.TenantUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantUserScalarFieldEnum | Prisma.TenantUserScalarFieldEnum[]
+}
+
+/**
+ * Penghuni.activationTokens
+ */
+export type Penghuni$activationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantActivationToken
+   */
+  select?: Prisma.TenantActivationTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantActivationToken
+   */
+  omit?: Prisma.TenantActivationTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantActivationTokenInclude<ExtArgs> | null
+  where?: Prisma.TenantActivationTokenWhereInput
+  orderBy?: Prisma.TenantActivationTokenOrderByWithRelationInput | Prisma.TenantActivationTokenOrderByWithRelationInput[]
+  cursor?: Prisma.TenantActivationTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantActivationTokenScalarFieldEnum | Prisma.TenantActivationTokenScalarFieldEnum[]
 }
 
 /**

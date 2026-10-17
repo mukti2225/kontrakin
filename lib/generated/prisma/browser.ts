@@ -38,6 +38,21 @@ export type Account = Prisma.AccountModel
  */
 export type Verification = Prisma.VerificationModel
 /**
+ * Model Organization
+ * 
+ */
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model OrganizationUser
+ * 
+ */
+export type OrganizationUser = Prisma.OrganizationUserModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel
+/**
  * Model Kamar
  * 
  */
@@ -62,3 +77,58 @@ export type Properti = Prisma.PropertiModel
  * 
  */
 export type Pemeliharaan = Prisma.PemeliharaanModel
+/**
+ * Model Lease
+ * 
+ */
+export type Lease = Prisma.LeaseModel
+/**
+ * Model LeaseCharge
+ * 
+ */
+export type LeaseCharge = Prisma.LeaseChargeModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model InvoiceLine
+ * 
+ */
+export type InvoiceLine = Prisma.InvoiceLineModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model PaymentAllocation
+ * 
+ */
+export type PaymentAllocation = Prisma.PaymentAllocationModel
+/**
+ * Model Vendor
+ * 
+ */
+export type Vendor = Prisma.VendorModel
+/**
+ * Model Communication
+ * 
+ */
+export type Communication = Prisma.CommunicationModel
+/**
+ * Model TenantUser
+ * 
+ */
+export type TenantUser = Prisma.TenantUserModel
+/**
+ * Model TenantActivationToken
+ * 
+ */
+export type TenantActivationToken = Prisma.TenantActivationTokenModel
+/**
+ * Model TenantOtp
+ * 
+ */
+export type TenantOtp = Prisma.TenantOtpModel

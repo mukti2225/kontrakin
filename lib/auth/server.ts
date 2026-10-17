@@ -36,8 +36,8 @@ export const auth = betterAuth({
       registrationRole: {
         type: "string",
         required: false,
-        defaultValue: "tenant",
-        input: true,
+        defaultValue: "owner",
+        input: false, // Disallow client from supplying registrationRole via public signup
       },
       kodeUndangan: {
         type: "string",
@@ -51,8 +51,17 @@ export const auth = betterAuth({
     user: {
       create: {
         before: async (user) => {
-          const role = user.registrationRole === "owner" ? "owner" : "tenant";
-          return { data: { ...user, role } };
+          // Public signup is strictly reserved for Owner.
+          // Staff are invited by Owner, Tenants are activated by Owner via secure activation links,
+          // and Superadmins are provisioned internally.
+          // Unconditionally force 'owner' role to prevent client role injection or escalation.
+          return {
+            data: {
+              ...user,
+              role: "owner",
+              registrationRole: "owner",
+            },
+          };
         },
       },
     },
@@ -60,7 +69,7 @@ export const auth = betterAuth({
 
   plugins: [
     admin({
-      defaultRole: "tenant",
+      defaultRole: "owner",
       adminRoles: ["super-admin"],
       roles,
     }),

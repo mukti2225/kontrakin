@@ -2,7 +2,8 @@
 "use server";
 
 import { prisma } from "@/lib/db/prisma";
-import { requireOwnerId } from "@/lib/auth/get-current-user";
+import { requireOwnerId, getCurrentUser } from "@/lib/auth/get-current-user";
+import { revalidatePath } from "next/cache";
 import { customAlphabet } from "nanoid";
 
 const generateKode = customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789", 8);
@@ -25,4 +26,19 @@ export async function getOrCreateKodeUndangan() {
 
   await prisma.user.update({ where: { id: user.id }, data: { kodeUndangan: kode } });
   return kode;
+}
+
+export async function updateProfileName(name: string) {
+  const user = await getCurrentUser();
+  if (!user) throw new Error("Unauthorized");
+  if (!name.trim()) throw new Error("Nama tidak boleh kosong");
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { name: name.trim() },
+  });
+
+  revalidatePath("/dashboard/owner/pengaturan");
+  revalidatePath("/dashboard/owner");
+  return { success: true };
 }
