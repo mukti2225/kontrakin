@@ -208,6 +208,11 @@ export function PenghuniClient({
   // Tenant Portal Access Management
   const [isPortalActionPending, setIsPortalActionPending] = useState(false);
   const [disablePortalTarget, setDisablePortalTarget] = useState<PenghuniDenganDetail | null>(null);
+  const [whatsappModalData, setWhatsappModalData] = useState<{
+    tenantName: string;
+    phone: string;
+    directUrl: string;
+  } | null>(null);
 
   // CSV / Spreadsheet Import Modal state
   const [importOpen, setImportOpen] = useState(false);
@@ -240,8 +245,6 @@ export function PenghuniClient({
   // ─── Portal Access Handlers ────────────────────────────────────────────────
   async function handleSendPortalAccess(t: PenghuniDenganDetail) {
     setIsPortalActionPending(true);
-    // Buka window terlebih dahulu secara sinkron sebelum await untuk mencegah blokir popup oleh browser
-    const waWindow = typeof window !== "undefined" ? window.open("about:blank", "_blank") : null;
 
     try {
       console.log("[PortalAccess] Mengirim permintaan akses portal untuk:", {
@@ -257,23 +260,22 @@ export function PenghuniClient({
       if (res?.directUrl) {
         console.log("[PortalAccess] directUrl berhasil didapatkan:", res.directUrl);
 
-        if (waWindow && !waWindow.closed) {
-          waWindow.location.href = res.directUrl;
-        } else {
-          window.open(res.directUrl, "_blank");
+        // Tampilkan modal dialog WhatsApp
+        setWhatsappModalData({
+          tenantName: t.nama,
+          phone: t.noHp,
+          directUrl: res.directUrl,
+        });
+
+        // Buka langsung ke URL WhatsApp jika diizinkan browser
+        try {
+          window.open(res.directUrl, "_blank", "noopener,noreferrer");
+        } catch (e) {
+          console.warn("[PortalAccess] window.open diblokir popup blocker:", e);
         }
 
-        toast.success("Akses Tenant Portal siap dikirim!", {
-          description: "Jika WhatsApp tidak terbuka otomatis, klik tombol di samping.",
-          action: {
-            label: "Buka WhatsApp",
-            onClick: () => window.open(res.directUrl, "_blank"),
-          },
-          duration: 10000,
-        });
+        toast.success("Tautan akses WhatsApp berhasil disiapkan!");
       } else {
-        if (waWindow && !waWindow.closed) waWindow.close();
-        console.warn("[PortalAccess] Server tidak mengembalikan directUrl. Data response:", res);
         toast.success("Akses Tenant Portal berhasil diproses!");
       }
 
@@ -288,7 +290,6 @@ export function PenghuniClient({
         );
       }
     } catch (err: any) {
-      if (waWindow && !waWindow.closed) waWindow.close();
       console.error("[PortalAccess] Gagal mengirim akses portal:", err);
       toast.error(err.message || "Gagal mengirim akses portal");
     } finally {
@@ -298,7 +299,6 @@ export function PenghuniClient({
 
   async function handleResendPortalAccess(t: PenghuniDenganDetail) {
     setIsPortalActionPending(true);
-    const waWindow = typeof window !== "undefined" ? window.open("about:blank", "_blank") : null;
 
     try {
       console.log("[PortalAccess] Mengirim ulang akses portal untuk:", {
@@ -313,23 +313,20 @@ export function PenghuniClient({
       if (res?.directUrl) {
         console.log("[PortalAccess] Mengarahkan ke directUrl:", res.directUrl);
 
-        if (waWindow && !waWindow.closed) {
-          waWindow.location.href = res.directUrl;
-        } else {
-          window.open(res.directUrl, "_blank");
+        setWhatsappModalData({
+          tenantName: t.nama,
+          phone: t.noHp,
+          directUrl: res.directUrl,
+        });
+
+        try {
+          window.open(res.directUrl, "_blank", "noopener,noreferrer");
+        } catch (e) {
+          console.warn("[PortalAccess] window.open diblokir:", e);
         }
 
-        toast.success("Tautan akses baru siap dikirim!", {
-          description: "Jika WhatsApp tidak terbuka otomatis, klik tombol di samping.",
-          action: {
-            label: "Buka WhatsApp",
-            onClick: () => window.open(res.directUrl, "_blank"),
-          },
-          duration: 10000,
-        });
+        toast.success("Tautan akses WhatsApp baru telah disiapkan!");
       } else {
-        if (waWindow && !waWindow.closed) waWindow.close();
-        console.warn("[PortalAccess] Tidak ada directUrl dalam response:", res);
         toast.success("Tautan akses baru berhasil diproses!");
       }
 
@@ -344,7 +341,6 @@ export function PenghuniClient({
         );
       }
     } catch (err: any) {
-      if (waWindow && !waWindow.closed) waWindow.close();
       console.error("[PortalAccess] Gagal mengirim ulang akses portal:", err);
       toast.error(err.message || "Gagal mengirim ulang akses portal");
     } finally {
@@ -2066,6 +2062,60 @@ export function PenghuniClient({
         onOpenChange={setImportOpen}
         onImportSuccess={handleImportSuccess}
       />
+      {/* ── Dialog Akses Portal WhatsApp ── */}
+      <Dialog
+        open={!!whatsappModalData}
+        onOpenChange={(open) => {
+          if (!open) setWhatsappModalData(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-md rounded-2xl bg-white p-6 shadow-xl">
+          <DialogHeader>
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-[#0FA37F] mb-3">
+              <MessageSquare className="h-6 w-6" />
+            </div>
+            <DialogTitle className="text-center text-lg font-bold text-neutral-900">
+              Kirim Akses Portal ke WhatsApp
+            </DialogTitle>
+            <DialogDescription className="text-center text-xs text-neutral-500">
+              Tautan aktivasi untuk <strong>{whatsappModalData?.tenantName}</strong> ({whatsappModalData?.phone}) telah berhasil dibuat.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="my-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3.5 text-xs text-neutral-600 space-y-1.5">
+            <p className="font-semibold text-neutral-800">Status Pengiriman:</p>
+            <p className="leading-relaxed text-neutral-500">
+              Klik tombol hijau di bawah untuk membuka WhatsApp Web atau aplikasi WhatsApp dengan pesan dan link aktivasi yang sudah terisi otomatis.
+            </p>
+          </div>
+
+          <DialogFooter className="flex flex-col sm:flex-row gap-2 mt-2">
+            <a
+              href={whatsappModalData?.directUrl || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setWhatsappModalData(null)}
+              className="inline-flex w-full sm:flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#1EBE5D] transition-colors"
+            >
+              <MessageSquare className="h-4 w-4" />
+              Buka WhatsApp Sekarang
+            </a>
+            <Button
+              type="button"
+              variant="outline"
+              className="rounded-xl border-neutral-200 text-xs"
+              onClick={() => {
+                if (whatsappModalData?.directUrl) {
+                  navigator.clipboard.writeText(whatsappModalData.directUrl);
+                  toast.success("Tautan WhatsApp berhasil disalin!");
+                }
+              }}
+            >
+              Salin Link
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
