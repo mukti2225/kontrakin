@@ -194,6 +194,15 @@ export class TenantActivationService {
       },
     });
 
+    console.log("[TenantActivationService] Portal access generated:", {
+      penghuniId,
+      nama: tenant.nama,
+      noHp: tenant.noHp,
+      activationUrl,
+      directUrl: sendResult.directUrl,
+      provider: sendResult.provider,
+    });
+
     // 7. Record communication history
     await prisma.communication.create({
       data: {

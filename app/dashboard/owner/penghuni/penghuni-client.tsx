@@ -240,12 +240,43 @@ export function PenghuniClient({
   // ─── Portal Access Handlers ────────────────────────────────────────────────
   async function handleSendPortalAccess(t: PenghuniDenganDetail) {
     setIsPortalActionPending(true);
+    // Buka window terlebih dahulu secara sinkron sebelum await untuk mencegah blokir popup oleh browser
+    const waWindow = typeof window !== "undefined" ? window.open("about:blank", "_blank") : null;
+
     try {
+      console.log("[PortalAccess] Mengirim permintaan akses portal untuk:", {
+        id: t.id,
+        nama: t.nama,
+        noHp: t.noHp,
+        origin: window.location.origin,
+      });
+
       const res = await sendTenantPortalAccessAction(t.id, window.location.origin);
-      toast.success("Akses Tenant Portal berhasil dikirim ke nomor WhatsApp penyewa!");
-      if (res.directUrl) {
-        window.open(res.directUrl, "_blank");
+      console.log("[PortalAccess] Response dari server:", res);
+
+      if (res?.directUrl) {
+        console.log("[PortalAccess] directUrl berhasil didapatkan:", res.directUrl);
+
+        if (waWindow && !waWindow.closed) {
+          waWindow.location.href = res.directUrl;
+        } else {
+          window.open(res.directUrl, "_blank");
+        }
+
+        toast.success("Akses Tenant Portal siap dikirim!", {
+          description: "Jika WhatsApp tidak terbuka otomatis, klik tombol di samping.",
+          action: {
+            label: "Buka WhatsApp",
+            onClick: () => window.open(res.directUrl, "_blank"),
+          },
+          duration: 10000,
+        });
+      } else {
+        if (waWindow && !waWindow.closed) waWindow.close();
+        console.warn("[PortalAccess] Server tidak mengembalikan directUrl. Data response:", res);
+        toast.success("Akses Tenant Portal berhasil diproses!");
       }
+
       setList((prev) =>
         prev.map((item) =>
           item.id === t.id ? { ...item, portalAccessStatus: "INVITE_SENT" } : item
@@ -257,6 +288,8 @@ export function PenghuniClient({
         );
       }
     } catch (err: any) {
+      if (waWindow && !waWindow.closed) waWindow.close();
+      console.error("[PortalAccess] Gagal mengirim akses portal:", err);
       toast.error(err.message || "Gagal mengirim akses portal");
     } finally {
       setIsPortalActionPending(false);
@@ -265,12 +298,41 @@ export function PenghuniClient({
 
   async function handleResendPortalAccess(t: PenghuniDenganDetail) {
     setIsPortalActionPending(true);
+    const waWindow = typeof window !== "undefined" ? window.open("about:blank", "_blank") : null;
+
     try {
+      console.log("[PortalAccess] Mengirim ulang akses portal untuk:", {
+        id: t.id,
+        nama: t.nama,
+        noHp: t.noHp,
+      });
+
       const res = await resendTenantPortalAccessAction(t.id, window.location.origin);
-      toast.success("Tautan akses baru berhasil dikirim via WhatsApp!");
-      if (res.directUrl) {
-        window.open(res.directUrl, "_blank");
+      console.log("[PortalAccess] Response kirim ulang dari server:", res);
+
+      if (res?.directUrl) {
+        console.log("[PortalAccess] Mengarahkan ke directUrl:", res.directUrl);
+
+        if (waWindow && !waWindow.closed) {
+          waWindow.location.href = res.directUrl;
+        } else {
+          window.open(res.directUrl, "_blank");
+        }
+
+        toast.success("Tautan akses baru siap dikirim!", {
+          description: "Jika WhatsApp tidak terbuka otomatis, klik tombol di samping.",
+          action: {
+            label: "Buka WhatsApp",
+            onClick: () => window.open(res.directUrl, "_blank"),
+          },
+          duration: 10000,
+        });
+      } else {
+        if (waWindow && !waWindow.closed) waWindow.close();
+        console.warn("[PortalAccess] Tidak ada directUrl dalam response:", res);
+        toast.success("Tautan akses baru berhasil diproses!");
       }
+
       setList((prev) =>
         prev.map((item) =>
           item.id === t.id ? { ...item, portalAccessStatus: "INVITE_SENT" } : item
@@ -282,6 +344,8 @@ export function PenghuniClient({
         );
       }
     } catch (err: any) {
+      if (waWindow && !waWindow.closed) waWindow.close();
+      console.error("[PortalAccess] Gagal mengirim ulang akses portal:", err);
       toast.error(err.message || "Gagal mengirim ulang akses portal");
     } finally {
       setIsPortalActionPending(false);

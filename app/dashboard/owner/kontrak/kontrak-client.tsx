@@ -395,13 +395,25 @@ export function KontrakClient({
           originUrl: window.location.origin,
         });
 
-        setLeases((prev) => [newLease as LeaseItem, ...prev]);
-        setFormOpen(false);
-        const toastMsg = sendPortalAccess
-          ? `Kontrak sewa ${newLease.nomorKontrak} aktif & Akses Tenant Portal berhasil dikirim via WhatsApp!`
-          : `Kontrak sewa ${newLease.nomorKontrak} berhasil diaktifkan`;
-        toast.success(toastMsg);
+        const directUrl = (newLease as any)?.portalAccessResult?.directUrl;
+        if (directUrl) {
+          console.log("[Kontrak] Akses portal dibuat otomatis, directUrl:", directUrl);
+          toast.success(`Kontrak sewa ${newLease.nomorKontrak} aktif!`, {
+            description: "Klik tombol di bawah untuk membuka WhatsApp penyewa:",
+            action: {
+              label: "Buka WhatsApp",
+              onClick: () => window.open(directUrl, "_blank"),
+            },
+            duration: 10000,
+          });
+        } else {
+          const toastMsg = sendPortalAccess
+            ? `Kontrak sewa ${newLease.nomorKontrak} aktif & Akses Tenant Portal berhasil diproses!`
+            : `Kontrak sewa ${newLease.nomorKontrak} berhasil diaktifkan`;
+          toast.success(toastMsg);
+        }
       } catch (err: any) {
+        console.error("[Kontrak] Gagal membuat kontrak:", err);
         toast.error(err.message || "Gagal membuat kontrak sewa");
       }
     });
