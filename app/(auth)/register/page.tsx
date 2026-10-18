@@ -2,15 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Eye,
-  EyeOff,
-  User,
-  Mail,
-  Lock,
-  Globe,
-  Apple,
-} from "lucide-react";
+import { Eye, EyeOff, User, Mail, Lock, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { signUpOwner } from "@/lib/auth/client";
 import { useRouter } from "next/navigation";
@@ -37,7 +29,7 @@ function IconInput({
 }) {
   return (
     <div className="relative flex items-center">
-      <Icon className="pointer-events-none absolute left-3 h-4 w-4 text-gray-400" />
+      <Icon className="pointer-events-none absolute left-3.5 h-4 w-4 text-neutral-400" />
       <input
         id={id}
         type={type}
@@ -45,35 +37,17 @@ function IconInput({
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-10 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#1a6b5a] focus:outline-none focus:ring-2 focus:ring-[#1a6b5a]/20 transition"
+        className="w-full rounded-xl border border-neutral-200 bg-neutral-50/60 py-3 pl-10 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 focus:bg-white focus:border-[#0FA37F] focus:outline-none focus:ring-2 focus:ring-[#0FA37F]/20 transition"
       />
-      {trailing && (
-        <div className="absolute right-3">{trailing}</div>
-      )}
+      {trailing && <div className="absolute right-3.5">{trailing}</div>}
     </div>
   );
 }
 
-// ─── Avatar stack placeholder ─────────────────────────────────────────────────
-function AvatarStack() {
-  const colors = ["bg-emerald-400", "bg-teal-500", "bg-cyan-400"];
-  return (
-    <div className="flex -space-x-2">
-      {colors.map((c, i) => (
-        <span
-          key={i}
-          className={`inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-white/60 ${c} text-xs font-bold text-white`}
-        >
-          {String.fromCharCode(65 + i)}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
+// ─── Main Register Page ────────────────────────────────────────────────────────
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -93,12 +67,12 @@ export default function RegisterPage() {
     }
 
     if (password !== confirmPassword) {
-      setError("Password dan Confirm Password tidak cocok.");
+      setError("Kata sandi dan Konfirmasi Kata Sandi tidak cocok.");
       return;
     }
 
     if (password.length < 8) {
-      setError("Password minimal 8 karakter.");
+      setError("Kata sandi minimal 8 karakter.");
       return;
     }
 
@@ -126,113 +100,130 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen bg-white">
-      {/* ── LEFT PANEL: decorative hero ───────────────────────────── */}
-      <div className="relative hidden lg:flex lg:w-1/2 flex-col justify-between overflow-hidden rounded-r-3xl">
-        {/* Teal-to-dark gradient background simulating property image */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0d4f42] via-[#1a7a65] to-[#0a3530]" />
-
-        {/* Subtle grid / texture overlay */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.15) 39px,rgba(255,255,255,.15) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.15) 39px,rgba(255,255,255,.15) 40px)",
-          }}
+      {/* ── LEFT PANEL: High-Resolution Architectural Visual Showcase ── */}
+      <section className="relative hidden w-1/2 overflow-hidden bg-neutral-900 lg:flex lg:flex-col lg:justify-between p-12">
+        {/* Real High-Resolution Property Exterior / Architecture */}
+        <img
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1400&auto=format&fit=crop"
+          alt="Arsitektur Properti Huni Link"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-70"
         />
 
-        {/* Decorative blurred circles simulating bokeh/building */}
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 h-72 w-40 rounded-full bg-white/10 blur-3xl" />
-        <div className="absolute bottom-40 right-8 h-48 w-48 rounded-full bg-emerald-400/20 blur-2xl" />
-        <div className="absolute bottom-10 left-8 h-32 w-32 rounded-full bg-teal-300/20 blur-2xl" />
+        {/* Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/45 to-neutral-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/60 to-transparent" />
 
-        {/* Building silhouette decoration */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 flex gap-2 opacity-20">
-          {[60, 100, 140, 100, 60].map((h, i) => (
-            <div
-              key={i}
-              className="w-6 rounded-t-sm bg-white"
-              style={{ height: `${h}px` }}
-            />
-          ))}
+        {/* Top Header Brand */}
+        <div className="relative z-10">
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <Image src="/icon-aja.png" alt="Huni Link" width={32} height={32} className="rounded-lg shadow-md" />
+            <span className="text-2xl font-bold tracking-tight text-white">
+              Huni<span className="text-[#0FA37F]">Link.</span>
+            </span>
+          </Link>
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 p-8">
-          {/* Brand */}
-          <div className="flex items-center gap-2">
-            <Image src="/icon-aja.png" alt="Kontrakin" width={28} height={28} className="drop-shadow" />
-            <span className="text-lg font-semibold text-white">Kontrakin</span>
+        {/* Bottom Glassmorphic Card */}
+        <div className="relative z-10 max-w-lg space-y-6">
+          <div className="rounded-3xl border border-white/15 bg-white/10 p-7 shadow-2xl backdrop-blur-md text-white">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-300 border border-emerald-400/30 mb-3">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              Sistem Operasional Rental Properti
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-white">
+              Kelola Kos & Properti Lebih Rapi, Cepat, dan Menguntungkan
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-neutral-200">
+              Bergabung bersama ratusan pemilik dan manajer properti di Indonesia yang telah meninggalkan pencatatan manual dan beralih ke Huni Link.
+            </p>
+
+            <div className="mt-6 pt-5 border-t border-white/15 flex items-center justify-between">
+              <div className="flex -space-x-2.5">
+                <img
+                  className="inline-block h-8 w-8 rounded-full ring-2 ring-neutral-900 object-cover"
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop"
+                  alt="Owner"
+                />
+                <img
+                  className="inline-block h-8 w-8 rounded-full ring-2 ring-neutral-900 object-cover"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&auto=format&fit=crop"
+                  alt="Owner"
+                />
+                <img
+                  className="inline-block h-8 w-8 rounded-full ring-2 ring-neutral-900 object-cover"
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&auto=format&fit=crop"
+                  alt="Owner"
+                />
+              </div>
+              <span className="text-xs font-medium text-neutral-300">
+                Dipercaya <strong className="text-white font-bold">500+ Pemilik Properti</strong>
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6 text-xs text-neutral-400">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="h-4 w-4 text-emerald-400" /> Tanpa Biaya Tersembunyi
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="h-4 w-4 text-emerald-400" /> Siap Pakai 5 Menit
+            </span>
           </div>
         </div>
+      </section>
 
-        <div className="relative z-10 px-10 pb-4">
-          <h2 className="text-3xl font-bold leading-tight text-white">
-            Mulai Kelola Properti
-            <br />
-            Anda
-            <br />
-            dengan Lebih Mudah
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed text-white/70">
-            Bergabunglah dengan ribuan pemilik properti yang telah
-            mempercayakan manajemen kos dan apartemen mereka kepada Kontrakin.
-            Terintegrasi, aman, dan efisien.
-          </p>
-        </div>
-
-        {/* Footer trust badge */}
-        <div className="relative z-10 flex items-center gap-3 px-10 py-8">
-          <AvatarStack />
-          <p className="text-sm text-white/80">
-            Dipercaya oleh <strong className="text-white">5.000+</strong> pemilik properti
-          </p>
-        </div>
-      </div>
-
-      {/* ── RIGHT PANEL: form ──────────────────────────────────────── */}
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-10 sm:px-12">
-        <div className="w-full max-w-md">
-          {/* Mobile brand */}
-          <div className="mb-6 flex items-center gap-2 lg:hidden">
-            <Image src="/icon-aja.png" alt="Kontrakin" width={28} height={28} />
-            <span className="text-lg font-semibold text-[#1a6b5a]">Kontrakin</span>
+      {/* ── RIGHT PANEL: Registration Form ── */}
+      <section className="flex flex-1 flex-col justify-center px-6 py-12 sm:px-12 lg:px-16 overflow-y-auto">
+        <div className="mx-auto w-full max-w-md">
+          {/* Mobile Brand Link */}
+          <div className="mb-6 lg:hidden">
+            <Link href="/" className="inline-flex items-center gap-2">
+              <Image src="/icon-aja.png" alt="Huni Link" width={30} height={30} className="rounded-md" />
+              <span className="text-xl font-bold tracking-tight text-neutral-900">
+                Huni<span className="text-[#0FA37F]">Link.</span>
+              </span>
+            </Link>
           </div>
 
           {/* Heading */}
-          <h1 className="text-2xl font-bold text-gray-900">Daftar Akun Pemilik (Owner)</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Mulai kelola rental property, unit kamar, dan keuangan Anda secara profesional.
-          </p>
+          <div className="mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">
+              Daftar Akun Pemilik (Owner)
+            </h1>
+            <p className="mt-1.5 text-sm text-neutral-500">
+              Buat workspace Anda dan mulai kelola kamar kos, unit kontrakan, dan keuangan hari ini.
+            </p>
+          </div>
 
-          {/* Tenant Notice Banner */}
-          <div className="mt-5 rounded-xl border border-teal-100 bg-teal-50/70 p-3.5 text-xs text-teal-800">
-            <p className="font-semibold text-teal-900">Penyewa (Tenant)?</p>
-            <p className="mt-0.5 text-teal-700">
-              Akses Tenant Portal diberikan langsung oleh pemilik properti melalui tautan aktivasi WhatsApp atau email. Jika sudah memiliki akses, silakan{" "}
-              <Link href="/login" className="font-semibold text-teal-900 underline hover:text-teal-950">
+          {/* Tenant Notice Box */}
+          <div className="mb-6 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 text-xs text-neutral-700">
+            <p className="font-bold text-neutral-900">Penyewa (Tenant)?</p>
+            <p className="mt-0.5 leading-relaxed text-neutral-600">
+              Akses Tenant Portal diberikan via link aktivasi WhatsApp oleh pemilik properti. Jika sudah punya akses, silakan{" "}
+              <Link href="/login" className="font-semibold text-neutral-900 underline underline-offset-2 hover:text-[#0FA37F]">
                 Masuk di sini
               </Link>.
             </p>
           </div>
 
-          {/* Error */}
+          {/* Error Alert */}
           {error && (
-            <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            <div className="mb-5 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
               {error}
             </div>
           )}
 
           {/* Form */}
-          <form onSubmit={handleRegister} className="mt-5 space-y-4">
-            {/* Nama */}
+          <form onSubmit={handleRegister} className="space-y-4">
+            {/* Nama Lengkap */}
             <div className="space-y-1.5">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-neutral-700">
                 Nama Lengkap
               </label>
               <IconInput
                 id="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder="Nama Anda atau Nama Usaha"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -242,8 +233,8 @@ export default function RegisterPage() {
 
             {/* Email */}
             <div className="space-y-1.5">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
+              <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-neutral-700">
+                Alamat Email
               </label>
               <IconInput
                 id="email"
@@ -256,9 +247,9 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Password */}
+            {/* Kata Sandi */}
             <div className="space-y-1.5">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-xs font-semibold uppercase tracking-wider text-neutral-700">
                 Kata Sandi
               </label>
               <IconInput
@@ -273,24 +264,23 @@ export default function RegisterPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="text-gray-400 hover:text-gray-600 transition"
+                    className="text-neutral-400 hover:text-neutral-700 transition"
                     aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
                   >
                     {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                   </button>
                 }
               />
-              <p className="text-xs text-gray-400">Gunakan kombinasi huruf, angka, dan simbol.</p>
             </div>
 
-            {/* Confirm Password */}
+            {/* Konfirmasi Kata Sandi */}
             <div className="space-y-1.5">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="confirmPassword" className="block text-xs font-semibold uppercase tracking-wider text-neutral-700">
                 Konfirmasi Kata Sandi
               </label>
               <IconInput
                 id="confirmPassword"
-                type={showPassword ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
                 placeholder="Ulangi kata sandi"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -299,81 +289,57 @@ export default function RegisterPage() {
                 trailing={
                   <button
                     type="button"
-                    onClick={() => setShowPassword((v) => !v)}
-                    className="text-gray-400 hover:text-gray-600 transition"
+                    onClick={() => setShowConfirmPassword((v) => !v)}
+                    className="text-neutral-400 hover:text-neutral-700 transition"
                     aria-label="Toggle konfirmasi kata sandi"
                   >
-                    {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    {showConfirmPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                   </button>
                 }
               />
             </div>
 
-            {/* Terms checkbox */}
-            <label className="flex cursor-pointer items-start gap-2.5">
+            {/* Terms Checkbox */}
+            <label className="flex cursor-pointer items-start gap-2.5 pt-1">
               <input
                 type="checkbox"
                 id="terms"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-0.5 h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#1a6b5a]"
+                className="mt-0.5 h-4 w-4 cursor-pointer rounded border-neutral-300 text-[#0FA37F] accent-[#0FA37F]"
               />
-              <span className="text-sm text-gray-600">
-                Saya setuju dengan{" "}
-                <Link href="/terms" className="font-medium text-[#1a6b5a] underline underline-offset-2">
+              <span className="text-xs text-neutral-600 leading-normal">
+                Saya menyetujui{" "}
+                <Link href="/terms" className="font-semibold text-neutral-900 underline underline-offset-2 hover:text-[#0FA37F]">
                   Syarat &amp; Ketentuan
                 </Link>{" "}
-                dan{" "}
-                <Link href="/privacy" className="font-medium text-[#1a6b5a] underline underline-offset-2">
-                  Kebijakan Privasi.
-                </Link>
+                serta{" "}
+                <Link href="/privacy" className="font-semibold text-neutral-900 underline underline-offset-2 hover:text-[#0FA37F]">
+                  Kebijakan Privasi
+                </Link>{" "}
+                Huni Link.
               </span>
             </label>
 
-            {/* Submit */}
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="mt-1 w-full rounded-lg bg-[#1a6b5a] py-3 text-sm font-semibold text-white transition hover:bg-[#155a4a] active:scale-[0.98] disabled:opacity-60"
+              className="mt-3 w-full rounded-xl bg-neutral-900 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0FA37F] active:scale-[0.99] disabled:opacity-60"
             >
-              {loading ? "Memproses..." : "Daftar Sekarang"}
+              {loading ? "Membuat Akun..." : "Daftar Gratis Sekarang"}
             </button>
           </form>
 
-          {/* Login link */}
-          <p className="mt-5 text-center text-sm text-gray-500">
-            Sudah punya akun?{" "}
-            <Link href="/login" className="font-semibold text-[#1a6b5a] hover:underline">
-              Masuk
+          {/* Login Link */}
+          <p className="mt-7 text-center text-sm text-neutral-500">
+            Sudah memiliki akun?{" "}
+            <Link href="/login" className="font-semibold text-neutral-900 hover:text-[#0FA37F] transition-colors underline underline-offset-4">
+              Masuk di sini
             </Link>
           </p>
-
-          {/* Divider */}
-          <div className="relative my-5 flex items-center">
-            <div className="flex-1 border-t border-gray-200" />
-            <span className="mx-3 text-xs text-gray-400">Atau daftar dengan</span>
-            <div className="flex-1 border-t border-gray-200" />
-          </div>
-
-          {/* Social buttons */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              className="flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 active:scale-[0.98]"
-            >
-              <Globe className="h-4 w-4 text-[#4285F4]" />
-              Google
-            </button>
-            <button
-              type="button"
-              className="flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 active:scale-[0.98]"
-            >
-              <Apple className="h-4 w-4 text-gray-900" />
-              Apple
-            </button>
-          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

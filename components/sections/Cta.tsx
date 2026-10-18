@@ -1,22 +1,68 @@
-import { ArrowRight } from "lucide-react";
+"use client";
 
-export const Cta = () => {
+import Link from "next/link";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+
+export default function Cta() {
   return (
-    <section id="cta" className="bg-[#006060] px-6 py-16 sm:px-8 md:py-20">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">Siap Mengoptimalkan Properti Anda?</h2>
-        <p className="mx-auto mt-4 max-w-[46ch] text-sm leading-6 text-white/75">Bergabung dengan ribuan pemilik properti yang telah meningkatkan efisiensi dan keuntungan bersama Huni Link.</p>
-        <a
-          href="/register"
-          className="group relative mt-7 inline-flex items-center gap-2 overflow-hidden rounded-md bg-white px-5 py-3 text-sm font-bold text-[#006060] shadow-sm transition duration-300 hover:-translate-y-1 hover:bg-[#e6f7f2] hover:shadow-lg"
-        >
-          <span className="absolute inset-y-0 left-0 w-1/3 -translate-x-[180%] skew-x-[-18deg] bg-white/60 transition-transform duration-700 group-hover:translate-x-[480%]" />
-          Daftar Gratis Sekarang
-          <ArrowRight className="size-3.5" />
-        </a>
+    <section id="cta" className="bg-white py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-6 sm:px-8">
+        <div className="relative overflow-hidden rounded-[36px] bg-neutral-900 px-8 py-16 sm:px-16 sm:py-20 text-center text-white shadow-xl">
+          {/* Subtle radiant ambient glow inside card */}
+          <div
+            className="pointer-events-none absolute -right-20 -top-20 h-96 w-96 rounded-full opacity-30 blur-3xl"
+            style={{
+              background: "radial-gradient(circle, #10b981 0%, transparent 70%)",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute -left-20 -bottom-20 h-96 w-96 rounded-full opacity-20 blur-3xl"
+            style={{
+              background: "radial-gradient(circle, #34d399 0%, transparent 70%)",
+            }}
+          />
+
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-tight">
+              Siap Mengubah Cara Anda Mengelola Properti?
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-neutral-300">
+              Daftar dalam 2 menit. Mulai kelola unit, catat transaksi sewa, dan kirim tagihan WhatsApp otomatis secara gratis bersama Huni Link.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href="/register"
+                className="rounded-full bg-[#0FA37F] px-8 py-4 text-sm font-bold text-white shadow-sm hover:bg-[#0c8265] transition-all duration-200"
+              >
+                Mulai Uji Coba Gratis
+              </Link>
+              <Link
+                href="#fitur"
+                className="inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-800/80 px-6 py-4 text-sm font-semibold text-neutral-200 hover:bg-neutral-800 transition-all duration-200"
+              >
+                <span>Pelajari Selengkapnya</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-xs text-neutral-400">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                <span>Tanpa Kartu Kredit</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                <span>Setup Cepat 5 Menit</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                <span>Bebas Batalkan Kapan Saja</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
-};
-
-export default Cta;
+}

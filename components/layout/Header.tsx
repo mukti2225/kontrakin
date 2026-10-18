@@ -13,8 +13,10 @@ import { useSession } from "@/lib/auth/client";
 
 const NAV_ITEMS = [
   { href: "#fitur", label: "Fitur" },
-  { href: "#harga", label: "Cara Kerja" },
-  { href: "#cta", label: "Tentang Kami" },
+  { href: "#integrasi", label: "Integrasi" },
+  { href: "#otomatisasi", label: "Automasi AI" },
+  { href: "#keunggulan", label: "Keunggulan" },
+  { href: "#faq", label: "FAQ" },
 ] as const;
 
 export default function Header() {
@@ -23,13 +25,13 @@ export default function Header() {
   const { data: session, isPending } = useSession();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#E5E5E0] bg-[#FAFAF8]/95 backdrop-blur supports-backdrop-filter:bg-[#FAFAF8]/80">
-      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-6">
-        <div className="flex flex-row gap-2">
-          <Image src="/icon-aja.png" alt="Kontrakin" width={30} height={30} />
-        <Link href="/" className="shrink-0 text-[21px] font-semibold tracking-[-0.05em] text-[#12141B]" style={{ fontFamily: "var(--font-display)" }}>
-          Kontrak<span className="text-[#0FA37F]">in</span>
-        </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-neutral-200/70 bg-white/90 backdrop-blur-md">
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 sm:px-8">
+        <div className="flex items-center gap-2.5">
+          <Image src="/icon-aja.png" alt="Huni Link" width={28} height={28} className="rounded-md" />
+          <Link href="/" className="shrink-0 text-xl font-bold tracking-tight text-neutral-900">
+            Huni<span className="text-[#0FA37F]">Link.</span>
+          </Link>
         </div>
 
         {/* Desktop nav */}
@@ -42,8 +44,8 @@ export default function Header() {
                   aria-current={pathname === item.href ? "page" : undefined}
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    "h-9 rounded-full bg-transparent px-4 text-[13px] text-[#4B4F58] hover:bg-[#EAF6F1] hover:text-[#12141B] focus-visible:ring-[#0FA37F]/40",
-                    pathname === item.href && "font-semibold text-[#12141B]",
+                    "h-9 rounded-full bg-transparent px-4 text-[13px] font-medium text-neutral-600 hover:bg-neutral-100/80 hover:text-neutral-950 focus-visible:ring-[#0FA37F]/40",
+                    pathname === item.href && "font-semibold text-neutral-950",
                   )}
                 >
                   {item.label}
@@ -56,20 +58,20 @@ export default function Header() {
         {/* Desktop actions */}
         <div className="hidden items-center gap-3 md:flex">
           {isPending ? (
-            <div className="h-9 w-20 animate-pulse bg-muted rounded-md"></div>
+            <div className="h-9 w-20 animate-pulse bg-muted rounded-full"></div>
           ) : session ? (
             <div className="flex items-center gap-4">
-              <span className="text-sm font-medium">Hai, {session.user.name}</span>
-              <Button render={<Link href="/dashboard" />} nativeButton={false}>
+              <span className="text-xs font-medium text-neutral-600">Hai, {session.user.name}</span>
+              <Button render={<Link href="/dashboard" />} nativeButton={false} className="rounded-full bg-neutral-900 text-xs px-4 h-9 hover:bg-[#0FA37F]">
                 Dashboard
               </Button>
             </div>
           ) : (
             <>
-              <Button variant="ghost" className="text-[13px] text-[#4B4F58] hover:bg-transparent hover:text-[#12141B]" render={<Link href="/login" />} nativeButton={false}>
+              <Button variant="ghost" className="text-[13px] font-medium text-neutral-700 hover:bg-neutral-100 rounded-full px-4" render={<Link href="/login" />} nativeButton={false}>
                 Masuk
               </Button>
-              <Button className="h-9 rounded-full bg-[#12141B] px-5 text-[13px] text-[#FAFAF8] hover:bg-[#0FA37F]" render={<Link href="/register" />} nativeButton={false}>
+              <Button className="h-9 rounded-full bg-neutral-900 px-5 text-[13px] font-medium text-white shadow-sm hover:bg-[#0FA37F] transition-colors" render={<Link href="/register" />} nativeButton={false}>
                 Mulai Gratis
               </Button>
             </>
